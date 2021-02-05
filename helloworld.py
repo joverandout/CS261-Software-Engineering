@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'index'
+    return 'MEETING APP PLS GIVE US A FIRST'
     
 
 @app.route('/login')
