@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import sys
 
 class Meeting():
@@ -20,6 +20,17 @@ class Meeting():
         self.__host = host
         self.__participatns = []
         self.__in_progress = in_progress
+
+    def start_meeting(self):
+        self.__in_progress = True
+    
+    def end_meeting(self):
+        self.__in_progress = False
+    
+    def meeting_overrun(self):
+        if datetime.now() - self.__starttime > self.__duration:
+            return True
+        return False
 
     def to_string(self):
         string = ""
