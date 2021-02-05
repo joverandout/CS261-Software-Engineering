@@ -1,12 +1,11 @@
 import React from 'react'; 
 import { Route, Redirect } from 'react-router-dom';  
-
 export default function RouteWrapper({   
   component: Component,   
   isPrivate,   
   ...rest 
 }) {   
-  const signed = false; 
+  const signed = true; 
   // set to true, but in the future we will need some kind of state-remembering-system to tell if we actually have signed in
   
   /**    

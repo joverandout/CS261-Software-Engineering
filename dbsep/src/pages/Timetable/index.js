@@ -1,9 +1,13 @@
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 
-export default function Timetable(){
+
+export default function HostSignIn(){
   return(
-    <h1>Hello, world! - Timetable</h1>,
-    document.getElementById('root')
+    ReactDOM.render(
+      <h1>Hello, world! - Timetable</h1>,
+      document.getElementById('root')
+    )
   )
 }

@@ -1,9 +1,13 @@
 
 import React from 'react';
+import ReactDOM from 'react-dom';
+
 
 export default function HostSignIn(){
   return(
-    <h1>Hello, world! - Host Log In</h1>,
-    document.getElementById('root')
+    ReactDOM.render(
+      <h1>Hello, world! - Sign in</h1>,
+      document.getElementById('root')
+    )
   )
 }
