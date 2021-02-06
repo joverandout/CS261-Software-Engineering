@@ -20,8 +20,7 @@ but i feel like this will be easier
 This is also why we're not using typescript, for ease of use :D
 
 Also note that we need to import React inside any file that uses JSX. otherwise it's not necessary.
-Also also, if you're creating a page that will render anything, so any page, make sure to wrap the inside 
-of your return clause with  ReactDOM.render(...) or else you get errors
+Also also, if you're creating a page that will render anything, do not use reactdom.render, just return the jsx (HTML). dom.render is called once in the /src/index.js file
 
 probalby need to mess with the .gitignore file since it's inside dbsep, idk if any backend stuff needs to be ignored
 
