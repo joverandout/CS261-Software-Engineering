@@ -34,14 +34,14 @@ class Meeting():
         return False
 
     #add a participant to the list of participants of a meeting
-    def update_participants(participant):
+    def update_participants(self, participant):
         self.__participants.append(participant)
 
     #return the number of participants in a meeting as an integer
-    def get_number_of_participants():
+    def get_number_of_participants(self):
         return lens(self.__participants)
 
-    def change_host(new_host):
+    def change_host(self, new_host):
         self.__host = new_host
 
     def to_string(self):
@@ -52,6 +52,8 @@ class Meeting():
         string += str(self.__starttime)
         string += "\n| host: "
         string += self.__host
+        string += "\n| participants: "
+        string += self.__participants
         string += "\n| ongoing: "
         string += str(self.__in_progress)
         return string
