@@ -5,7 +5,7 @@ export default function RouteWrapper({
   isPrivate,   
   ...rest 
 }) {   
-  const signed = false; 
+  const signed = true; 
   // set to true, but in the future we will need some kind of state-remembering-system to tell if we actually have signed in
   
   /**    
@@ -16,7 +16,7 @@ export default function RouteWrapper({
     return <Redirect to="/" />;   
   }      
   /**    
-  * Redirect user to Main page if they try to access a non private route    
+  * Redirect user to Main page if he tries to access a non private route    
   * (SignIn or SignUp) after being authenticated.    
   */   
   if (!isPrivate && signed) {     
