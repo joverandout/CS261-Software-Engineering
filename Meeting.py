@@ -45,16 +45,17 @@ class Meeting():
         self.__host = new_host
 
     def to_string(self):
-        string = ""
+        string = "+++++++++++++++++++++\n"
         string += "| MEETING: "
         string += self.title
         string += "\n| Startime: "
         string += str(self.__starttime)
         string += "\n| host: "
-        string += self.__host
+        string += str(self.__host)
         string += "\n| participants: "
-        string += self.__participants
+        string += str(self.__participants)
         string += "\n| ongoing: "
         string += str(self.__in_progress)
+        string += "\n+++++++++++++++++++++"
         return string
 
