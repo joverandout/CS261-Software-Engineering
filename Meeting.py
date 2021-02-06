@@ -27,6 +27,8 @@ class Meeting():
     def end_meeting(self):
         self.__in_progress = False
     
+    #return a boolean, true if a meeting has overrun and false
+    #otherwise
     def meeting_overrun(self):
         if datetime.now() - self.__starttime > self.__duration:
             return True
