@@ -24,6 +24,7 @@ class Meeting():
     def start_meeting(self):
         self.__in_progress = True
     
+    #change the progress of the meeting to end it
     def end_meeting(self):
         self.__in_progress = False
     
