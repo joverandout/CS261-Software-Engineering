@@ -1,11 +1,22 @@
-import React from 'react'; 
-import { Route, Redirect } from 'react-router-dom';  
+import React, { useContext } from 'react'; 
+import { Route, Redirect } from 'react-router-dom'; 
+
+import UserContext from '../contexts/user-context'
+
 export default function RouteWrapper({   
   component: Component,   
   isPrivate,   
   ...rest 
 }) {   
-  const signed = false; 
+
+  
+  const userC = useContext(UserContext)
+  let signed
+  if(userC.user == null){
+    signed = false
+  }else{
+    signed = true
+  }
   // set to true, but in the future we will need some kind of state-remembering-system to tell if we actually have signed in
   
   /**    
