@@ -29,7 +29,11 @@ export default function HostSignIn(){
             <button onClick={()=>{
               console.log(user)
               if(signedIn == true){
-                setUser({
+                setUser({ 
+                  /*This works becuase updating this hook causes a re-render. 
+                  When the route component is rendered it sees that we are now 
+                  signed in, no need to "render" redirect here
+                  */
                   name:'Nkosi',
                   id:1
                 })
