@@ -8,7 +8,7 @@ class Meeting():
     __starttime = None
     __duration = None
     __host = None
-    __participatns = None
+    __participants = None
     __in_progress = None
     
     def __init__(self, title, category, code, startime, duration, host, in_progress):
@@ -18,7 +18,7 @@ class Meeting():
         self.__starttime = startime
         self.__duration = duration
         self.__host = host
-        self.__participatns = []
+        self.__participants = []
         self.__in_progress = in_progress
 
     def start_meeting(self):
@@ -31,6 +31,12 @@ class Meeting():
         if datetime.now() - self.__starttime > self.__duration:
             return True
         return False
+
+    def update_participants(participant):
+        self.__participants.append(participant)
+
+    def get_number_of_participants():
+        return lens(self.__participants)
 
     def to_string(self):
         string = ""
