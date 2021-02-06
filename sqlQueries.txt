@@ -1,0 +1,28 @@
+select GeneralText, Emotion, FTime, Rating, UF.CompanyID, A.Anonymous from FEEDBACK 
+INNER JOIN USERFEEDBACK as UF on UF.FeedbackID = FEEDBACK.FeedbackID
+inner join ATTENDANCE as A on A.MeetingID = UF.MeetingID
+where UF.MeetingID = 1;
+
+select MeetingID from MEETING where MEETING.HostID = 1;
+
+SELECT MeetingID from MEETING where MEETING.StartTime <= CURRENT_TIME;
+
+select GeneralText from FEEDBACK 
+Inner join USERFEEDBACK as UF ON UF.FeedbackID = FEEDBACK.FeedbackID
+where UF.MeetingID = 1 and FEEDBACK.Emotion = 'Technical';
+
+select * from TEMPLATES where templateID = 1;
+
+select TemplateID, TemplateName from TEMPLATES 
+where HostID = 1;
+
+select * from ATTENDANCE;
+
+select * from HOSTS where Username = 'john' 
+and Password = 'pa$$word';
+
+select Attendance.CompanyID, USERFEEDBACK.FeedbackID from ATTENDANCE
+left join USERFEEDBACK on Attendance.CompanyID = USERFEEDBACK.CompanyID
+where USERFEEDBACK.FeedbackID is NULL and ATTENDANCE.MeetingID = 1;
+
+SELECT MeetingID from MEETING where MEETING.StartTime <= CURRENT_TIMESTAMP;
