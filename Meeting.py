@@ -32,6 +32,7 @@ class Meeting():
             return True
         return False
 
+    #add a participant to the list of participants of a meeting
     def update_participants(participant):
         self.__participants.append(participant)
 
