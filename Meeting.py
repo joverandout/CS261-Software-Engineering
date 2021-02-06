@@ -27,8 +27,7 @@ class Meeting():
     def end_meeting(self):
         self.__in_progress = False
     
-    #return a boolean, true if a meeting has overrun and false
-    #otherwise
+    #return a boolean, true if a meeting has overrun and false otherwise
     def meeting_overrun(self):
         if datetime.now() - self.__starttime > self.__duration:
             return True
@@ -41,6 +40,9 @@ class Meeting():
     #return the number of participants in a meeting as an integer
     def get_number_of_participants():
         return lens(self.__participants)
+
+    def change_host(new_host):
+        self.__host = new_host
 
     def to_string(self):
         string = ""
