@@ -42,6 +42,8 @@ class Meeting():
     def get_number_of_participants(self):
         return len(self.__participants)
 
+    #change the host of the meeting to a new one since the host is a private
+    #variable this needs to be a procedure
     def change_host(self, new_host):
         self.__host = new_host
 
