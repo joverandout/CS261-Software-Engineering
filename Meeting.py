@@ -35,6 +35,7 @@ class Meeting():
     def update_participants(participant):
         self.__participants.append(participant)
 
+    #return the number of participants in a meeting as an integer
     def get_number_of_participants():
         return lens(self.__participants)
 
