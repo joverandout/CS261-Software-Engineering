@@ -8,7 +8,6 @@ import SignIn from '../pages/HostSignIn';
 import Timetable from '../pages/Timetable';
 import FindMeeting from '../pages/m/FindMeeting';
 
-import ReactDOM from 'react-dom';
 
 
 export default function Routes() {
