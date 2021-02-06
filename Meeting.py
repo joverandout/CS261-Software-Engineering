@@ -39,7 +39,7 @@ class Meeting():
 
     #return the number of participants in a meeting as an integer
     def get_number_of_participants(self):
-        return lens(self.__participants)
+        return len(self.__participants)
 
     def change_host(self, new_host):
         self.__host = new_host
