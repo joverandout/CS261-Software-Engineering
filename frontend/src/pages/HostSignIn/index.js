@@ -1,17 +1,25 @@
 
-import React, {useState} from 'react';
-import { Redirect } from 'react-router-dom';
-import userContext from '../../contexts/user-context';
+import React, {useContext, useState} from 'react';
+import { Link } from 'react-router-dom';
+
 import UserContext from '../../contexts/user-context'
 
 export default function HostSignIn(){
   const [signedIn, setSignedIn] = useState(false);
+  const [nextbutton, setButton] = useState(null);
+  let contextUser = useContext(UserContext)
+  console.log(contextUser)
 
-  function signin(){
-    setSignedIn(signedIn != true);
-  }
+
 
   let signedInIndicator = (<h2>Signed in: {signedIn.toString()}</h2>);
+  const button = (
+    <Link to="/Timetable">
+    <button>
+      Next Page
+    </button>
+    </Link>
+  )
 
   const page = (
     <div>
@@ -20,32 +28,38 @@ export default function HostSignIn(){
 
       {/* This code is remarkably ugly... idek if its possible to put the function elsewhere
       But context relies on "function as a child" */}
-      <button onClick={signin}>
-        Sign In
-      </button>
+
       <UserContext.Consumer>
        {
          ({user, setUser})=>(
             <button onClick={()=>{
-              console.log(user)
-              if(signedIn == true){
+
+              if(signedIn == false){
+                setSignedIn(true);
                 setUser({ 
                   /*This works becuase updating this hook causes a re-render. 
                   When the route component is rendered it sees that we are now 
-                  signed in, no need to "render" redirect here
+                  signed in
+
+                  This is OK becuase there aren't usually sign in and "next" buttons.. Just one
+                  plus we need to get confirmation from the server before setting the hook
                   */
                   name:'Nkosi',
                   id:1
                 })
+                setButton(button)
               }else{
-                setUser(null)
+                setSignedIn(false);
+                setUser(null);
+                setButton(null)
               }
             }}>
-              Next
+              Sign In
             </button>
          )
        }
       </UserContext.Consumer>
+      {nextbutton}
 
       
 

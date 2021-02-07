@@ -1,7 +1,7 @@
 import React from 'react';
 //import { Switch, Route } from 'react-router-dom';
-import { Switch } from 'react-router-dom';
-import Route from './route';
+import { Switch, Route } from 'react-router-dom';
+//import Route from './route';
 
 
 import SignIn from '../pages/HostSignIn';
@@ -15,13 +15,18 @@ export default function Routes() {
   const  isPrivate = true
   return (
     <Switch>
-      <Route path="/" exact component={SignIn} />
+      <Route path="/" exact>
+        <SignIn/>
+      </Route>
       
-      <Route path="/Timetable" component={Timetable} isPrivate />  
+      <Route path="/Timetable" exact>
+        <Timetable/>
+      </Route>
       
-      <Route path="/FindMeeting" component={FindMeeting}  />     
-      {/* redirect user to SignIn page if route does not exist and user is not authenticated */}
-      <Route component={SignIn} />
+      <Route path="/FindMeeting" exact>
+        <FindMeeting/>
+      </Route>   
+  
     </Switch>
   );
 }

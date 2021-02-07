@@ -4,12 +4,12 @@ import { Route, Redirect } from 'react-router-dom';
 import UserContext from '../contexts/user-context'
 
 export default function RouteWrapper({   
-  component: Component,   
+  component: Component, 
+  isLogin,  
   isPrivate,   
   ...rest 
 }) {   
 
-  
   const userC = useContext(UserContext)
   let signed
   if(userC.user == null){
@@ -18,21 +18,24 @@ export default function RouteWrapper({
     signed = true
   }
   // set to true, but in the future we will need some kind of state-remembering-system to tell if we actually have signed in
-  
-  /**    
-  * Redirect user to SignIn page if they try to access a private      route
-  * without authentication.    
-  */   
-  if (isPrivate && !signed) {     
-    return <Redirect to="/" />;   
-  }      
-  /**    
-  * Redirect user to Main page if they try to access a non private route    
-  * (SignIn or SignUp) after being authenticated.    
-  */   
-  if (!isPrivate && signed) {     
-    return <Redirect to="/Timetable" />;   
-  }    
+  if(isLogin == undefined){
+    console.log("This is not the login page")
+    /**    
+    * Redirect user to SignIn page if they try to access a private      route
+    * without authentication.    
+    */   
+    if (isPrivate && !signed) {     
+      return <Redirect to="/" />;   
+    }      
+    /**    
+    * Redirect user to Main page if they try to access a non private route    
+    * (SignIn or SignUp) after being authenticated.    
+    */   
+    if (!isPrivate && signed) {     
+      return <Redirect to="/Timetable" />;   
+    }    
+  }// if this is defined, then we're on the login page, so we've likely just 
+  //rendered after changing the context, instead of actually bein redirected
   
   /**    
   * If not included on both previous cases, redirect user to the desired route.    

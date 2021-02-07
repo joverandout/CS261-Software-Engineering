@@ -23,9 +23,7 @@ export default function App() {
 
   return (
     <UserContext.Provider value={userC}>
-      <Router history={history}>
-        <Routes />
-      </Router>
+      <Routes />
     </UserContext.Provider >
   );
 }
