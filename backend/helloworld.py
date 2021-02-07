@@ -14,9 +14,52 @@ def index():
     return 'MEETING APP PLS GIVE US A FIRST'
     
 
-@app.route('/login')
+@app.route('/login', methods=["POST"])
 def login():
-    return 'login'
+    info = request.get_json()
+    if info == None:
+        return "No login information was provided"
+    print("Info")
+    print(info)
+    #Dont actually know what to do if parsing fails. info will be an error
+    try:
+        username = info["username"]
+        password = info["password"]
+
+        #logic to determine if the user is in the database,
+        if username in ["Nkosi", "Vita", "Caleb", "Dominika", "Megan", "Joe"]:
+            return "Successful Login"# automatic 200 status code
+        else:
+            return ("User not found", 401) # tuples in this form are automatically (Response, status code)
+    except:
+        #Likely error is that the request did not have the fields we wanted from it
+        return ("Bad Request, probably missing the data we want", 400)
+    
+
+@app.route('/dataprinter', methods=["POST"])
+def dataPrintyer():
+    info = request.get_json()
+    if info == None:
+        return "No login information was provided"
+
+    #Dont actually know what to do if parsing fails. info will be an error
+    for field in info:
+        print("{} : {}".format(str(field), str(info[field])))
+    return "Printed!"
+
+@app.route('/datagetter', methods=["GET"])
+def dataGetter():
+    #imagine we do some authentification here, by looking at cookies, or the header
+    return {
+	"text":"This is different text",
+	"boolean":True,
+	"extra":"could be anything really",
+	"morejson":{
+		"mj1":"nested json",
+		"mj2":3
+	},
+	"id":124
+}
 
 @app.route('/user/<username>')
 def profile(username):
