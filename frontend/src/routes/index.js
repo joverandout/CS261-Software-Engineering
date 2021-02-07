@@ -1,8 +1,7 @@
-import React from 'react';
-//import { Switch, Route } from 'react-router-dom';
-import { Switch, Route } from 'react-router-dom';
-//import Route from './route';
+import React, {useContext} from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
+import UserContext from '../contexts/user-context'
 
 import SignIn from '../pages/HostSignIn';
 import Timetable from '../pages/Timetable';
@@ -19,14 +18,41 @@ export default function Routes() {
         <SignIn/>
       </Route>
       
-      <Route path="/Timetable" exact>
+      <PrivateRoute path="/Timetable" exact>
         <Timetable/>
-      </Route>
+      </PrivateRoute>
       
-      <Route path="/FindMeeting" exact>
+      <PrivateRoute path="/FindMeeting" exact>
         <FindMeeting/>
-      </Route>   
+      </PrivateRoute>   
   
     </Switch>
+  );
+}
+
+function PrivateRoute({ children, ...rest }) {
+
+  let contextUser = useContext(UserContext)
+  let authorised = false
+  if(contextUser.user != null){
+    authorised = true
+  }
+
+  return (
+    <Route {...rest}
+      render={({ location }) =>
+
+        authorised ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/",
+              state: { from: location }
+            }}
+          />
+        )
+      }
+    />
   );
 }
