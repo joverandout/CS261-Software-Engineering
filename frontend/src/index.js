@@ -4,20 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { Router } from 'react-router-dom';
-import history from './services/history';
-import Routes from './routes';
-
-const UserContext = React.createContext(null) // initiall no user
-
-const routing = (
-  <Router history={history}>
-      <Routes />
-  </Router>
-)
 
 ReactDOM.render(
-  routing,
+  <App/>,
   document.getElementById('root')
 );
 
