@@ -8,21 +8,15 @@ npm
 Website to start with
 https://reactjs.org/docs/create-a-new-react-app.html
 
-If you want to start from scratch just to see what the vibe is, just follow that, then this ->
-Navigation:
-https://medium.com/javascript-in-plain-english/routing-and-navigation-in-react-cffc26e8a389
+Navigation: https://reactrouter.com/web/guides/quick-start
 
 otherwise clone the git and run npm i (i think) in the dbsep directory. Still read that though ^
 
 We're using react because anything that requires interactiveness will be aided by using react. So this technically doesn't need to be a strictly react app, 
 but i feel like this will be easier
 
-This is also why we're not using typescript, for ease of use :D
-
 Also note that we need to import React inside any file that uses JSX. otherwise it's not necessary.
 Also also, if you're creating a page that will render anything, do not use reactdom.render, just return the jsx (HTML). dom.render is called once in the /src/index.js file
-
-probalby need to mess with the .gitignore file since it's inside dbsep, idk if any backend stuff needs to be ignored
 
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
