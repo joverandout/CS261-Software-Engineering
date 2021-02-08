@@ -1,5 +1,6 @@
 from flask import Flask, url_for
 from flask import request
+from flask_cors import CORS
 from markupsafe import escape
 
 import sqlite3
@@ -8,13 +9,16 @@ from sqlite3 import Error
 import template_db_fethcer
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
+
 def index():
     return 'MEETING APP PLS GIVE US A FIRST'
     
 
 @app.route('/login', methods=["POST"])
+
 def login():
     info = request.get_json()
     if info == None:
@@ -37,6 +41,7 @@ def login():
     
 
 @app.route('/dataprinter', methods=["POST"])
+
 def dataPrintyer():
     info = request.get_json()
     if info == None:
@@ -48,6 +53,7 @@ def dataPrintyer():
     return "Printed!"
 
 @app.route('/datagetter', methods=["GET"])
+
 def dataGetter():
     #imagine we do some authentification here, by looking at cookies, or the header
     return {
@@ -62,6 +68,7 @@ def dataGetter():
 }
 
 @app.route('/user/<username>')
+
 def profile(username):
     if username == 'Susan':
         return 'lol meme'
