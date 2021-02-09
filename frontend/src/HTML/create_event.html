@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Create Event</title>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div class="header">
+            <button class="white_button" id="back_button">Back</button>
+            <h1>Create New Event</h1>
+            <div class="divider"> <span></span>
+        </div>
+        
+        <section>
+            
+            <form onsubmit={doSmethingHere}> <!--Insert functionality here?-->
+ 
+                <input type="text" placeholder="Enter event title" required> 
+                <br>
+
+                <label>Category:</label>
+                <select name="cars" id="cars">
+                    <option> Select Category </option> <!--get categories for that user-->
+                </select>
+                <br>
+
+                <label>Event Start Time:</label>
+                <br>
+
+                <label>Event Duration:</label>
+                <br>
+
+                <label>Make Meeting Recurring</label>
+                <br>
+
+                <label>Select a Template:</label>
+                <br>
+
+                <label>Or</label>
+                <br>
+
+                <div class="mahi_holder">
+                    <div class="container">
+                      <div class="row bg_1">
+                        <div class="col-3 input-effect">
+                            <input class="effect-20" type="text" placeholder="">
+                            <label>First Name</label>
+                            <span class="focus-border">
+                                <i></i>
+                            </span>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="yellow_button">Schedule Event</button>
+
+                <button type="submit" class="green_button">Start Event Now</button>
+
+
+            </form>
+        </section>
+        
+
+    </body>
+</html>
