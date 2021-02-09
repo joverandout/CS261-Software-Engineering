@@ -5,16 +5,18 @@ class Meeting():
     title = ""
     category = ""
     code = ""
+    template = None
     __starttime = None
     __duration = None
     __host = None
     __participants = None
     __in_progress = None
     
-    def __init__(self, title, category, code, startime, duration, host, in_progress):
+    def __init__(self, title, category, code, startime, duration, host, in_progress, template):
         self.title = title
         self.category = category
         self.code = code
+        self.template = template
         self.__starttime = startime
         self.__duration = duration
         self.__host = host
