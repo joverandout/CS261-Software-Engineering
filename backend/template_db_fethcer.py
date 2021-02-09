@@ -1,12 +1,14 @@
 import template_db_fethcer
 from Meeting import Meeting
+from Host import Host
 from datetime import datetime
 
 import sqlite3
 from sqlite3 import Error
 
 def get_template_from_database(db):
-    m1 = Meeting("Title", "Category", "Code", datetime.now(), datetime.now(), "host BUT ONLY FOR NOW", False)
+    h1 = Host("user123", "9999", "John", "Smith", "password123")
+    m1 = Meeting("Title", "Category", "Code", datetime.now(), datetime.now(), h1, False)
     print(m1.to_string())
     return select_top_value(connect(db))
 

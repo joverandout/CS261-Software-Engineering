@@ -53,8 +53,8 @@ class Meeting():
         string += self.title
         string += "\n| Startime: "
         string += str(self.__starttime)
-        string += "\n| host: "
-        string += str(self.__host)
+        string += "\n| host:"
+        string += self.__host.to_string()
         string += "\n| participants: "
         string += str(self.__participants)
         string += "\n| ongoing: "
