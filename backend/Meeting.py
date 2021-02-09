@@ -53,10 +53,13 @@ class Meeting():
         string += self.title
         string += "\n| Startime: "
         string += str(self.__starttime)
-        string += "\n| host:"
+        string += "\n| host: \n|  -> ["
         string += self.__host.to_string()
-        string += "\n| participants: "
-        string += str(self.__participants)
+        string += "]\n| " + str(self.get_number_of_participants()) + " participants:"
+        for p in self.__participants:
+            string += "\n|  -> ["
+            string += p.to_string()
+            string += "]"
         string += "\n| ongoing: "
         string += str(self.__in_progress)
         string += "\n+++++++++++++++++++++"
