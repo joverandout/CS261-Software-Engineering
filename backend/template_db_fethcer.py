@@ -3,6 +3,7 @@ from Meeting import Meeting
 from Host import Host
 from Attendee import Attendee
 from datetime import datetime
+from Template import Template
 
 import sqlite3
 from sqlite3 import Error
@@ -11,7 +12,8 @@ def get_template_from_database(db):
     h1 = Host("user123", "9999", "John", "Smith", "password123")
     p1 = Attendee("attendee123", "1", "name", "name", True)
     p2 = Attendee("attendee124", "2", "Jackie", "Cooper", False)
-    m1 = Meeting("Title", "Category", "Code", datetime.now(), datetime.now(), h1, False)
+    t1 = template("template1", ["happy", "sad"], ["is cereal a soup?"])
+    m1 = t1.make_new_meetings("Title", "Category", "Code", datetime.now(), datetime.now(), h1, False)
 
     participants = [p1, p2]
     for p in participants:
