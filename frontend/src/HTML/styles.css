@@ -1,0 +1,87 @@
+body {
+    background-color: #deebf7;
+    text-align: center;
+    font-family: Comfortaa;
+}
+
+h1 { 
+    font-size: 30px; 
+    font-style: normal; 
+    font-variant: normal; 
+    font-weight: 700; 
+    line-height: 26.4px; 
+}
+
+span {
+    font-size: 15px;
+}
+
+input{
+    padding: 5px;
+    margin: 5px;
+}
+
+button {
+    font-family: Comfortaa;
+    color: black;
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+    border-radius: 0.2rem;
+    border: 0.2rem solid transparent;
+    width: 15%;
+    display: block;
+    transition: all 0.3s;
+  }
+
+.green_button{
+    border-color: #00b050;
+    background-color: #B9DFA0;
+}
+
+.yellow_button{
+    border-color: #FFC000;
+    background-color: #F2DFA7;
+}
+
+.white_button{
+    border-color: darkgray;
+    background-color: white;
+}
+
+#back_button{
+    position: relative;
+    top: 10px;
+    left: 10px;
+}
+
+.header{
+    padding: 15px;
+}
+
+.divider {
+    border-bottom: 1px solid black;
+    height: 2px;
+    margin: 0.5em 0px 1.5em;
+}
+
+
+/*https://codepen.io/maheshambure21/pen/EozKKy*/
+.col-3{float: left; width: 27.33%; margin: 40px 3%; position: relative;} /* necessary to give position: relative to parent. */
+input[type="text"]{font: 15px/24px "Lato", Arial, sans-serif; color: #333; width: 100%; box-sizing: border-box; letter-spacing: 1px;}
+.effect-20{border: 1px solid #ccc; padding: 7px 14px; transition: 0.4s; background: transparent;}
+.effect-20 ~ .focus-border:before,
+.effect-20 ~ .focus-border:after{content: ""; position: absolute; top: 0; left: 0; width: 0; height: 2px; background-color: #4caf50; transition: 0.3s;}
+.effect-20 ~ .focus-border:after{top: auto; bottom: 0; left: auto; right: 0;}
+.effect-20 ~ .focus-border i:before,
+.effect-20 ~ .focus-border i:after{content: ""; position: absolute; top: 0; left: 0; width: 2px; height: 0; background-color: #4caf50; transition: 0.4s;}
+.effect-20 ~ .focus-border i:after{left: auto; right: 0; top: auto; bottom: 0;}
+.effect-20:focus ~ .focus-border:before,
+.effect-20:focus ~ .focus-border:after,
+.has-content.effect-20 ~ .focus-border:before,
+.has-content.effect-20 ~ .focus-border:after{width: 100%; transition: 0.3s;}
+.effect-20:focus ~ .focus-border i:before,
+.effect-20:focus ~ .focus-border i:after,
+.has-content.effect-20 ~ .focus-border i:before,
+.has-content.effect-20 ~ .focus-border i:after{height: 100%; transition: 0.4s;}
+.effect-20 ~ label{position: absolute; left: 14px; width: 100%; top: 10px; color: #aaa; transition: 0.3s; z-index: -1; letter-spacing: 0.5px;}
+.effect-20:focus ~ label, .has-content.effect-20 ~ label{top: -18px; left: 0; font-size: 12px; color: #4caf50; transition: 0.3s;}
