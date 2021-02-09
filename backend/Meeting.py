@@ -51,7 +51,7 @@ class Meeting():
 
     def to_string(self):
         string = "+++++++++++++++++++++\n"
-        string += "| MEETING: "
+        string += "| MEETING [based on the " + str(self.template.name) + " template] "
         string += self.title
         string += "\n| Startime: "
         string += str(self.__starttime)

@@ -13,9 +13,9 @@ class Template():
 
     def update_emotions(self, emotion, should_remove):
         if should_remove:
-            __emotions.remove(emotion)
+            self.__emotions.remove(emotion)
         else:
-            __emotions.append(emotion)
+            self.__emotions.append(emotion)
 
     def get_emotions(self):
         return self.__emotions
@@ -30,5 +30,5 @@ class Template():
             self.__questions.append(question)
 
     def make_new_meetings(self, title, category, code, startime, duration, host, in_progress):
-        m1 = Meeting(self, title, category, code, startime, duration, host, in_progress, self)
+        m1 = Meeting(title, category, code, startime, duration, host, in_progress, self)
         return m1
