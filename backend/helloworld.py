@@ -24,8 +24,7 @@ def profile(username):
         return 'lol meme'
     if username == 'template':
         rows = template_db_fethcer.get_template_from_database('database.db')
-        for row in rows:
-            return(str(row))
+        return rows
     return '{}\'s profile'.format(escape(username))
 
 with app.test_request_context():

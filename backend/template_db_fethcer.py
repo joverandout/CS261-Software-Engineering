@@ -20,15 +20,31 @@ def get_template_from_database(db):
         m1.update_participants(p)
     
     print(m1.to_string())
-    return select_top_value(connect(db))
+    return select_top_value(connect(db), h1)
 
-def select_top_value(conn):
+def select_top_value(conn, h1):
     cur = conn.cursor()
-    cur.execute("SELECT * FROM HOSTS")
+    input = 1
+    cur.execute("SELECT TemplateName, EmotionsSelected, Question, TemplateID FROM TEMPLATES WHERE TemplateID = " + str(input))
+
+    rows = cur.fetchall()
+    row = rows[0]
+
+    emotions = row[1].split (",")
+    questions = row[2].split(",")
+    templateID = row[3]
+
+    t2 = Template(row[0], emotions, questions)
+
+    cur.execute("SELECT MeetingName, Category, Starttime FROM MEETING WHERE TemplateID =" + str(templateID))
 
     rows = cur.fetchall()
 
-    return rows
+    row = rows[0]
+
+    m2 = t2.make_new_meetings(row[0], row[1], "CODE", row[2], datetime.now(), h1, False)
+    return m2.to_string()
+
 
 def connect(db):
     conn = None
