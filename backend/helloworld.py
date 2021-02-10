@@ -13,7 +13,6 @@ app = Flask(__name__)
 def index():
     return 'MEETING APP PLS GIVE US A FIRST'
     
-
 @app.route('/login')
 def login():
     return 'login'

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import sys
 
 class Meeting():
@@ -32,7 +32,7 @@ class Meeting():
     
     #return a boolean, true if a meeting has overrun and false otherwise
     def meeting_overrun(self):
-        if datetime.now() - self.__starttime > self.__duration:
+        if self.__starttime + timedelta(minutes=self.__duration) > datetime.now():
             return True
         return False
 
@@ -55,6 +55,8 @@ class Meeting():
         string += self.title
         string += "\n| Startime: "
         string += str(self.__starttime)
+        string += "\n| Duration: "
+        string += str(self.__duration)
         string += "\n| host: \n|  -> ["
         string += self.__host.to_string()
         string += "]\n| " + str(self.get_number_of_participants()) + " participants:"
