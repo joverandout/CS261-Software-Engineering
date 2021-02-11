@@ -68,7 +68,7 @@ def hostmain():
 
             return jsonify(returnData)
     except:
-        return ("nope not wokring",400)
+        return ("nope not working",400)
 
 
 
@@ -98,7 +98,7 @@ def meetingview():
             print(data)
             return jsonify(returnData)
     except:
-        return ("nope not wokring",400)
+        return ("nope not working",400)
 
 
 @app.route('/userfeedback', methods=["POST"])
@@ -131,7 +131,7 @@ def userfeedback():
             con.commit()
             return "SUCCESS???"
     except:
-        return ("nope not wokring",400)
+        return ("nope not working",400)
 
 
 @app.route('/newmeeting', methods=["POST"])
@@ -157,7 +157,7 @@ def newmeeting():
             con.commit()
             return "SUCCESS???"
     except:
-        return ("nope not wokring",400)
+        return ("nope not working",400)
 
 
 
