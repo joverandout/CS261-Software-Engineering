@@ -1,4 +1,5 @@
 from flask import Flask, url_for
+from flask_socketio import SocketIO, emit, send
 from flask import request
 from flask_cors import CORS
 from markupsafe import escape
@@ -9,16 +10,35 @@ from sqlite3 import Error
 import template_db_fethcer
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'dolphin'
 CORS(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
+
+if __name__ == '__main__':
+    socketio.run(app)
+
+@socketio.on('connect')
+def socket_connection():
+    print("\nNew Connection!\nData: ")
+    print(request.args.get("foo"))
+    emit('Yay a connection!', {'info': 'rmation'})
+    
+
+@socketio.on('disconnect')
+def socket_disconnect():
+    print('Client disconnected... \n')
+
+@socketio.on("hello")
+def handle_hello(text):
+    print("\nSocket Message: "+text+"\n")
+
 
 @app.route('/')
-
 def index():
     return 'MEETING APP PLS GIVE US A FIRST'
     
 
 @app.route('/login', methods=["POST"])
-
 def login():
     info = request.get_json()
     if info == None:
@@ -38,11 +58,17 @@ def login():
     except:
         #Likely error is that the request did not have the fields we wanted from it
         return ("Bad Request, probably missing the data we want", 400)
+
+@app.route('/sendsocketmessage', methods=["POST"])  
+def sendsocketmessage():
+    data = request.get_json()
+    print("\nSending Message to frontend: ",data)
     
+    socketio.emit("femessage",data)
+    return "Sent!"
 
 @app.route('/dataprinter', methods=["POST"])
-
-def dataPrintyer():
+def dataPrinter():
     info = request.get_json()
     if info == None:
         return "No login information was provided"
@@ -53,7 +79,6 @@ def dataPrintyer():
     return "Printed!"
 
 @app.route('/datagetter', methods=["GET"])
-
 def dataGetter():
     #imagine we do some authentification here, by looking at cookies, or the header
     return {
