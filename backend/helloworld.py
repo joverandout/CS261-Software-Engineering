@@ -1,4 +1,5 @@
 from flask import Flask, url_for, render_template, jsonify
+from flask_socketio import SocketIO, emit, send
 from flask import request
 from flask_cors import CORS
 from markupsafe import escape
@@ -9,14 +10,41 @@ from sqlite3 import Error
 import template_db_fethcer
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'dolphin'
 CORS(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
+
+if __name__ == '__main__':
+    socketio.run(app)
+
+@socketio.on('connect')
+def socket_connection():
+    print("\nNew Connection!\nData: ")
+    print(request.args.get("foo"))
+    emit('Yay a connection!', {'info': 'rmation'})
+    
+
+@socketio.on('disconnect')
+def socket_disconnect():
+    print('Client disconnected... \n')
+
+@socketio.on("hello")
+def handle_hello(text):
+    print("\nSocket Message: "+text+"\n")
+
+
 
 @app.route('/')
-
 def index():
     return 'MEETING APP PLS GIVE US A FIRST'
 
-
+@app.route('/sendsocketmessage', methods=["POST"])  
+def sendsocketmessage():
+    data = request.get_json()
+    print("\nSending Message to frontend: ",data)
+    
+    socketio.emit("femessage",data)
+    return "Sent!"
 
 @app.route('/hostmain', methods=["POST"])
 def hostmain():
@@ -46,10 +74,6 @@ def hostmain():
 
 @app.route('/meetingview', methods=["POST"])
 def meetingview():
-    #variable for each emotion 
-    #add the totals? maybe? idk
-    # dont care about technical problems after the meeting 
-    # need to decide what info we want to present
     info = request.get_json()
     if info == None:
         return "No meeitn ID"
