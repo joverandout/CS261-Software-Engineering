@@ -14,6 +14,8 @@ app.config['SECRET_KEY'] = 'dolphin'
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
+#socket stuff
+
 if __name__ == '__main__':
     socketio.run(app)
 
