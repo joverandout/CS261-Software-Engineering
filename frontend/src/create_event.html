@@ -3,6 +3,8 @@
         <link rel="stylesheet" type="text/css" href="styles.css">
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
   
     </head>
     <body>
@@ -29,17 +31,26 @@
                 </div>
                 <div>
                     <select name="cars" id="cars">
-                        <option> Select Category </option> <!--get categories for that user-->
+                        <option> --Select Category-- </option> <!--get categories for that user-->
                     </select>
                 </div>
                 <div>
                     <p>Event Start Time:</p>
                 </div>
-                <div>
-                    <p>Event Duration:</p>
+                <div class="oneLine">
+                    Event Duration:
+                    <input type="number" min=1 class="form-control" id="duration" required>
+                    <select name="durationUnit" id="durationUnit">
+                        <option value="minutes">minutes</option>
+                        <option value="hours">hours</option>
+                    </select>
                 </div>
-                <div>
-                    <p>Make Meeting Recurring</p>
+                <div class="oneLine">
+                    Make Meeting Recurring: <input type="checkbox" id="recurringMeetingCheckbox" onclick="showRecurrenceDropdown()"> <!--Show recurrence dropdown using this function-->
+                    <select name="recurrenceFrequency" id="recurrenceFrequency">
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                    </select>
                 </div>
 
                 <button type="submit" class="yellow_button">Schedule Event</button>
