@@ -8,10 +8,13 @@ body {
     background-color: #deebf7;
     text-align: center;
     font-family: Comfortaa;
+    font-size: 20px;
 }
 
+/*Sizes are in em (relative to element font size) to create a 
+  nice scalable page. Font is 20px, 1em = 20px. */
 form {
-    padding:50px;
+    padding:2em;
 }
 
 hr {
@@ -19,16 +22,16 @@ hr {
 }
 
 h1 {
-    padding: 20px;
+    padding: 1em;
 }
 
 /*DROPDOWN MENU*/
 select {
-    padding: 15px 0 15px;
+    padding: 0.75em 0 0.75em;
     width: 100%;
     border: none;
     border-bottom: 3px solid #34495e;
-    font-size: 20px;
+    font-size: 18px;
     background: white/*#ecf0f1*/;
     font-family: Comfortaa;
 }
@@ -37,13 +40,13 @@ select {
 
     /*Sets size of text box*/
     .wrap {
-        width: 600px;
+        width: 30em;
         max-width: 100%;
         margin: 0 auto;
     }
     
     .row{
-        margin: 30px 0; /* need some nice spacing here */
+        margin: 1.5em 0; /* need some nice spacing here */
         position: relative; /* this one is important */
     }
     
@@ -60,7 +63,7 @@ select {
     }
     
     input {
-        padding: 15px 0 15px;
+        padding: 0.75em 0 0.75em;
         width: 100%;
         border: none;
         border-bottom: 3px solid #34495e;
@@ -87,24 +90,24 @@ select {
 .oneline {
     list-style: none;
     width: 100%;
-    padding: 10px;
+    padding: 0.5em;
     white-space: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
 }
 
 .oneline > input {
-    width: 100px;
+    width: 5em;
     max-width: 100%;
 }
 
 .oneline > select {
-    width: 200px;
+    width: 10em;
     max-width: 100%;
 }
 
 input[type="checkbox"] {
-    width: 20px;
+    width: 1em;
     transform: scale(1.5);
 }
 
@@ -115,11 +118,11 @@ input[type="checkbox"] {
     font-family: Comfortaa;
     color: black;
     margin: auto;
-    margin-top: 20px;
-    padding: 1.5rem 2rem;
+    margin-top: 1em;
+    padding: 1.5rem 1.5rem;
     border-radius: 0.2rem;
     border: 0.2rem solid transparent;
-    width: 200px;
+    width: 15rem;
     max-width: 100%;
     display: block;
     transition: all 0.3s;
@@ -141,24 +144,22 @@ input[type="checkbox"] {
 }
 
 #back_button{
-    position: fixed; /*Fix back button to top-left*/
+    position: absolute; /*Fix back button to top-left*/
     left: 15;
     top: 5;
-    width: 150px;
+    width: 12em;
     color: red;
 }
 
 
-@media screen and (max-width: 628px) {
-    /* Code/resizing specifically for mobile devices goes here */
+@media screen and (max-width: 700px) {
+    /* Code/resizing specifically for tablet/mobile devices goes here */
     .header > h1 {
-        margin-left: 170px;
-        width: 50vw;
+        margin-left: 4em;
+        width: 70vw - 12em;
         text-align: right;
         word-wrap: break-word;
     }
-
-
 
     .oneline {
         list-style: none;
@@ -182,6 +183,26 @@ input[type="checkbox"] {
     input[type="checkbox"] {
         width: 10px;
         transform: scale(1.5);
+    }
+
+}
+
+@media screen and (max-width: 480px) {
+    /* Code/resizing specifically for mobile devices goes here */
+    .header > h1 {
+        font-size: 20px;
+        margin-left: 5.5em;
+        width: 70vw - 12em;
+        text-align: right;
+        word-wrap: break-word;
+    }
+
+    #back_button{
+        left: 15;
+        top: 5;
+        width: 8em;
+        height: 4.5em;
+        color: red;
     }
 
 }
