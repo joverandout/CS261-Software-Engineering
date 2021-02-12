@@ -1,3 +1,9 @@
+@viewport {
+    width: device-width;
+    zoom: 1.0;
+}
+
+/*General page style*/
 body {
     background-color: #deebf7;
     text-align: center;
@@ -12,6 +18,11 @@ hr {
     border-color: black;
 }
 
+h1 {
+    padding: 20px;
+}
+
+/*DROPDOWN MENU*/
 select {
     padding: 15px 0 15px;
     width: 100%;
@@ -27,6 +38,7 @@ select {
     /*Sets size of text box*/
     .wrap {
         width: 600px;
+        max-width: 100%;
         margin: 0 auto;
     }
     
@@ -68,7 +80,34 @@ select {
         font-weight: bold;
         font-size: 1.1em;
     }
-    
+
+
+/*Class to style multiple elements onto one line*/
+/*Looks delightful except it's too wide... Need to resize some text boxes*/
+.oneline {
+    list-style: none;
+    width: 100%;
+    padding: 10px;
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.oneline > input {
+    width: 100px;
+    max-width: 100%;
+}
+
+.oneline > select {
+    width: 200px;
+    max-width: 100%;
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    transform: scale(1.5);
+}
+
 
   /*BUTTONS*/
 
@@ -80,7 +119,8 @@ select {
     padding: 1.5rem 2rem;
     border-radius: 0.2rem;
     border: 0.2rem solid transparent;
-    width: 30%;
+    width: 200px;
+    max-width: 100%;
     display: block;
     transition: all 0.3s;
   }
@@ -98,4 +138,50 @@ select {
 .white_button{
     border-color: darkgray;
     background-color: white;
+}
+
+#back_button{
+    position: fixed; /*Fix back button to top-left*/
+    left: 15;
+    top: 5;
+    width: 150px;
+    color: red;
+}
+
+
+@media screen and (max-width: 628px) {
+    /* Code/resizing specifically for mobile devices goes here */
+    .header > h1 {
+        margin-left: 170px;
+        width: 50vw;
+        text-align: right;
+        word-wrap: break-word;
+    }
+
+
+
+    .oneline {
+        list-style: none;
+        width: 100%;
+        padding: 10px;
+        white-space: normal;
+        overflow-x: auto;
+        overflow-y: auto;
+    }
+    
+    .oneline > input {
+        width: 100px;
+        max-width: 100%;
+    }
+    
+    .oneline > select {
+        width: 200px;
+        max-width: 100%;
+    }
+
+    input[type="checkbox"] {
+        width: 10px;
+        transform: scale(1.5);
+    }
+
 }
