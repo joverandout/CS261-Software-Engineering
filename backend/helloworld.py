@@ -14,7 +14,9 @@ app.config['SECRET_KEY'] = 'dolphin'
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-#socket stuff
+#socket stuff but the functions wont work since the 
+#python throws an error when trying to import the 
+#paclets cors and socketio
 
 if __name__ == '__main__':
     socketio.run(app)
