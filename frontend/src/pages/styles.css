@@ -145,10 +145,12 @@ input[type="checkbox"] {
 }
 
 #back_button{
-    position: fixed; /*Fix back button to top-left*/
+    position: absolute; /*Fix back button to top-left*/
     left: 15;
     top: 5;
-    width: 150px;
+    width: 10vw;
+    min-width: 100px;
+    max-width: 200px;
     color: rgb(0, 0, 0);
 }
 
@@ -156,10 +158,12 @@ input[type="checkbox"] {
 @media screen and (max-width: 628px) {
     /* Code/resizing specifically for mobile devices goes here */
     .header > h1 {
-        margin-left: 170px;
-        width: 50vw;
+        margin-left: 80px;
+        width: 80vw - 120px;
         text-align: right;
         word-wrap: break-word;
+        font-size: 18px;
+        padding-top: 30px;
     }
 
 
