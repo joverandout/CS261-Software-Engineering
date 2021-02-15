@@ -25,20 +25,55 @@
   
             <form>
 
+                <script>
+                    // Show/Hide "New Category" input text box
+                    function newCategory(that) {
+                        if(that.value == "new") {
+                            document.getElementById("catInput").style.display = "block";
+                            document.getElementById("catInputLabel").style.display = "block";
+                        } else {
+                            document.getElementById("catInput").style.display = "none";
+                            document.getElementById("catInputLabel").style.display = "none";
+                        }
+                    }
+                    // Show/Hide "Make Meeting Recurring" dropdown selector
+                    function showRecurrenceDropdown(that) {
+                        if(document.getElementById("recurrenceFrequency").style.display == "none") {
+                            document.getElementById("recurrenceFrequency").style.display = "block";
+                        } else {
+                            document.getElementById("recurrenceFrequency").style.display = "none";
+                        }
+                    }
+                </script>
+
                 <div class="row">
+                    <p style="font-size: 20px; font-weight: bold; text-align: left;"> Event Name: </p>
                     <input type="text" class="form-control" id="name" required>
-                    <label for="name">Event Title</label>
+                    
                 </div>
+
                 <div>
-                    <select name="cars" id="cars">
+                    <p style="font-size: 20px; font-weight: bold; text-align: left;"> Select a Category: </p>
+                    <select name="cat" id="cat" onchange="newCategory(this)">
                         <option> --Select Category-- </option> <!--get categories for that user-->
+                        <option value="new"> Add New Category </option>
                     </select>
                 </div>
+
+                <div class="row">
+                    <input type="text" class="form-control" id="catInput" style="display: none;">
+                    <label id="catInputLabel" for="name" style="display: none;">New Category Name</label>
+                    <!--Store the new category name if this option is chosen-->
+                </div>                   
+
                 <div>
-                    <p>Event Start Time:</p>
+                    <p style="font-size: 20px; font-weight: bold; text-align: left;">Event Start Time:</p>
+                    <input type="datetime-local" id="datetime" name="datetime">
                 </div>
+                    
+
                 <div class="oneLine">
-                    Event Duration:
+                    <p style="font-size: 20px; font-weight: bold; text-align: left;"> Event Duration: </p>
                     <input type="number" min=1 class="form-control" id="duration" required>
                     <select name="durationUnit" id="durationUnit">
                         <option value="minutes">minutes</option>
@@ -46,11 +81,21 @@
                     </select>
                 </div>
                 <div class="oneLine">
-                    Make Meeting Recurring: <input type="checkbox" id="recurringMeetingCheckbox" onclick="showRecurrenceDropdown()"> <!--Show recurrence dropdown using this function-->
-                    <select name="recurrenceFrequency" id="recurrenceFrequency">
+                    <p style="font-size: 20px; font-weight: bold; text-align: left;"> Make Meeting Recurring: </p>
+                    <input type="checkbox" id="recurringMeetingCheckbox" onclick="showRecurrenceDropdown()"> <!--Show recurrence dropdown using this function-->
+                    <select name="recurrenceFrequency" id="recurrenceFrequency" style="display: none;">
                         <option value="daily">Daily</option>
                         <option value="weekly">Weekly</option>
                     </select>
+                </div>
+
+                <div>
+                    <p style="font-size: 20px; font-weight: bold; text-align: left;"> Select an existing template:</p>
+                    <select name="template" id="template">
+                        <option> --Select Template-- </option> <!--get templates for that user-->
+                    </select>
+                    <p style="font-size: 20px; font-weight: bold; text-align: left;">Or</p>
+                    <input type="button" onclick="" value="Make a new Template"> <!--On click, load the page to create template-->
                 </div>
 
                 <button type="submit" class="yellow_button">Schedule Event</button>
