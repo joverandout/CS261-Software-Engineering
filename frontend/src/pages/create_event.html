@@ -4,6 +4,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
 
+        <!--Instruct the browser not to change the scale on a mobile device-->
         <meta name="viewport" content="width=device-width, initial-scale=1">
   
     </head>
@@ -83,7 +84,7 @@
                 <div class="oneline">
                     <p style="font-size: 20px; font-weight: bold; text-align: left;"> Make Meeting Recurring: </p>
                     <input type="checkbox" id="recurringMeetingCheckbox" onclick="showRecurrenceDropdown()"> <!--Show recurrence dropdown using this function-->
-                    <select name="recurrenceFrequency" id="recurrenceFrequency" style="display: none;">
+                    <select name="recurrenceFrequency" id="recurrenceFrequency" style="display: none; margin: auto;">
                         <option value="daily">Daily</option>
                         <option value="weekly">Weekly</option>
                     </select>

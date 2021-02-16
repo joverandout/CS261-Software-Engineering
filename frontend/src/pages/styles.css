@@ -89,7 +89,6 @@ select {
 
 
 /*Class to style multiple elements onto one line*/
-/*Looks delightful except it's too wide... Need to resize some text boxes*/
 .oneline {
     list-style: none;
     width: 100%;
@@ -99,19 +98,30 @@ select {
     overflow-y: hidden;
 }
 
+.oneline > p {
+    display: inline-block;
+}
+
 .oneline > input {
+    display: inline-block;
     width: 100px;
     max-width: 100%;
 }
 
 .oneline > select {
+    display: inline-block;
     width: 200px;
     max-width: 100%;
 }
 
 input[type="checkbox"] {
+    display: inline-block;
     width: 20px;
     transform: scale(1.5);
+}
+
+#AnonymousMessage {
+    padding-right: 0px;
 }
 
 
@@ -186,22 +196,32 @@ input[type="checkbox"] {
         padding: 10px;
         white-space: normal;
         overflow-x: auto;
-        overflow-y: auto;
+        overflow-y: hidden;
     }
     
+    .oneline > p {
+        display: inline-block;
+    }
+
     .oneline > input {
+        display: inline-block;
         width: 100px;
         max-width: 100%;
     }
     
     .oneline > select {
+        display: inline-block;
         width: 200px;
         max-width: 100%;
     }
 
     input[type="checkbox"] {
-        width: 10px;
+        display: inline-block;
+        width: 20px;
         transform: scale(1.5);
+        padding-bottom: 50px;
     }
+
+
 
 }
