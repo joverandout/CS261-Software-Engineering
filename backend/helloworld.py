@@ -14,6 +14,10 @@ app.config['SECRET_KEY'] = 'dolphin'
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
+#socket stuff but the functions wont work since the 
+#python throws an error when trying to import the 
+#paclets cors and socketio
+
 if __name__ == '__main__':
     socketio.run(app)
 
@@ -68,10 +72,14 @@ def hostmain():
 
             return jsonify(returnData)
     except:
-        return ("nope not wokring",400)
+        return ("nope not working",400)
 
 
 
+"""VITA
+need to pass the feedback 
+i dont think it requires socket as its not live 
+  """
 @app.route('/meetingview', methods=["POST"])
 def meetingview():
     info = request.get_json()
@@ -98,9 +106,13 @@ def meetingview():
             print(data)
             return jsonify(returnData)
     except:
-        return ("nope not wokring",400)
+        return ("nope not working",400)
 
-
+"""VITA
+Need to pass the feedback recieved back to the front end 
+Via the socket - idk how to make this work byt we gon try 
+also need to filter out abusive text - start with some sewar words 
+  """
 @app.route('/userfeedback', methods=["POST"])
 def userfeedback():
     info = request.get_json()
@@ -131,7 +143,7 @@ def userfeedback():
             con.commit()
             return "SUCCESS???"
     except:
-        return ("nope not wokring",400)
+        return ("nope not working",400)
 
 
 @app.route('/newmeeting', methods=["POST"])
@@ -157,8 +169,31 @@ def newmeeting():
             con.commit()
             return "SUCCESS???"
     except:
-        return ("nope not wokring",400)
+        return ("nope not working",400)
 
+
+@app.route('/newtemplate', methods=["POST"])
+def newtemplate():
+    info = request.get_json()
+    if info == None:
+        return "No feedback there"
+    print(info)
+    try:
+        hostID = info["hostid"]
+        templateName = info["templatename"]
+        emotionsSelected = info["emotionsselected"]
+        question = info["question"]
+        with sqlite3.connect("database.db") as con:
+            print("Here")
+            cur = con.cursor()
+            query = "INSERT INTO TEMPLATES VALUES(NULL, " + hostID + ", '" + templateName + "', '" + emotionsSelected + "', '"+ question +"')"
+            print(query)
+            cur.execute(query)
+            print("Success")
+            con.commit()
+            return "SUCCESS???"
+    except:
+        return ("nope not working",400)
 
 
 
