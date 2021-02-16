@@ -8,6 +8,7 @@ body {
     background-color: #deebf7;
     text-align: center;
     font-family: Comfortaa;
+    font-size: 20px;
 }
 
 form {
@@ -163,10 +164,20 @@ input[type="checkbox"] {
         width: 80vw - 120px;
         text-align: right;
         word-wrap: break-word;
-        font-size: 18px;
+        font-size: 20px;
         padding-top: 30px;
     }
 
+    /*General page style*/
+    body {
+        font-size: 15px;
+    }
+
+    link {
+        font-size: 25px;
+        max-width: 70vw;
+        width: 70vw;
+    }
 
 
     .oneline {

@@ -5,15 +5,20 @@
         <link rel="stylesheet" type="text/css" href="styles.css">
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+    
+        <!--Instruct the browser not to change the scale on a mobile device-->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  
     </head>
     <body>
         <!--<div class="login">-->
         <div class="wrap">
             <h1>Host Login</h1>
-            <form onsubmit={doSmethingHere}> <!--Insert functionality here?-->
+            <form onsubmit={doSmethingHere} action=""> <!--Insert functionality here?-->
 
                 <div class="row">
                     <input type="text" class="form-control" id="name" name="username" required> <!--I believe that the name attribute can be used to identify the submitted input??-->
+                                                                                                <!--I also believe this is correct :) -->
                     <label for="name">Username</label>
                 </div>
 
@@ -22,7 +27,7 @@
                     <label for="pw">Password</label>
                 </div>
                 
-                <span><a href="#">I’ve forgotten my password</a></span>
+                <span><a href="#" class="link">I’ve forgotten my password</a></span>
 
                 <div>
                     <button type="submit" class="green_button">GO</button>
