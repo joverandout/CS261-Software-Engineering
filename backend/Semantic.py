@@ -13,7 +13,9 @@ from flair.data import Sentence
 
 
 # load tagger (DOWNLOADING THIS TAKES A VERY LONG TIME)
+# uncomment one
 classifier = TextClassifier.load('sentiment-fast')
+# classifier = TextClassifier.load('sentiment')
 
 # initialize sentence splitter
 splitter = SegtokSentenceSplitter()
