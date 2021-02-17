@@ -6,35 +6,37 @@
 #   year      = {2018}
 # }
 
+from flair.tokenization import SegtokSentenceSplitter
 from flair.models import TextClassifier
 from flair.models import SequenceTagger
 from flair.data import Sentence
 
-# load tagger
-classifier = TextClassifier.load('en-sentiment')
 
-#  example sentences
-sentence1 = Sentence("Overall, design is good and thoroughly describes most of the processes in the system. The analysis section could have included some more detail, as several different avenues of text analysis are described, but no firm decision is made. Methodology seems sensible, and the presented timeline seems reasonable. Having a list of tests is good, but it would have been nice to see a more formal description of each test (including data to use and expected outcomes)")
-sentence2 = Sentence("Your wife should leave you")
+# user feedback (free text input)
+feedback = ("The analysis section could have included some more detail. " 
+        "Several different avenues of text analysis are described, "
+        "but no firm decision is made. The presented timeline seems reasonable. "
+        "Having a list of tests is good, but it would have been nice to see a more "
+        "formal description of each test. Perhaps include data to use and expected outcomes")
 
+# load tagger (DOWNLOADING THIS TAKES A VERY LONG TIME)
+classifier = TextClassifier.load('sentiment-fast')
 
+# initialize sentence splitter
+splitter = SegtokSentenceSplitter()
 
-# check prediction for first sentence
-print(sentence1)
-# this modifies the sentence to include the sentiment and confidence of analysis
-classifier.predict(sentence1)
-print('Sentence above is: ')
-print(sentence1.labels[0].value)
-print(sentence1.labels[0].score)
+# use splitter to split text into list of sentences
+sentences = splitter.split(feedback)
 
+# make the prediction
+classifier.predict(sentences)
 
-# print prediction for second sentence
-print(sentence2)
-# this modifies the sentence to include the sentiment and confidence of analysis
-classifier.predict(sentence2)
-print('Sentence above is: ')
-print(sentence2.labels[0].value)
-print(sentence2.labels[0].score)
+#print out the predictions
+for sentence in sentences:
+    print(sentence)
+    print(sentence.labels[0].value) #this is a string
+    print(sentence.labels[0].score) #this is a float
+
 
 
 
