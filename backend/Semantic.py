@@ -12,10 +12,8 @@ from flair.models import SequenceTagger
 from flair.data import Sentence
 
 
-# load tagger (DOWNLOADING THIS TAKES A VERY LONG TIME)
-# uncomment one
+# load classifier (either 'sentiment' or 'sentiment-fast')
 classifier = TextClassifier.load('sentiment-fast')
-# classifier = TextClassifier.load('sentiment')
 
 # initialize sentence splitter
 splitter = SegtokSentenceSplitter()
@@ -24,11 +22,13 @@ class Semantic():
     input = ""
     __semValues = []
     __confScores = []
+    __evaluation = []
 
     def __init__(self, stringfeedback):
         self.input = stringfeedback
         self.__semValues = []
         self.__confScores = []
+        self.__evaluation = []
 
     def update_semValues_and_confScores(self): 
         # use splitter to split text into list of sentences
@@ -42,10 +42,8 @@ class Semantic():
             self.__semValues.append(sentence.labels[0].value) 
             self.__confScores.append(sentence.labels[0].score)
 
-    def get_semValues(self):
-        return self.__semValues
-
-    def get_confScores(self):
+    def get_scores(self):
+        for i in range(len(self.__confScores)):
+            if self.__semValues[i]=="NEGATIVE":
+                self.__confScores[i] = -self.__confScores[i]
         return self.__confScores
-
-
