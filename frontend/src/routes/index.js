@@ -6,16 +6,21 @@ import UserContext from '../contexts/user-context'
 import SignIn from '../pages/HostSignIn';
 import Timetable from '../pages/Timetable';
 import FindMeeting from '../pages/m/FindMeeting';
-
+import Feedback from "../pages/Feedback"
 
 
 export default function Routes() {
 
   const  isPrivate = true
+  //Special route for the loggin screen?
   return (
-    <Switch>
+    <Switch> 
       <Route path="/" exact>
         <SignIn/>
+      </Route>
+
+      <Route path="/Feedback" exact>
+        <Feedback/>
       </Route>
       
       <PrivateRoute path="/Timetable" exact>
@@ -25,7 +30,6 @@ export default function Routes() {
       <PrivateRoute path="/FindMeeting" exact>
         <FindMeeting/>
       </PrivateRoute>   
-  
     </Switch>
   );
 }
