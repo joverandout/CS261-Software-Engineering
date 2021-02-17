@@ -20,7 +20,6 @@ if __name__ == '__main__':
 @socketio.on('connect')
 def socket_connection():
     print("\nNew Connection!\nData: ")
-    print(request.args.get("foo"))
     emit('Yay a connection!', {'info': 'rmation'})
     
 
