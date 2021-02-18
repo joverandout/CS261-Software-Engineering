@@ -99,15 +99,16 @@
                         }
                         </script>
 
-                <div class="wrap" style="width: 300px;">
+                <div class="wrap">
                     
                     <!--When a user adds a new emotion, this needs to be added to the above rows of emotion buttons-->
-                    <div class="row">
-                        <div class="oneline">
-                            <input type="text" class="form-control" id="name">
-                            <label for="name">Add custom emotion</label>
-                            <button type="button">Add</button>
-                        </div>
+                    <!--'Add' button onclick runs function to add new emotion-colour pair to list-->
+                    <!--Above button creation should probs be in a function so we can rerun when additional buttons made-->
+                    <!--Global var count to store number of active buttons (changed in changeColour) with maximum of 8-->
+                    <div class="oneline">
+                        <p>Add custom emotion: </p>
+                        <input type="text" class="form-control" id="name">
+                        <button type="button">Add</button>
                     </div>
                    
                 </div>                              
