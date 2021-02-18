@@ -5,6 +5,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <style>
             .btn-group button {
               background-color: #e7e6e6;
@@ -64,22 +65,51 @@
                         document.getElementById("buttons").innerHTML = x;
 
                         //Currently this is how I'm changing colour on click. Again, please change.
-                        //The buttons cannot yet be unselected, which is a problem.
                         function changeColour(id, colour) {
-                               document.getElementById(id).style.backgroundColor = colour; 
+                            // backgroundColor property is in RGB so must be converted to hex to compare with 'colour'
+                            if (RGBToHex(document.getElementById(id).style.backgroundColor) == colour.toUpperCase()) {
+                                // Reset background colour of button
+                                document.getElementById(id).style.backgroundColor = "";
+                            } else {
+                                // Set background colour of button
+                                document.getElementById(id).style.backgroundColor = colour;
+                            }
+                               
+                        }
+
+                        // Function from https://css-tricks.com/converting-color-spaces-in-javascript/
+                        function RGBToHex(rgb) {
+                            // Choose correct separator
+                            let sep = rgb.indexOf(",") > -1 ? "," : " ";
+                            // Turn "rgb(r,g,b)" into [r,g,b]
+                            rgb = rgb.substr(4).split(")")[0].split(sep);
+
+                            let r = (+rgb[0]).toString(16),
+                                g = (+rgb[1]).toString(16),
+                                b = (+rgb[2]).toString(16);
+
+                            if (r.length == 1)
+                                r = "0" + r;
+                            if (g.length == 1)
+                                g = "0" + g;
+                            if (b.length == 1)
+                                b = "0" + b;
+
+                            return ("#" + r.toUpperCase() + g.toUpperCase() + b.toUpperCase());
                         }
                         </script>
 
                 <div class="wrap" style="width: 300px;">
                     
                     <!--When a user adds a new emotion, this needs to be added to the above rows of emotion buttons-->
-                        <div class="row">
-                            <div class="oneLine">
+                    <div class="row">
+                        <div class="oneline">
                             <input type="text" class="form-control" id="name">
                             <label for="name">Add custom emotion</label>
                             <button type="button">Add</button>
                         </div>
                     </div>
+                   
                 </div>                              
 
                 <button type="submit" class="green_button" id="next_button">Next</button>
