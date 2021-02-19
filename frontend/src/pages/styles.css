@@ -173,6 +173,16 @@ input[type="checkbox"] {
     color: rgb(0, 0, 0);
 }
 
+#new_event {
+    position: absolute; /*Fix back button to top-left*/
+    right: 15;
+    top: 5;
+    width: 10vw;
+    min-width: 150px;
+    max-width: 250px;
+    color: rgb(0, 0, 0);
+}
+
 
 @media screen and (max-width: 628px) {
     /* Code/resizing specifically for mobile devices goes here */
@@ -233,6 +243,12 @@ input[type="checkbox"] {
         padding-bottom: 50px;
     }
 
-
+    #avoid_buttons > h1 {
+        padding-top: 130px;
+        margin-left: 30px;
+        text-align: center;
+        font-size: 22px;
+        width: 80vw;
+    }
 
 }
