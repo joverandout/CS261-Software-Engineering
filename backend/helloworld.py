@@ -1,4 +1,7 @@
 #pip install flask
+#pip install flask_socketio
+#pip install flask-cors
+#pip install flair (might need anaconda)
 
 from flask import Flask, url_for, render_template, jsonify
 from flask_socketio import SocketIO, emit, send
