@@ -1,3 +1,5 @@
+#pip install flask
+
 from flask import Flask, url_for, render_template, jsonify
 from flask_socketio import SocketIO, emit, send
 from flask import request
@@ -8,7 +10,7 @@ import sqlite3
 from sqlite3 import Error
 
 import template_db_fethcer
-import Semantic
+from Semantic import Semantic
 import time
 from datetime import datetime
 
@@ -132,7 +134,12 @@ def userfeedback():
         #print("here")
 
         # send to the sentiment analysis 
-        # going to get back a
+        feedbackEval = Semantic(generaltext)
+        feedbackEval.update_semValues_and_confScores()
+        s = feedbackEval.get_scores()
+
+        # going to get back an array
+        print(s)
 
         #write swear word and filter them out 
         abusive = False
