@@ -107,10 +107,6 @@ def meetingview():
             return jsonify(returnData)
     except:
         return ("nope not working",400)
-<<<<<<< HEAD
-=======
-
->>>>>>> 36d6ba2171546d6b55289c4404f83e7af8447b36
 
 """VITA
 Need to pass the feedback recieved back to the front end 
@@ -174,10 +170,7 @@ def newmeeting():
             return "SUCCESS???"
     except:
         return ("nope not working",400)
-<<<<<<< HEAD
 
-=======
->>>>>>> 36d6ba2171546d6b55289c4404f83e7af8447b36
 
 @app.route('/newtemplate', methods=["POST"])
 def newtemplate():
