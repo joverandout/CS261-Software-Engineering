@@ -8,6 +8,9 @@ import sqlite3
 from sqlite3 import Error
 
 import template_db_fethcer
+import Semantic
+import time
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'dolphin'
@@ -126,22 +129,77 @@ def userfeedback():
         rating = info["rating"]
         meetingID = info["meetingid"]
         companyID = info["companyid"]
-        print("here")
-        with sqlite3.connect("database.db") as con:
-            cur = con.cursor()
-            # we probs want to make a sequence
-            query = "INSERT INTO FEEDBACK VALUES(NULL, '" + generaltext + "', '" + emotion + "', '" + timeSent + "', '"+ rating +"')"
-            #query = "INSERT into FEEDBACK values(?, ?, ?, ?, ?)", 
-            #query = "SELECT * FROM FEEDBACK"
-            print("here1.5")
-            print(query)
-            cur.execute(query)
-            query2 = "INSERT INTO USERFEEDBACK VALUES(last_insert_rowid(), "+ meetingID +", "+ companyID +") "
-            cur.execute(query2)
+        #print("here")
 
-            print("Success")
-            con.commit()
-            return "SUCCESS???"
+        # send to the sentiment analysis 
+        # going to get back a
+
+        #write swear word and filter them out 
+        abusive = False
+        timeConstraint = True
+        if abusive == False :
+
+            # need to chech here that the meetin is live DO THIS
+
+            with sqlite3.connect("database.db") as con:
+                cur = con.cursor()
+
+                #check when the last time they submitted feedback was - non technical only 
+                lastFeedback = "SELECT ftime FROM FEEDBACK INNER JOIN  USERFEEDBACK AS uf ON uf.FeedbackID = FEEDBACK.FeedbackID WHERE CompanyID = "+ companyID+ " AND MeetingID = "+ meetingID + " AND feedback.emotion != 'Technical' ORDER BY feedback.FeedbackID DESC LIMIT 1;"
+                #print(lastFeedback)
+                cur.execute(lastFeedback)
+                recentTime = cur.fetchall()
+                #print("HERE")
+                #print(len(recentTime))
+                for each in recentTime:
+                   # print("LOOP")
+                   # print(each)
+                    timer = each[0]
+                    #print(timer)
+                    timerAsTime = datetime.strptime(timer,"%H:%M:%S")
+                   # print("GOT TIME COB")
+                    now = datetime.now()
+                    currentTime = now.strftime("%H:%M:%S")
+                    #print(currentTime)
+                    difference = datetime.strptime(currentTime,"%H:%M:%S") - timerAsTime
+                   # print("duifeeren")
+                    #print(difference.seconds)
+                    if difference.seconds < 120:
+                        print("Too soon")
+                        timeConstraint = False
+                    else:
+                        print("TIME IS K")
+
+                if timeConstraint:
+
+                    query = "INSERT INTO FEEDBACK VALUES(NULL, '" + generaltext + "', '" + emotion + "', '" + timeSent + "', '"+ rating +"')"
+                    # print("here1.5")
+                    # print(query)
+                    cur.execute(query)
+                    #print("executed 1")
+                    query2 = "INSERT INTO USERFEEDBACK VALUES(last_insert_rowid(), "+ meetingID +", "+ companyID +") "
+                    cur.execute(query2)
+                    #print("here 2")
+                    query3 = "SELECT * FROM FEEDBACK WHERE feedbackid = last_insert_rowid()"
+                    cur.execute(query3)
+                    #print("here3")
+                    row_headers=[x[0] for x in cur.description]
+                    #print(row_headers)
+                    data = cur.fetchall()
+                    returnData = []
+                    for each in data:
+                        returnData.append(dict(zip(row_headers, each)))
+                    #print(data)
+                    #print("Success")
+                    con.commit()
+                    # i think this should work but cant properly test 
+                    socketio.emit("femessage",jsonify(returnData))
+
+                    return jsonify(returnData)
+                else:
+                    return "we dont want your feedback - take it easy"
+        else:
+            return "abusive message was sent- be nice"
     except:
         return ("nope not working",400)
 
