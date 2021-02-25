@@ -193,10 +193,14 @@ def userfeedback():
                 print(timeConstraint)
                 if timeConstraint == True:
                     print("here")
-                    query = "INSERT INTO FEEDBACK VALUES(NULL, '" + generaltext + "', '" + emotion + "', '" + timeSent + "', '"+ rating +"', ' " + semanticAnalysis + "')"
+                    #query = """INSERT INTO FEEDBACK VALUES(NULL, " """+ generaltext +""" ", '""" + emotion + """', '""" + timeSent + """', '"""+ rating +"""', ' """ + semanticAnalysis + ""')"""
+                    part1 = """INSERT INTO FEEDBACK VALUES(NULL, " """ + generaltext
+                    part2 = """ ", '""" + emotion 
+                    part3 = "' , '" + timeSent + "' , '"+rating + "', '" + semanticAnalysis + "')"
                     # print("here1.5")
-                    print(query)
-                    cur.execute(query)
+                    print(part1 + part2 + part3)
+                    #print(query)
+                    cur.execute(part1 + part2 + part3)
                     #print("executed 1")
                     query2 = "INSERT INTO USERFEEDBACK VALUES(last_insert_rowid(), "+ meetingID +", "+ companyID +") "
                     cur.execute(query2)
@@ -221,6 +225,34 @@ def userfeedback():
                     return "we dont want your feedback - take it easy"
         else:
             return "abusive message was sent- be nice"
+    except:
+        return ("nope not working",400)
+
+@app.route('/userlogin', methods=["POST"])
+def userlogin():
+    info = request.get_json()
+    if info == None:
+        return "No feedback there"
+    print(info)
+    try:
+        logincode = ["logincode"]
+        username = ["username"]
+        anonymous = ["anonymous"]
+
+        # DO THIS - NEED TO CHECK IF THE MEETING IS LIVE FROM THE MEETING LIST 
+        # this will be the meeting id that we extract from the list of live meetings from login code
+        meetingid = 1
+        # how am i supposed to get the company id ??? 
+        companyid = 200
+        # if the meeting is live then i need to add this user as an attendee 
+        with sqlite3.connect("database.db") as con:
+            cur = con.cursor()
+            attendance = "INSERT INTO ATTENDANCE VALUES("+meetingid+", " + companyid + ", "+ anonymous + ")"
+            cur.execute(attendance)
+            print("success")
+            con.commit()
+            
+            return "SUCCESS???"
     except:
         return ("nope not working",400)
 
