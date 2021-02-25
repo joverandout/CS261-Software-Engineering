@@ -284,27 +284,26 @@ def hostlogin():
         return "No login information was provided"
     print("Info")
     print(info)
+    
     #Dont actually know what to do if parsing fails. info will be an error
     try:
         username = info["username"]
         password = info["password"]
 
-        hashed_password = hashlib.sha256(password).hexdigest()
+        hashed_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
         print(hashed_password)
-
         succesful_login = False
 
         #logic to determine if the user is in the database,
         with sqlite3.connect("database.db") as con:
+            print(hashed_password)
             print("Here")
             cur = con.cursor()
-            query = "SELECT HostID, Password FROM HOSTS WHERE Username = " + username
+            query = "SELECT HostID, Password FROM HOSTS WHERE username = '" + username + "'"
             cur.execute(query)
-            row_headers=[x[0] for x in cur.description]
             data = cur.fetchall()
-            returnData = []
             for each in data:
-                if each[1] == password:
+                if each[1] == hashed_password:
                     succesful_login = True
                     logged_in_id = each[0]
                     return "SUCCESS???"
@@ -353,8 +352,6 @@ def profile(username):
 
 with app.test_request_context():
     print(url_for('index'))
-    print(url_for('login'))
-    print(url_for('login', next='/'))
     print(url_for('profile', username='John Doe'))
     print(url_for('profile', username='Susan'))
     print(url_for('profile', username='template'))
