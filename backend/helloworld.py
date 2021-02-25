@@ -9,6 +9,9 @@ from flask import request
 from flask_cors import CORS
 from markupsafe import escape
 
+import hashlib
+
+
 import sqlite3
 from sqlite3 import Error
 
@@ -274,9 +277,8 @@ def newtemplate():
 
 #comment
 
-@app.route('/login', methods=["POST"])
-
-def login():
+@app.route('/hostlogin', methods=["POST"])
+def hostlogin():
     info = request.get_json()
     if info == None:
         return "No login information was provided"
@@ -287,11 +289,26 @@ def login():
         username = info["username"]
         password = info["password"]
 
+        hashed_password = hashlib.sha256(password).hexdigest()
+        print(hashed_password)
+
+        succesful_login = False
+
         #logic to determine if the user is in the database,
-        if username in ["Nkosi", "Vita", "Caleb", "Dominika", "Megan", "Joe"]:
-            return "Successful Login"# automatic 200 status code
-        else:
-            return ("User not found", 401) # tuples in this form are automatically (Response, status code)
+        with sqlite3.connect("database.db") as con:
+            print("Here")
+            cur = con.cursor()
+            query = "SELECT HostID, Password FROM HOSTS WHERE Username = " + username
+            cur.execute(query)
+            row_headers=[x[0] for x in cur.description]
+            data = cur.fetchall()
+            returnData = []
+            for each in data:
+                if each[1] == password:
+                    succesful_login = True
+                    logged_in_id = each[0]
+                    return "SUCCESS???"
+            return ("wrong password",400)
     except:
         #Likely error is that the request did not have the fields we wanted from it
         return ("Bad Request, probably missing the data we want", 400)
