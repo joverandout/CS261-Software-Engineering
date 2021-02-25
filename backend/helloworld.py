@@ -146,7 +146,7 @@ def userfeedback():
         semanticAnalysis = '-0.999987,0.989999'
 
         #write swear word and filter them out 
-        swearWords = ['fuck', 'shit', 'bollocks', 'wanker', 'asshat', 'prick','bellend','crap', 'bugger', 'dick','knob','twat', 'bitch']
+        swearWords = ['fuck', 'shit', 'bollocks', 'wanker', 'asshat', 'prick','bellend','crap', 'bugger', 'dick','knob','twat', 'bitch', 'cunt']
 
         abusive = False
         for each in swearWords:
