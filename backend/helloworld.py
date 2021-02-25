@@ -13,7 +13,7 @@ import sqlite3
 from sqlite3 import Error
 
 import template_db_fethcer
-from Semantic import Semantic
+#from Semantic import Semantic
 import time
 from datetime import datetime
 
@@ -137,19 +137,27 @@ def userfeedback():
         #print("here")
 
         # send to the sentiment analysis 
-        feedbackEval = Semantic(generaltext)
-        feedbackEval.update_semValues_and_confScores()
-        s = feedbackEval.get_scores()
+        # feedbackEval = Semantic(generaltext)
+        # feedbackEval.update_semValues_and_confScores()
+        # s = feedbackEval.get_scores()
 
         # going to get back an array
-        print(s)
+        #print(s)
+        semanticAnalysis = '-0.999987,0.989999'
 
         #write swear word and filter them out 
+        swearWords = ['fuck', 'shit', 'bollocks', 'wanker', 'asshat', 'prick','bellend','crap', 'bugger', 'dick','knob','twat', 'bitch']
+
         abusive = False
+        for each in swearWords:
+            if each in generaltext:
+                abusive = True 
+
         timeConstraint = True
         if abusive == False :
 
             # need to chech here that the meetin is live DO THIS
+            #need joe to make the list of meetings 
 
             with sqlite3.connect("database.db") as con:
                 cur = con.cursor()
@@ -179,12 +187,12 @@ def userfeedback():
                         timeConstraint = False
                     else:
                         print("TIME IS K")
-
-                if timeConstraint:
-
-                    query = "INSERT INTO FEEDBACK VALUES(NULL, '" + generaltext + "', '" + emotion + "', '" + timeSent + "', '"+ rating +"')"
+                print(timeConstraint)
+                if timeConstraint == True:
+                    print("here")
+                    query = "INSERT INTO FEEDBACK VALUES(NULL, '" + generaltext + "', '" + emotion + "', '" + timeSent + "', '"+ rating +"', ' " + semanticAnalysis + "')"
                     # print("here1.5")
-                    # print(query)
+                    print(query)
                     cur.execute(query)
                     #print("executed 1")
                     query2 = "INSERT INTO USERFEEDBACK VALUES(last_insert_rowid(), "+ meetingID +", "+ companyID +") "
