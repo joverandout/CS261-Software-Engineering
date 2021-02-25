@@ -307,6 +307,8 @@ def hostlogin():
                     succesful_login = True
                     logged_in_id = each[0]
                     return "SUCCESS???"
+        
+        if(not succesful_login):
             return ("wrong password",400)
     except:
         #Likely error is that the request did not have the fields we wanted from it
