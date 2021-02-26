@@ -391,25 +391,26 @@ def startmeeting():
             each = data[0]
             hostid = each[0]
             templateid = each[1]
-            query = "SELECT * FROM HOSTS WHERE HostID = "+ hostid
+            query = "SELECT * FROM HOSTS WHERE HostID = "+ str(hostid)
             cur.execute(query)
             data = cur.fetchall()
             each = data[0]
             host = Host(each[1], each[0], each[2], each[3], each[4])
             cur = con.cursor()
-            query = "SELECT * FROM TEMPLATES WHERE MeetingID = "+ templateid
+            query = "SELECT * FROM TEMPLATES WHERE TemplateID = "+ str(templateid)
             cur.execute(query)
             data = cur.fetchall()
             each = data[0]
             emotions = each[3].split(',')
             template = Template(each[2], emotions, each[4].split(','))
             cur = con.cursor()
-            query = "SELECT * FROM MEETING WHERE MeetingID = "+ meetingID
+            query = "SELECT * FROM MEETING WHERE MeetingID = "+ str(meetingID)
             cur.execute(query)
             data = cur.fetchall()
             each = data[0]
             meeting = template.make_new_meetings(each[3], each[5], 1, each[6], each[4], host, True)
             meeting_dict[meetingID] = meeting
+            return "SUCCESS???"
     except:
         return ("nope not working",400)
 
