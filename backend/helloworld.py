@@ -9,6 +9,12 @@ from flask import request
 from flask_cors import CORS
 from markupsafe import escape
 
+from Meeting import Meeting
+from Host import Host
+from Attendee import Attendee
+from datetime import datetime, timedelta
+from Template import Template
+
 import hashlib
 
 
@@ -28,6 +34,8 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 #socket stuff but the functions wont work since the 
 #python throws an error when trying to import the 
 #paclets cors and socketio
+
+meeting_dict = {}
 
 if __name__ == '__main__':
     socketio.run(app)
@@ -307,7 +315,67 @@ def newtemplate():
         return ("nope not working",400)
 
 
-#comment
+@app.route('/endmeeting', methods=["POST"])
+def endmeeting():
+    info = request.get_json()
+    if info == None:
+        return "No meeting information was provided"
+    try:
+        meetingID = info["meetingid"]
+        if(meetingID in meeting_dict):
+            meeting = meeting_dict.get(meetingID)
+            meeting.end_meeting()
+            del meeting_dict[meetingID]
+        else:
+            return("that meeting isn't ongoing", 400)
+    except:
+        return ("nope not working",400)
+
+@app.route('/startmeeting', methods=["POST"])
+def startmeeting():
+    info = request.get_json()
+    if info == None:
+        return "No meeting information was provided"
+    try:
+        # #self, title, category, code, startime, duration, host, in_progress, template)
+        # #def __init__(self, username, user_id, firstname, lastname, password):
+        # host
+        # host = Host()
+        # meeting = Meeting(each[3], each[5], 1, each[6], each[4], )
+        #     t1 = Template("template1", ["happy", "sad"], ["is cereal a soup?"])
+        # m1 = t1.make_new_meetings("Title", "Category", "Code", datetime.now(), datetime.now(), h1, False)
+        hostid = 0
+        meetingID = info["meetingid"]
+        with sqlite3.connect("database.db") as con:
+            cur = con.cursor()
+            query = "SELECT HostID, TemplateID FROM MEETING WHERE MeetingID = "+ meetingID
+            cur.execute(query)
+            data = cur.fetchall()
+            each = data[0]
+            hostid = each[0]
+            templateid = each[1]
+            query = "SELECT * FROM HOSTS WHERE HostID = "+ hostid
+            cur.execute(query)
+            data = cur.fetchall()
+            each = data[0]
+            host = Host(each[1], each[0], each[2], each[3], each[4])
+            cur = con.cursor()
+            query = "SELECT * FROM TEMPLATES WHERE MeetingID = "+ templateid
+            cur.execute(query)
+            data = cur.fetchall()
+            each = data[0]
+            emotions = each[3].split(',')
+            template = Template(each[2], emotions, each[4].split(','))
+            cur = con.cursor()
+            query = "SELECT * FROM MEETING WHERE MeetingID = "+ meetingID
+            cur.execute(query)
+            data = cur.fetchall()
+            each = data[0]
+            meeting = template.make_new_meetings(each[3], each[5], 1, each[6], each[4], host, True)
+            meeting_dict[meetingID] = meeting
+    except:
+        return ("nope not working",400)
+
 
 @app.route('/hostlogin', methods=["POST"])
 def hostlogin():
