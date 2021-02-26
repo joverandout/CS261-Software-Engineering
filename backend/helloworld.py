@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-from flask import Flask, url_for
 from flask_socketio import SocketIO, emit, send
-=======
-from flask import Flask, url_for, render_template, jsonify
->>>>>>> 098bd9e8cf1c1d285f995a8157722fb4f5acc25a
-from flask import request
+from flask import Flask, url_for, render_template, jsonify, request
 from flask_cors import CORS
 from markupsafe import escape
 
@@ -14,40 +9,13 @@ from sqlite3 import Error
 import template_db_fethcer
 
 app = Flask(__name__)
-<<<<<<< HEAD
-app.config['SECRET_KEY'] = 'dolphin'
 CORS(app)
-socketio = SocketIO(app, cors_allowed_origins="*")
-
-if __name__ == '__main__':
-    socketio.run(app)
-
-@socketio.on('connect')
-def socket_connection():
-    print("\nNew Connection!\nData: ")
-    emit('Yay a connection!', {'info': 'rmation'})
-    
-
-@socketio.on('disconnect')
-def socket_disconnect():
-    print('Client disconnected... \n')
-
-@socketio.on("hello")
-def handle_hello(text):
-    print("\nSocket Message: "+text+"\n")
-
-=======
-CORS(app)
->>>>>>> 098bd9e8cf1c1d285f995a8157722fb4f5acc25a
 
 @app.route('/')
 
 def index():
     return 'MEETING APP PLS GIVE US A FIRST'
 
-<<<<<<< HEAD
-@app.route('/login', methods=["POST"])
-=======
 
 
 @app.route('/hostmain', methods=["POST"])
@@ -173,7 +141,6 @@ def newmeeting():
 
 @app.route('/login', methods=["POST"])
 
->>>>>>> 098bd9e8cf1c1d285f995a8157722fb4f5acc25a
 def login():
     info = request.get_json()
     if info == None:
@@ -193,25 +160,11 @@ def login():
     except:
         #Likely error is that the request did not have the fields we wanted from it
         return ("Bad Request, probably missing the data we want", 400)
-<<<<<<< HEAD
-
-@app.route('/sendsocketmessage', methods=["POST"])  
-def sendsocketmessage():
-    data = request.get_json()
-    print("\nSending Message to frontend: ",data)
-    
-    socketio.emit("femessage",data)
-    return "Sent!"
-
-@app.route('/dataprinter', methods=["POST"])
-def dataPrinter():
-=======
     
 
 @app.route('/dataprinter', methods=["POST"])
 
 def dataPrintyer():
->>>>>>> 098bd9e8cf1c1d285f995a8157722fb4f5acc25a
     info = request.get_json()
     if info == None:
         return "No login information was provided"

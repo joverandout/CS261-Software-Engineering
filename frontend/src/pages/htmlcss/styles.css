@@ -1,7 +1,3 @@
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:regular,bold,italic&subset=latin,latin-ext');
-
-@import url( "https://fonts.gstatic.com");
-
 @viewport {
     width: device-width;
     zoom: 1.0;
@@ -96,6 +92,7 @@ select {
 .oneline {
     list-style: none;
     width: 100%;
+    max-width: 90%;
     padding: 10px;
     white-space: nowrap;
     overflow-x: auto;
@@ -108,13 +105,19 @@ select {
 
 .oneline > input {
     display: inline-block;
-    width: 100px;
+    width: 150px;
     max-width: 100%;
 }
 
 .oneline > select {
     display: inline-block;
     width: 200px;
+    max-width: 100%;
+}
+
+.oneline > button {
+    display: inline-block;
+    width: 100px;
     max-width: 100%;
 }
 
@@ -170,6 +173,16 @@ input[type="checkbox"] {
     color: rgb(0, 0, 0);
 }
 
+#new_event {
+    position: absolute; /*Fix back button to top-left*/
+    right: 15;
+    top: 5;
+    width: 10vw;
+    min-width: 150px;
+    max-width: 250px;
+    color: rgb(0, 0, 0);
+}
+
 
 @media screen and (max-width: 628px) {
     /* Code/resizing specifically for mobile devices goes here */
@@ -209,7 +222,7 @@ input[type="checkbox"] {
 
     .oneline > input {
         display: inline-block;
-        width: 100px;
+        width: 150px;
         max-width: 100%;
     }
     
@@ -219,6 +232,10 @@ input[type="checkbox"] {
         max-width: 100%;
     }
 
+    .oneline > button {
+        display: inline-block;
+    }
+
     input[type="checkbox"] {
         display: inline-block;
         width: 20px;
@@ -226,6 +243,12 @@ input[type="checkbox"] {
         padding-bottom: 50px;
     }
 
-
+    #avoid_buttons > h1 {
+        padding-top: 130px;
+        margin-left: 30px;
+        text-align: center;
+        font-size: 22px;
+        width: 80vw;
+    }
 
 }
