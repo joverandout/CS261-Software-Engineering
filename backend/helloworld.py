@@ -236,6 +236,29 @@ def userfeedback():
     except:
         return ("nope not working",400)
 
+
+@app.route('/meetinglogin', methods=["POST"])
+def meetinglogin():
+    info = request.get_json()
+    if info == None:
+        return "No feedback there"
+    print(info)
+    try:
+        meetingcode = info["meetingcode"]
+
+        # DO THIS - NEED TO CHECK IF THE MEETING IS LIVE FROM THE MEETING LIST 
+        # this will be the meeting id that we extract from the list of live meetings from login code
+        # need to add this user to the meetign count or somethingf 
+        meetinglive = True
+        if meetinglive:
+            return "SUCCESS???"
+            #mayve also return JSON with the meeting ID
+        else:
+            return "FAILURE - meetin not live"
+    except:
+        return ("nope not working",400)
+
+
 @app.route('/userlogin', methods=["POST"])
 def userlogin():
     info = request.get_json()
@@ -243,19 +266,33 @@ def userlogin():
         return "No feedback there"
     print(info)
     try:
-        logincode = ["logincode"]
-        username = ["username"]
-        anonymous = ["anonymous"]
-
-        # DO THIS - NEED TO CHECK IF THE MEETING IS LIVE FROM THE MEETING LIST 
-        # this will be the meeting id that we extract from the list of live meetings from login code
-        meetingid = 1
+        username = info["username"]
+        meetingid = info["meetingid"]
+        anonymous = info["anonymous"]
+        print("here")
         # how am i supposed to get the company id ??? 
-        companyid = 200
+        companyid = 0
         # if the meeting is live then i need to add this user as an attendee 
         with sqlite3.connect("database.db") as con:
             cur = con.cursor()
-            attendance = "INSERT INTO ATTENDANCE VALUES("+meetingid+", " + companyid + ", "+ anonymous + ")"
+            print("here 1.5")
+            print("SELECT CompanyID FROM ATTENDEE where username = ''")
+            print(username)
+            userq = "SELECT CompanyID FROM ATTENDEE where username = '" + username + "'"
+            print(userq)
+            cur.execute(userq)
+            print("here2")
+            data = cur.fetchall()
+            for each in data:
+                print(each[0])
+                companyid = each[0]
+            #print(data)
+            print("here3")
+            print(companyid)
+            print(str(companyid))
+            print("INSERT INTO ATTENDANCE VALUES("+ meetingid +", " + str(companyid)  +" ,"+ anonymous +")")
+            attendance = "INSERT INTO ATTENDANCE VALUES("+ meetingid +", " + str(companyid) + ", "+ anonymous + ")"
+            print(attendance)
             cur.execute(attendance)
             print("success")
             con.commit()
