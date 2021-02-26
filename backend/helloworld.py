@@ -169,7 +169,10 @@ def userfeedback():
 
             # need to chech here that the meetin is live DO THIS
             #need joe to make the list of meetings 
-
+            if(meetingID in meeting_dict):
+                print("here")
+            else:
+                return "MEETING NO LONGER LIVE"
             with sqlite3.connect("database.db") as con:
                 cur = con.cursor()
 
@@ -241,15 +244,24 @@ def userfeedback():
 def meetinglogin():
     info = request.get_json()
     if info == None:
-        return "No feedback there"
+        return "No meeting code"
     print(info)
     try:
         meetingcode = info["meetingcode"]
-
+        print(meetingcode)
         # DO THIS - NEED TO CHECK IF THE MEETING IS LIVE FROM THE MEETING LIST 
         # this will be the meeting id that we extract from the list of live meetings from login code
         # need to add this user to the meetign count or somethingf 
-        meetinglive = True
+        meetinglive = False
+        print(meeting_dict)
+        for meeting in meeting_dict:
+            print("in loop")
+            print(meeting)
+            print(meeting_dict[meeting].code)
+            print(meetingcode)
+            if str(meeting_dict[meeting].code) == str(meetingcode):
+                print("meeting is live ")
+                meetinglive = True
         if meetinglive:
             return "SUCCESS???"
             #mayve also return JSON with the meeting ID
@@ -294,6 +306,10 @@ def userlogin():
             attendance = "INSERT INTO ATTENDANCE VALUES("+ meetingid +", " + str(companyid) + ", "+ anonymous + ")"
             print(attendance)
             cur.execute(attendance)
+
+            #idk if this is right
+            meeting_dict[meetingid].update_participants(companyid)
+
             print("success")
             con.commit()
             
@@ -408,7 +424,7 @@ def startmeeting():
             cur.execute(query)
             data = cur.fetchall()
             each = data[0]
-            meeting = template.make_new_meetings(each[3], each[5], 1, each[6], each[4], host, True)
+            meeting = template.make_new_meetings(each[3], each[5], 123, each[6], each[4], host, True)
             meeting_dict[meetingID] = meeting
             return "SUCCESS???"
     except:
