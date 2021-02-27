@@ -171,7 +171,7 @@ def userfeedback():
             # need to chech here that the meetin is live DO THIS
             #need joe to make the list of meetings 
             if(meetingID in currently_live_meetings or meetingID in still_collecting_feedback_meetings):
-                print("here")
+                print("this meeting is still accepting feedback")
             else:
                 return "MEETING NO LONGER LIVE"
             with sqlite3.connect("database.db") as con:
