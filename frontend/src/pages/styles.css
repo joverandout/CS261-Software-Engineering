@@ -163,6 +163,11 @@ input[type="checkbox"] {
     background-color: white;
 }
 
+#next_button{
+    float:right;
+    margin-bottom: 20px;
+}
+
 #back_button{
     position: absolute; /*Fix back button to top-left*/
     left: 15;
@@ -171,6 +176,45 @@ input[type="checkbox"] {
     min-width: 100px;
     max-width: 200px;
     color: rgb(0, 0, 0);
+}
+
+#progress_button{
+    position: absolute; /*Fix back button to top-right*/
+    right: 15;
+    top: 5;
+    width: 10vw;
+    min-width: 100px;
+    max-width: 200px;
+    color: rgb(0, 0, 0);
+}
+
+.question_box {
+    background-color: #F2DFA7;
+    width:500px;
+    padding: 30px 30px;
+}
+
+
+/*Emotion buttons*/
+#emotion_button {
+    background-color: #e7e6e6;
+    border: 1px solid black;
+    color: black; 
+    padding: 10px 24px;
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+    }
+
+.btn-group button {
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+    margin: 20px;
+    font-weight: bolder;
 }
 
 #new_event {

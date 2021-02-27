@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    </head>
+    <body>
+        <button class="white_button" id="back_button">Back</button>
+        <div class="header">
+            <h1>New Template</h1>
+        </div>
+
+        <hr>
+
+        <p style="font-size: larger;">Template:  //TEMPLATE NAME//</p>
+        <p>Add questions to ask your attendees at the end of the session</p>
+
+        <!--I hard coded this margin value for my sanity so it looks nice for now, not sure how to responsively put the boxes the align more to the centre-->
+        <div style="margin-left: 130px;">
+            <div class="btn-group" id="buttons" style="margin-bottom: 60px; padding: 30px 30px;">
+                <!--The existing questions go here?-->
+                <!--On click, add/remove border: 3px solid black;-->
+                <button type="button" class="question_box">If you could sum up this session in one word, what would it be?</button>
+                <button type="button" class="question_box">What one thing could be improved about this session?</button>
+                <button type="button" class="question_box">Do you have any questions to submit to the organiser?</button>
+            </div>
+        </div>
+
+        <div class="wrap">
+            <div class="row">
+                <input type="textarea" class="form-control" id="name" style="line-height: 2em; border:2px solid #34495e; margin-top: 10px;">
+                <label for="name">Add New Question</label>
+            </div>
+            <button type="button" class="white_button">Add</button>
+        </div>
+
+        <button type="submit" class="green_button" id="next_button">Next</button>
+
+    </body>
+</html>

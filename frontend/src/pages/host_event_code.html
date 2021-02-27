@@ -1,0 +1,71 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 163;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.left {
+  left: 0;
+  border-right: 0.5px solid black;
+}
+
+.right {
+  right: 0;
+  border-left: 0.5px solid black;
+}
+
+.centered {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+        </style>
+    </head>
+    <body>
+        <button class="white_button" id="back_button" style="color:red; font-weight: bolder;">END EVENT</button>
+        <div class="header">
+            <h1>//EVENT NAME//</h1>
+            <p>number of attendees</p>
+        </div>
+        <button class="green_button" id="progress_button">In Progress</button>
+
+        <hr>
+
+        <div class="split left">
+            <div class="centered">
+              <p>Join this event by scanning the QR code below</p>
+              <!--Insert QR generator here-->
+            </div>
+          </div>
+        
+          <div class="split right">
+            <div class="centered">
+                <!--These brs are highly sus but I didn't know how to change the formatting to move this downwards-->
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                <p> Or go to </p>
+                <p style="font-size: xx-large;">www.my.meeting.com</p>
+                <p> and enter the meeting code: </p>
+                <p style="font-size: xx-large;">D9WYS</p>  
+                <button class="yellow_button" id="next_button" style="margin-top: 150px;">View Live Feedback</button>
+            </div>
+          </div>
+
+          
+
+
+    </body>
+</html>

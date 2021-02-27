@@ -6,26 +6,6 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <style>
-            .btn-group button {
-              background-color: #e7e6e6;
-              border: 1px solid black;
-              color: black; 
-              font-weight: bolder;
-              padding: 10px 24px; /* Some padding */
-              cursor: pointer; /* Pointer/hand icon */
-              float: left; /* Float the buttons side by side */
-              margin: 20px;
-            }
-            
-            /* Clear floats (clearfix hack) */
-            .btn-group:after {
-              content: "";
-              clear: both;
-              display: table;
-            }
-        
-        </style>
     </head>
     <body>
         <button class="white_button" id="back_button">Back</button>
@@ -60,7 +40,7 @@
                         for (i=0; i<len; i++) {
                             //This loop concatenates a html button for every emotion in the list, in its given colour.
                             //By all means this can be changed to work better in react.
-                            x = x + "<button type=\"button\" id=\""+i+"\" onClick=changeColour(\'"+i+"\',\'"+wordList[i][1]+"\')>" + wordList[i][0] + "</button>" ;
+                            x = x + "<button class=\"emotion_button\" type=\"button\" id=\""+i+"\" onClick=changeColour(\'"+i+"\',\'"+wordList[i][1]+"\')>" + wordList[i][0] + "</button>" ;
                         }
                         document.getElementById("buttons").innerHTML = x;
 
@@ -108,7 +88,7 @@
                     <div class="oneline">
                         <p>Add custom emotion: </p>
                         <input type="text" class="form-control" id="name">
-                        <button type="button">Add</button>
+                        <button type="button" class="white_button">Add</button>
                     </div>
                    
                 </div>                              
