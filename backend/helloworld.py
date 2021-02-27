@@ -35,7 +35,8 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 #python throws an error when trying to import the 
 #paclets cors and socketio
 
-meeting_dict = {}
+currently_live_meetings = {}
+still_collecting_feedback_meetings = {}
 
 if __name__ == '__main__':
     socketio.run(app)
@@ -169,7 +170,7 @@ def userfeedback():
 
             # need to chech here that the meetin is live DO THIS
             #need joe to make the list of meetings 
-            if(meetingID in meeting_dict):
+            if(meetingID in currently_live_meetings):
                 print("here")
             else:
                 return "MEETING NO LONGER LIVE"
@@ -253,13 +254,13 @@ def meetinglogin():
         # this will be the meeting id that we extract from the list of live meetings from login code
         # need to add this user to the meetign count or somethingf 
         meetinglive = False
-        print(meeting_dict)
-        for meeting in meeting_dict:
+        print(currently_live_meetings)
+        for meeting in currently_live_meetings:
             print("in loop")
             print(meeting)
-            print(meeting_dict[meeting].code)
+            print(currently_live_meetings[meeting].code)
             print(meetingcode)
-            if str(meeting_dict[meeting].code) == str(meetingcode):
+            if str(currently_live_meetings[meeting].code) == str(meetingcode):
                 print("meeting is live ")
                 meetinglive = True
         if meetinglive:
@@ -308,7 +309,7 @@ def userlogin():
             cur.execute(attendance)
 
             #idk if this is right
-            meeting_dict[meetingid].update_participants(companyid)
+            currently_live_meetings[meetingid].update_participants(companyid)
 
             print("success")
             con.commit()
@@ -375,10 +376,26 @@ def endmeeting():
         return "No meeting information was provided"
     try:
         meetingID = info["meetingid"]
-        if(meetingID in meeting_dict):
-            meeting = meeting_dict.get(meetingID)
+        if(meetingID in currently_live_meetings):
+            meeting = currently_live_meetings.get(meetingID)
             meeting.end_meeting()
-            del meeting_dict[meetingID]
+            still_collecting_feedback_meetings[meetingID] = meeting
+            del currently_live_meetings[meetingID]
+            return "SUCCESS???"
+        else:
+            return("that meeting isn't ongoing", 400)
+    except:
+        return ("nope not working",400)
+
+@app.route('/stopmeeting', methods=["POST"])
+def stopmeeting():
+    info = request.get_json()
+    if info == None:
+        return "No meeting information was provided"
+    try:
+        meetingID = info["meetingid"]
+        if(meetingID in currently_live_meetings):
+            del still_collecting_feedback_meetings[meetingID]
             return "SUCCESS???"
         else:
             return("that meeting isn't ongoing", 400)
@@ -426,7 +443,7 @@ def startmeeting():
             data = cur.fetchall()
             each = data[0]
             meeting = template.make_new_meetings(each[3], each[5], 123, each[6], each[4], host, True)
-            meeting_dict[meetingID] = meeting
+            currently_live_meetings[meetingID] = meeting
             return "SUCCESS???"
     except:
         return ("nope not working",400)
