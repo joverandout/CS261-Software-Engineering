@@ -11,9 +11,10 @@ from multiprocessing.spawn import freeze_support
 from flair.data import Corpus
 from flair.datasets.document_classification import ClassificationCorpus
 from flair.embeddings import WordEmbeddings, FlairEmbeddings, DocumentRNNEmbeddings
+from flair.embeddings import TransformerDocumentEmbeddings
 from flair.models.text_classification_model import TextClassifier
 from flair.trainers.trainer import ModelTrainer
-
+from torch.optim.adam import Adam
 
 #reads data into dataframe, drops redundant columns and duplicates
 data = pd.read_csv("off_or_not.tsv", encoding='latin-1', delimiter='\t')
@@ -55,15 +56,29 @@ if __name__ == '__main__':
     label_dict = corpus.make_label_dictionary()
 
     # 3. make a list of word embeddings
-    word_embeddings = [WordEmbeddings('glove')]
+    word_embeddings = [WordEmbeddings('glove'), FlairEmbeddings('news-forward-fast'),
+                                        FlairEmbeddings('news-backward-fast'),]
 
     # 4. initialize document embedding by passing list of word embeddings
     # Can choose between many RNN types (GRU by default, to change use rnn_type parameter)
-    document_embeddings = DocumentRNNEmbeddings(word_embeddings, hidden_size=256)
+    document_embeddings = TransformerDocumentEmbeddings('distilbert-base-uncased', fine_tune=True)
+
+    stacked_embeddings = StackedEmbeddings([
+                                        WordEmbeddings('glove'),
+                                        FlairEmbeddings('news-forward-fast'),
+                                        FlairEmbeddings('news-backward-fast'),
+                                       ])
 
     # 5. create the text classifier
     classifier = TextClassifier(document_embeddings, label_dictionary=label_dict, multi_label=False)
 
     # 6. initialize the text classifier trainer
-    trainer = ModelTrainer(classifier, corpus)
-    #trainer.train('.', max_epochs=10, patience = 5)
+    trainer = ModelTrainer(classifier, corpus, optimizer=Adam)
+    trainer.train('.', 
+                  learning_rate=3e-5, # use very small learning rate
+                  mini_batch_size=16,
+                  max_epochs=5,)
+
+
+# DONT FORGET THIS
+# create a StackedEmbedding object that combines glove and forward/backward flair embeddings
