@@ -217,6 +217,29 @@ input[type="checkbox"] {
     font-weight: bolder;
 }
 
+.btn-group-2 button {
+    cursor: pointer; /* Pointer/hand icon */
+    float: center;
+    max-width: 80vw;
+    width: 600px;
+    background-color:#F2DFA7;
+    font-weight: bolder;
+    font-size: medium;
+}
+
+.column button {
+    max-width: 40vw;
+}
+
+.btn-group-3 button {
+    float: center;
+    max-width: 40vw;
+    width: 400px;
+    background-color:#F2DFA7;
+    font-weight: bolder;
+    font-size: medium;
+}
+
 #new_event {
     position: absolute; /*Fix back button to top-left*/
     right: 15;
