@@ -198,6 +198,10 @@ input[type="checkbox"] {
     color: rgb(0, 0, 0);
 }
 
+.closeFeedbackButton {
+    background-color: #e45050;
+}
+
 .question_box {
     background-color: #F2DFA7;
     width:500px;
