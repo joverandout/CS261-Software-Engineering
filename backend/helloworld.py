@@ -128,6 +128,37 @@ def meetingview():
     except:
         return ("nope not working",400)
 
+
+@app.route('/postmeetingfeed', methods=["POST"])
+def postmeetingfeed():
+    info = request.get_json()
+    if info == None:
+        return "No feedback there"
+    print(info)
+    try:
+        meetingID = info["meetingid"]
+        postquestions = info["questionresponses"]
+        timeSent = info["ftime"]
+        companyID = info["companyid"]
+        print(postquestions)
+        if (meetingID in still_collecting_feedback_meetings):
+            print("meetign collecting post feedback")
+        else:
+            print("NO takine feedbakc")
+            #return "no longer taking feedback"
+        with sqlite3.connect("database.db") as con:
+            cur = con.cursor()
+            for each in postquestions:
+                part1 = """INSERT INTO FEEDBACK VALUES(NULL, " """ + each
+                part2 = """ ", '"""
+                part3 = "Post' , '" + timeSent + "' , NULL, NULL)"
+                print(part1+part2+part3)
+                cur.execute(part1+part2+part3)
+            
+            return "SUCCESS??"
+    except:
+        return ("nope not working",400)
+
 """VITA
 Need to pass the feedback recieved back to the front end 
 Via the socket - idk how to make this work byt we gon try 
@@ -170,7 +201,7 @@ def userfeedback():
 
             # need to chech here that the meetin is live DO THIS
             #need joe to make the list of meetings 
-            if(meetingID in currently_live_meetings or meetingID in still_collecting_feedback_meetings):
+            if(meetingID in currently_live_meetings):
                 print("this meeting is still accepting feedback")
             else:
                 return "MEETING NO LONGER LIVE"
