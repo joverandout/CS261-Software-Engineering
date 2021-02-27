@@ -170,7 +170,7 @@ def userfeedback():
 
             # need to chech here that the meetin is live DO THIS
             #need joe to make the list of meetings 
-            if(meetingID in currently_live_meetings):
+            if(meetingID in currently_live_meetings or meetingID in still_collecting_feedback_meetings):
                 print("here")
             else:
                 return "MEETING NO LONGER LIVE"
