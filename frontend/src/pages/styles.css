@@ -188,6 +188,16 @@ input[type="checkbox"] {
     color: rgb(0, 0, 0);
 }
 
+#new_event {
+    position: absolute; /*Fix back button to top-left*/
+    top: 5;
+    right: 5vw;
+    width: 10vw;
+    min-width: 150px;
+    max-width: 250px;
+    color: rgb(0, 0, 0);
+}
+
 .question_box {
     background-color: #F2DFA7;
     width:500px;
@@ -240,15 +250,6 @@ input[type="checkbox"] {
     font-size: medium;
 }
 
-#new_event {
-    position: absolute; /*Fix back button to top-left*/
-    right: 15;
-    top: 5;
-    width: 10vw;
-    min-width: 150px;
-    max-width: 250px;
-    color: rgb(0, 0, 0);
-}
 
 
 @media screen and (max-width: 628px) {
