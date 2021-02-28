@@ -23,6 +23,7 @@ from sqlite3 import Error
 
 import template_db_fethcer
 #from Semantic import Semantic
+from Offensive import Offensive
 import time
 from datetime import datetime
 
@@ -179,6 +180,11 @@ def userfeedback():
         companyID = info["companyid"]
         #print("here")
 
+        offEval = Offensive(generaltext)
+        offEval.update_rating()
+        howOffensive = offEval.get_scores()
+        print(howOffensive)
+
         # send to the sentiment analysis 
         # feedbackEval = Semantic(generaltext)
         # feedbackEval.update_semValues_and_confScores()
@@ -196,6 +202,10 @@ def userfeedback():
             if each in generaltext:
                 abusive = True 
 
+        for each in howOffensive:
+            if each > 0.5:
+                abusive = True
+                
         timeConstraint = True
         if abusive == False :
 
