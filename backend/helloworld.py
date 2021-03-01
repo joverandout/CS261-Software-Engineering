@@ -369,18 +369,28 @@ def userlogin():
             print(companyid)
             print(str(companyid))
             print("INSERT INTO ATTENDANCE VALUES("+ meetingid +", " + str(companyid)  +" ,"+ anonymous +")")
-            attendance = "INSERT INTO ATTENDANCE VALUES("+ meetingid +", " + str(companyid) + ", "+ anonymous + ")"
-            print(attendance)
-            cur.execute(attendance)
+            # attendance = "INSERT INTO ATTENDANCE VALUES("+ meetingid +", " + str(companyid) + ", "+ anonymous + ")"
+            # print(attendance)
+            # cur.execute(attendance)
 
             #idk if this is right
             currently_live_meetings[meetingid].update_participants(companyid)
 
-            #getTemplate = "SELECT FROM "
+            getTemplate = "Select TemplateName, EmotionsSelected, Question from TEMPLATES INNER JOIN MEETING ON MEETING.TemplateID = TEMPLATES.TemplateID WHERE MEETING.MeetingID =" + meetingid
+            cur.execute(getTemplate)
+            row_headers=[x[0] for x in cur.description]
+            print(row_headers)
+            data = cur.fetchall()
+
+            returnData = []
+            for each in data:
+                returnData.append(dict(zip(row_headers, each)))
+            #print("out")
+            print(returnData)
             print("success")
             con.commit()
             
-            return "SUCCESS???"
+            return jsonify(returnData)
     except:
         return ("nope not working",400)
 
