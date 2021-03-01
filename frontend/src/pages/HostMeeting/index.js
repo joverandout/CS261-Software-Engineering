@@ -1,25 +1,69 @@
 import "../styles.css"
-import React, {useContext, useState, useMemo, useEffect} from 'react';
+import React, {useReducer, useState, useMemo, useEffect} from 'react';
 import { Chart } from "react-charts"
+import {io} from "socket.io-client"
+
+const socket = io("http://127.0.0.1:5000", {
+  auth:{
+    token:"id01043"
+  }
+})
 
 
-const socket = io("http://127.0.0.1:5000/");
 
 
+function reducer(state, action){
+    switch(action.type){
+        case "newSemantic":
+            let currentSum = state.semanticData.sum
+            let currentCount = state.semanticData.count
+            let actionVal = action.semanticValue
+
+           let newCount = currentCount+1
+           let newSum = currentSum+actionVal
+           let ave = newSum/newCount
+           let plot = [...state.semanticData.plot, [Date.parse(Date()), ave]]
+           console.log(plot)
+           
+           return {
+               semanticData:{
+                   sum:newSum,
+                   count:newCount,
+                   plot:plot
+               }
+           }
+    }
+}
 
 export default function HostMeeting(){
+    
+    const initialState ={
+        semanticData: {
+            sum:0,
+            count:0,
+            plot:[[Date.parse(Date()), 0]]
+        }
+    }
+    const [state, dispatch] = useReducer(reducer, initialState)
+
+    useEffect(()=>{
+        socket.on("feedback", newFeedback)
+    },[])
+    
+    function newFeedback(data){
+       dispatch({
+           type:"newSemantic",
+           semanticValue:data.value
+       })
+    }
+    
     const data = useMemo(
         () => [
           {
             label: 'Series 1',
-            data: [[0, 1], [1, 2], [2, 4], [3, 2], [4, 7]]
-          },
-          {
-            label: 'Series 2',
-            data: [[0, 3], [1, 1], [2, 5], [3, 6], [4, 4]]
+            data: state.semanticData.plot//[[0,0],[1,1],[2,1],[3,-1]]
           }
-        ],
-        []
+        ]
       )
      
       const axes = useMemo(
@@ -35,8 +79,8 @@ export default function HostMeeting(){
         // space of its parent element automatically
         <div
           style={{
-            width: '400px',
-            height: '300px'
+            width: '900px',
+            height: '700px'
           }}
         >
           <Chart data={data} axes={axes} />
@@ -45,6 +89,8 @@ export default function HostMeeting(){
 
     return(
         <div>
+            <p>{state.semanticData.count}</p>
+            <hr/>
             {lineChart}
         </div>
     )
