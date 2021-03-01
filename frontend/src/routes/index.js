@@ -13,6 +13,7 @@ import CreateTemplate from '../pages/CreateTemplate';
 import EosFeedback from '../pages/EosFeedback';
 import JoinMeeting from '../pages/JoinMeeting';
 import AttendeeMeeting from '../pages/AttendeeMeeting';
+import HostMeeting from '../pages/HostMeeting';
 
 
 export default function Routes() {
@@ -55,6 +56,10 @@ export default function Routes() {
 
       <Route path="/AttendeeMeeting" exact>
         <AttendeeMeeting/>
+      </Route>
+
+      <Route path="/HostMeeting" exact>
+        <HostMeeting/>
       </Route>
       
       

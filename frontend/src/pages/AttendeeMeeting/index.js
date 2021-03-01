@@ -49,6 +49,7 @@ export default function AttendeeMeeting(){
 
     }
 
+    //todo manage state of components from parent to allow state resetting
     let technicalIssue = (
         <div  id="reportIssue">
         <div className="form-container report-container">
