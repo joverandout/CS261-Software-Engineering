@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:regular,bold,italic&subset=latin,latin-ext');
 
-@import url( "https://fonts.gstatic.com");
+@import url( "https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap");
 
 @viewport {
     width: device-width;
@@ -229,3 +229,23 @@ input[type="checkbox"] {
 
 
 }
+
+.btn-group button {
+    background-color: #F2DFA7;
+    border: 1px solid black;
+    color: black; 
+    font-weight: bolder;
+    font-size: large;
+    padding: 10px 10px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: center; /* Float the buttons in the middle of the screen */
+    margin: 20px;
+    width: 80vw;
+  }
+  
+  /* Clear floats (clearfix hack) */
+  .btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+  }

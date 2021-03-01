@@ -22,7 +22,7 @@ export default function HostSignIn(){
 
   let signedInIndicator = (<h2>Signed in: {signedIn.toString()}</h2>);
   function login(){
-    
+    /*
     Axios.post("http://127.0.0.1:5000/login",{
       "username":username,
 	    "password":password
@@ -49,6 +49,8 @@ export default function HostSignIn(){
         setUser:contextUser.setUser
       })
     })
+    */
+   history.push('/Timetable')
   }
 
   function usernameChange(e){
