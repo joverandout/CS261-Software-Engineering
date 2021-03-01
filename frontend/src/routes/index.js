@@ -5,8 +5,6 @@ import UserContext from '../contexts/user-context'
 
 import SignIn from '../pages/HostSignIn';
 import Timetable from '../pages/Timetable';
-import FindMeeting from '../pages/m/FindMeeting';
-import Feedback from "../pages/Feedback"
 import PublishEvent from '../pages/PublishEvent';
 import CreateEvent from '../pages/CreateEvent';
 import CreateTemplate from '../pages/CreateTemplate';
@@ -24,10 +22,6 @@ export default function Routes() {
     <Switch> 
       <Route path="/" exact>
         <SignIn/>
-      </Route>
-
-      <Route path="/Feedback" exact>
-        <Feedback/>
       </Route>
       
       <Route path="/Timetable" exact>
@@ -61,11 +55,7 @@ export default function Routes() {
       <Route path="/HostMeeting" exact>
         <HostMeeting/>
       </Route>
-      
-      
-      <PrivateRoute path="/FindMeeting" exact>
-        <FindMeeting/>
-      </PrivateRoute>   
+  
     </Switch>
   );
 }
