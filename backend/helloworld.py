@@ -17,8 +17,12 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 if __name__ == '__main__':
     socketio.run(app)
 
-@app.route('/')
+@socketio.on('connect')
+def socket_connection():
+    print("\nNew Connection!")
+    
 
+@app.route('/')
 def index():
     return 'MEETING APP PLS GIVE US A FIRST'
 
@@ -29,6 +33,7 @@ def semanticfeedback():
         return "No hostID provided"
     print(info)
     value = info["semanticvalue"]
+    socketio.emit("feedback", {"value":value})
     return "all good"
 
 
