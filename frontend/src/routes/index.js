@@ -7,10 +7,16 @@ import SignIn from '../pages/HostSignIn';
 import Timetable from '../pages/Timetable';
 import FindMeeting from '../pages/m/FindMeeting';
 import Feedback from "../pages/Feedback"
+import PublishEvent from '../pages/PublishEvent';
+import CreateEvent from '../pages/CreateEvent';
+import CreateTemplate from '../pages/CreateTemplate';
+import EosFeedback from '../pages/EosFeedback';
+import JoinMeeting from '../pages/JoinMeeting';
+import AttendeeMeeting from '../pages/AttendeeMeeting';
 
 
 export default function Routes() {
-
+  //todo make the relevant routes private
   const  isPrivate = true
   //Special route for the loggin screen?
   return (
@@ -23,9 +29,34 @@ export default function Routes() {
         <Feedback/>
       </Route>
       
-      <PrivateRoute path="/Timetable" exact>
+      <Route path="/Timetable" exact>
         <Timetable/>
-      </PrivateRoute>
+      </Route>
+
+      <Route path="/PublishEvent" exact>
+        <PublishEvent/>
+      </Route>
+
+      <Route path="/CreateEvent" exact>
+        <CreateEvent/>
+      </Route>
+
+      <Route path="/CreateTemplate" exact>
+        <CreateTemplate/>
+      </Route>
+
+      <Route path="/EosFeedback" exact>
+        <EosFeedback/>
+      </Route>
+
+      <Route path="/JoinMeeting" exact>
+        <JoinMeeting/>
+      </Route>
+
+      <Route path="/AttendeeMeeting" exact>
+        <AttendeeMeeting/>
+      </Route>
+      
       
       <PrivateRoute path="/FindMeeting" exact>
         <FindMeeting/>
