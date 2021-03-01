@@ -11,11 +11,25 @@ import template_db_fethcer
 app = Flask(__name__)
 CORS(app)
 
+app.config['SECRET_KEY'] = 'Dolphin!'
+socketio = SocketIO(app, cors_allowed_origins="*")
+
+if __name__ == '__main__':
+    socketio.run(app)
+
 @app.route('/')
 
 def index():
     return 'MEETING APP PLS GIVE US A FIRST'
 
+@app.route("/semanticfeedback", methods=["POST"])
+def semanticfeedback():
+    info = request.get_json()
+    if info == None:
+        return "No hostID provided"
+    print(info)
+    value = info["semanticvalue"]
+    return "all good"
 
 
 @app.route('/hostmain', methods=["POST"])
