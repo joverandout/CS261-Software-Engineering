@@ -1,6 +1,6 @@
 import "../styles.css"
 import "../template_styles.css"
-import React, {useContext, useState, useCallback, useEffect} from 'react';
+import React, { useState} from 'react';
 
 export default function EmotionButton(props){
     const [value, setValue] = useState(false)
