@@ -38,7 +38,11 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 currently_live_meetings = {}
 still_collecting_feedback_meetings = {}
 
+stack_of_available_codes = []
+
 if __name__ == '__main__':
+    for i in range(10000,10500):
+        stack_of_available_codes.append(i)
     socketio.run(app)
 
 @socketio.on('connect')
