@@ -34,20 +34,45 @@ function EventComponent(props){
 }
 
 export default function Timetable(){
-  const [eventsRefreshed, setEvRefresh] = useState(false); //only change this if we need to ask for the list of events again for some reason
   const [eventButtons, setEventButtons] = useState([])
-  
+  const [tagOptions, setTagOptions] = useState([])
+  const [eventList, setEventList] = useState([]) // doesnt really need to be a hook tbh
+  const [tagList, setTagList] = useState([]) //neither does this
 
+
+  //Runs once to get the event list form the server.
   useEffect(()=>{
-    
-    let eventList = getHostMeetings()
+    let hostMeetingsApiCall = getHostMeetings()
+    //todo nake sure this returns as valid
+
+    let tmpEvList = hostMeetingsApiCall[0]
+    let tagList = hostMeetingsApiCall[1]
+    setEventList(tmpEvList)
+
+    let tmpTagOptions = []
+    tagList.forEach((tag, index) => {
+      tmpTagOptions.push(<option key={index}> {tag} </option>)
+    });
+    setTagOptions(tmpTagOptions)
+
     let evButtons = []
-    for(let i=0; i<eventList.length; i++){
-      evButtons.push(<EventComponent event={eventList[i]} key={i} id={i}/>)
+    for(let i=0; i<tmpEvList.length; i++){
+      evButtons.push(<EventComponent event={tmpEvList[i]} key={i} id={i}/>)
     }
     setEventButtons(evButtons)
-    
-  }, [eventsRefreshed])
+  }, [])
+
+  function refreshEventList(fieldObj){
+    let tag = fieldObj.target.value
+    console.log("Tag:"+tag)
+    let evButtons = []
+    for(let i=0; i<eventList.length; i++){
+      if(tag=="All" || tag==eventList[i].tag){
+        evButtons.push(<EventComponent event={eventList[i]} key={i} id={i}/>)
+      }  
+    }
+    setEventButtons(evButtons)
+  }
 
   
   // todo - change the username according to the context details
@@ -64,8 +89,10 @@ export default function Timetable(){
             <h1>Welcome, Username </h1>
             <h3>Your scheduled meetings:</h3>
             <p style={{fontSize: 18, fontWeight: "bold", textAlign: "left"}}> Filter by Category: </p>
-            <select name="cat" id="cat" style={{width: "30vw", paddingLeft: 10, marginRight: "60vw"}}> 
+            <select name="cat" id="cat" style={{width: "30vw", paddingLeft: 10, marginRight: "60vw"}} onChange={refreshEventList}> 
                 <option> --Select Category-- </option>
+                <option> All </option>
+                {tagOptions}
             </select>
         </div>
 
