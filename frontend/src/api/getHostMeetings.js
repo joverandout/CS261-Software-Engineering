@@ -1,7 +1,7 @@
 import Axios from 'axios';
 
 export default function getHostMeetings(){
-    return [{
+    return [[{
         eventName:"Event 1",
         eventTime:" 20/02/21 : 1600",
         tag:"Tag1"
@@ -15,5 +15,5 @@ export default function getHostMeetings(){
         eventName:"Event 3",
         eventTime:" 11/03/21 : 2200",
         tag:"Tag3"
-    }]
+    }], ["Tag1", "Tag3"]]
 }
