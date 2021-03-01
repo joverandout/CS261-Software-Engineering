@@ -271,7 +271,26 @@ def userfeedback():
                     data = cur.fetchall()
                     returnData = []
                     for each in data:
-                        returnData.append(dict(zip(row_headers, each)))
+                        if each[2] == "Technical":
+                            print("its technical")
+                            newDict = dict()
+                            newDict[each[2]] = each[1]
+                            print(newDict)
+                            returnData.append(newDict)
+                        else:
+                            print(each)
+                            emotions = each[2].split(",")
+                            ratings = each[4].split(",")
+                            semanticsList = each[5].split(",")
+                            print(emotions)
+                            print(ratings)
+                            print(semanticsList)
+                            # for emo in emotions:
+                            #     #print()
+                            newDict = dict(zip(emotions,ratings))
+                            newDict["Semantics"] = semanticsList
+                            print(newDict)
+                            returnData.append(newDict)
                     #print(data)
                     #print("Success")
                     con.commit()
@@ -357,6 +376,7 @@ def userlogin():
             #idk if this is right
             currently_live_meetings[meetingid].update_participants(companyid)
 
+            #getTemplate = "SELECT FROM "
             print("success")
             con.commit()
             
