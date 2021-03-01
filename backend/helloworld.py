@@ -23,7 +23,7 @@ from sqlite3 import Error
 
 import template_db_fethcer
 #from Semantic import Semantic
-from Offensive import Offensive
+#from Offensive import Offensive
 import time
 from datetime import datetime
 
@@ -184,10 +184,10 @@ def userfeedback():
         companyID = info["companyid"]
         #print("here")
 
-        offEval = Offensive(generaltext)
-        offEval.update_rating()
-        howOffensive = offEval.get_scores()
-        print(howOffensive)
+        # offEval = Offensive(generaltext)
+        # offEval.update_rating()
+        # howOffensive = offEval.get_scores()
+        # print(howOffensive)
 
         # send to the sentiment analysis 
         # feedbackEval = Semantic(generaltext)
@@ -206,9 +206,9 @@ def userfeedback():
             if each in generaltext:
                 abusive = True 
 
-        for each in howOffensive:
-            if each > 0.5:
-                abusive = True
+        # for each in howOffensive:
+        #     if each > 0.5:
+        #         abusive = True
                 
         timeConstraint = True
         if abusive == False :
@@ -424,6 +424,8 @@ def endmeeting():
         if(meetingID in currently_live_meetings):
             meeting = currently_live_meetings.get(meetingID)
             meeting.end_meeting()
+            newly_available_code = meeting.code
+            stack_of_available_codes.append(newly_available_code)
             still_collecting_feedback_meetings[meetingID] = meeting
             del currently_live_meetings[meetingID]
             return "SUCCESS???"
@@ -487,7 +489,8 @@ def startmeeting():
             cur.execute(query)
             data = cur.fetchall()
             each = data[0]
-            meeting = template.make_new_meetings(each[3], each[5], 123, each[6], each[4], host, True)
+            meeting_code = stack_of_available_codes.pop()
+            meeting = template.make_new_meetings(each[3], each[5], meeting_code, each[6], each[4], host, True)
             currently_live_meetings[meetingID] = meeting
             return "SUCCESS???"
     except:
