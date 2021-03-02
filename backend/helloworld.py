@@ -335,10 +335,9 @@ def meetinglogin():
     print(info)
     try:
         meetingcode = info["meetingcode"]
+        username = info["username"]
+        anonymous = info["anonymous"]
         print(meetingcode)
-        # DO THIS - NEED TO CHECK IF THE MEETING IS LIVE FROM THE MEETING LIST 
-        # this will be the meeting id that we extract from the list of live meetings from login code
-        # need to add this user to the meetign count or somethingf 
         meetinglive = False
         print(currently_live_meetings)
         for meeting in currently_live_meetings:
@@ -351,6 +350,7 @@ def meetinglogin():
                 meetinglive = True
         if meetinglive:
             return "SUCCESS???"
+            #THERE IS NO WAY TO GET THE MEETING ID 
             # DO THIS mayve also return JSON with the meeting ID
         else:
             return "FAILURE - meetin not live"
