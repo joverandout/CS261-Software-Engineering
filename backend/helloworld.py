@@ -370,9 +370,9 @@ def meetinglogin():
                 print(companyid)
                 print(str(companyid))
                 print("INSERT INTO ATTENDANCE VALUES("+ str(meetingid) +", " + str(companyid)  +" ,"+ anonymous +")")
-                # attendance = "INSERT INTO ATTENDANCE VALUES("+ meetingid +", " + str(companyid) + ", "+ anonymous + ")"
-                # print(attendance)
-                # cur.execute(attendance)
+                attendance = "INSERT INTO ATTENDANCE VALUES("+ str(meetingid) +", " + str(companyid) + ", "+ anonymous + ")"
+                print(attendance)
+                cur.execute(attendance)
                 print(currently_live_meetings)
                 print(MeetingFound)
                 print(MeetingFound.get_number_of_participants())
