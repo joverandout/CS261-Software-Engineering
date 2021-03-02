@@ -1,6 +1,7 @@
 import "../styles.css"
+import "./popup_styles.css"
 
-import React, {useContext, useState, useCallback} from 'react';
+import React, {useContext, useState, useCallback, useEffect} from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import x2 from "./x2.png";
 import EmotionButton from "../../components/emotion_button"
@@ -8,27 +9,39 @@ import EmotionButton from "../../components/emotion_button"
 export default function AttendeeMeeting(){
     const location = useLocation();
     const eList = [["Proud", "#F4b72f"],["Excited","#F4b72f"],["Interested", "#F4b72f"], ["Happy", "#F4b72f"], ["Joyful", "#F4b72f"], ["Optimistic", "#75C7E3"], ["Tired", "#75C7E3"], ["Calm", "#75C7E3"], ["Grateful", "#75C7E3"], ["Bored", "#75C7E3"], ["Sad", "#9B75E3"], ["Insecure", "#9B75E3"], ["Depressed", "#9B75E3"], ["Anxious", "#9B75E3"], ["Afraid", "#9B75E3"], ["Annoyed", "#F07A7A"], ["Angry", "#F07A7A"], ["Overwhelmed", "#F07A7A"], ["Stressed", "#F07A7A"], ["Frustrated", "#F07A7A"]];
-
+    
     let tmpEmValues = []
-    let emotionButtons = []
-    for(let i=0; i<eList.length;i++){
+    eList.forEach(element => {
         tmpEmValues.push(false)
-        let emotionObj={
-            name: eList[i][0],
-            color: eList[i][1]
-        }
-        emotionButtons.push(<EmotionButton toggleEmotionCb={toggleEmotionCb} emotion={emotionObj} key={i} id={i}/>)
-         
-    }
+    });
     const [emotionValues, setEmValues] = useState(tmpEmValues)
+    const [popup, setPopup] = useState(false)
+    const [emotionButtons, setEmotionButtons] = useState([])
+    
+    //todo manage button state from the parent
+    useEffect(()=>{
+        console.log("!!!!!!!!")
+        
+        let tmpEmButtons = []
+        for(let i=0; i<eList.length;i++){
+            let emotionObj={
+                name: eList[i][0],
+                color: eList[i][1]
+            }
+            tmpEmButtons.push(<EmotionButton toggleEmotionCb={toggleEmotionCb} emotion={emotionObj} key={i} id={i}/>)
+        }
+        setEmotionButtons(tmpEmButtons)
+    },[])
+    
+
+
     function toggleEmotionCb(id, value){
-        console.log(value)
         let count = 0
         for(let i=0;i<emotionValues.length;i++){
             if(emotionValues[i] == true){
                 count++;
             }
-            if(count>=8 && value==true){
+            if(count>=3 && value==true){
                 //todo make some kind of popup appear
                 console.log("too many emotions selected")
                 return false
@@ -37,12 +50,13 @@ export default function AttendeeMeeting(){
         let tmpEmValues = emotionValues;
         let val = emotionValues[id]
         tmpEmValues[id] = (val?false:true)
-        setEmValues(tmpEmValues)
+        setEmValues([...tmpEmValues])
+        console.log(tmpEmValues)
         return true
     }
 
     function togglePopup(){
-
+        setPopup(popup ? false:true)
     }
 
     function issueButton(buttonObj){
@@ -71,6 +85,7 @@ export default function AttendeeMeeting(){
         <div>
             <div className="header">
                     <h1>Event Name</h1>
+                    <button className="green_button" onClick={togglePopup}>Report Technical Issue</button>
             </div>
             <hr/>
             <div className="btn-group" id="buttons" style={{marginBottom: 60}}>
@@ -87,7 +102,7 @@ export default function AttendeeMeeting(){
 
     return(
     <div>
-        {page}
+        {popup ? technicalIssue:page}
     </div>
     )
 }

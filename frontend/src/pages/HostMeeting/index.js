@@ -3,15 +3,6 @@ import React, {useReducer, useState, useMemo, useEffect} from 'react';
 import { Chart } from "react-charts"
 import {io} from "socket.io-client"
 
-const socket = io("http://127.0.0.1:5000", {
-  auth:{
-    token:"id01043"
-  }
-})
-
-
-
-
 function reducer(state, action){
     switch(action.type){
         case "newSemantic":
@@ -47,7 +38,12 @@ export default function HostMeeting(){
     const [state, dispatch] = useReducer(reducer, initialState)
 
     useEffect(()=>{
-        socket.on("feedback", newFeedback)
+      const socket = io("http://127.0.0.1:5000", {
+        auth:{
+          token:"id01043"
+        }
+      })
+      socket.on("feedback", newFeedback)
     },[])
     
     function newFeedback(data){

@@ -4,16 +4,47 @@ import { useLocation, useHistory } from 'react-router-dom';
 
 export default function PublishEvent(){
     let location = useLocation()
-    let eventName = location.state.event.eventName
-    console.log(location)
+    const history = useHistory();
+    //todo, add error checking here in case the state doesnt exist
+    const event = location.state.event
+    const eventName = event.eventName
+    const startTime = event.eventTime
+
+    function startEvent(){
+        history.push({
+            pathname: "/HostMeeting",
+            search:"eventID", // i forgot what this does
+          })
+    }
+
+    function backButton(){
+        history.push({
+            pathname: "/Timetable"
+          })
+    }
 
     //todo add qrcode
-    //todo date checking
-    //todo add back button functionality 
+
+    //todo add periodic checks for when the time starts
+    // to be honest for the purpose of the demo we can just have everything set to some early time thats already passed
+    /*
+    let startButton = (null)
+    if(Date.parse(Date())>Date.parse(startTime)){
+        startButton = (
+            <div>
+                <button className="green_button" onClick={startEvent}>Start Event</button>
+            </div>
+        ) 
+    }*/
+    let startButton = (
+        <div>
+            <button className="green_button" onClick={startEvent}>Start Event</button>
+        </div>
+    ) 
     return (
         
         <div>
-            <button className="white_button" id="back_button" >Back</button>
+            <button className="white_button" id="back_button" onClick={backButton}>Back</button>
             <div className="header">
                 <h1>Publish Event</h1>
             </div>
@@ -24,13 +55,9 @@ export default function PublishEvent(){
 
                     <p>Do you want to start the following event?</p><br/>
                     <p style={{fontSize: "xx-large"}}>{eventName}</p> 
-                    <br/><p>Scheduled for:</p><br/>
-                    <a>///// Date if applicable, else just print 'Now' ////</a>
+                    <br/><p>Scheduled for: {startTime}</p><br/>
 
-
-                    <div>
-                        <button className="green_button">Start Event</button>
-                    </div>
+                    {startButton}
             </div>
         </div>
     );
