@@ -339,6 +339,7 @@ def meetinglogin():
         anonymous = info["anonymous"]
         print(meetingcode)
         meetinglive = False
+        MeetingFound = None
         print(currently_live_meetings)
         for meeting in currently_live_meetings:
             print("in loop")
@@ -348,10 +349,58 @@ def meetinglogin():
             if str(currently_live_meetings[meeting].code) == str(meetingcode):
                 print("meeting is live ")
                 meetinglive = True
+                print(currently_live_meetings[meeting].meetingid)
+                meetingid = currently_live_meetings[meeting].meetingid
+                MeetingFound = currently_live_meetings[meeting]
         if meetinglive:
-            return "SUCCESS???"
-            #THERE IS NO WAY TO GET THE MEETING ID 
-            # DO THIS mayve also return JSON with the meeting ID
+            with sqlite3.connect("database.db") as con:
+                cur = con.cursor()
+                print("here 1.5")
+                print("SELECT CompanyID FROM ATTENDEE where username = ''")
+                print(username)
+                userq = "SELECT CompanyID FROM ATTENDEE where username = '" + username + "'"
+                print(userq)
+                cur.execute(userq)
+                print("here2")
+                data = cur.fetchall()
+                for each in data:
+                    print(each[0])
+                    companyid = each[0]
+                print("here3")
+                print(companyid)
+                print(str(companyid))
+                print("INSERT INTO ATTENDANCE VALUES("+ str(meetingid) +", " + str(companyid)  +" ,"+ anonymous +")")
+                # attendance = "INSERT INTO ATTENDANCE VALUES("+ meetingid +", " + str(companyid) + ", "+ anonymous + ")"
+                # print(attendance)
+                # cur.execute(attendance)
+                print(currently_live_meetings)
+                print(MeetingFound)
+                print(MeetingFound.get_number_of_participants())
+                MeetingFound.update_participants(companyid)
+                print(MeetingFound.get_number_of_participants())
+                
+                getTemplate = "Select TemplateName, EmotionsSelected, Question from TEMPLATES INNER JOIN MEETING ON MEETING.TemplateID = TEMPLATES.TemplateID WHERE MEETING.MeetingID =" + str(meetingid)
+                print(getTemplate)
+                cur.execute(getTemplate)
+                row_headers=[x[0] for x in cur.description]
+                print(row_headers)
+                data = cur.fetchall()
+
+                returnData = []
+                for each in data:
+                    #returnData.append(dict(zip(row_headers, each)))
+                    tempDict = dict()
+                    tempDict["meetingid"] = str(meetingid)
+                    tempDict["emotionsselected"] = each[1]
+                    tempDict["templatename"] = each[0]
+                    tempDict["question"] = each[2]
+                    returnData.append(tempDict)
+                #print("out")
+                print(returnData)
+                print("success")
+                con.commit()
+                
+                return jsonify(returnData)
         else:
             return "FAILURE - meetin not live"
     except:
@@ -552,7 +601,7 @@ def startmeeting():
             meeting_code = stack_of_available_codes.pop()
             meeting = template.make_new_meetings(each[0], each[3], each[5], meeting_code, each[6], each[4], host, True)
             currently_live_meetings[meetingID] = meeting
-            return "SUCCESS???"
+            return jsonify(meeting_code)
     except:
         return ("nope not working",400)
 
