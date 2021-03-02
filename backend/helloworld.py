@@ -550,7 +550,7 @@ def startmeeting():
             data = cur.fetchall()
             each = data[0]
             meeting_code = stack_of_available_codes.pop()
-            meeting = template.make_new_meetings(each[3], each[5], meeting_code, each[6], each[4], host, True)
+            meeting = template.make_new_meetings(each[0], each[3], each[5], meeting_code, each[6], each[4], host, True)
             currently_live_meetings[meetingID] = meeting
             return "SUCCESS???"
     except:
