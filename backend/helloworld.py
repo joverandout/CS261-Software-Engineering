@@ -389,11 +389,13 @@ def meetinglogin():
                 returnData = []
                 for each in data:
                     #returnData.append(dict(zip(row_headers, each)))
+                    emotions = each[1].split(',')
+                    postquestions = each[2].split('?')
                     tempDict = dict()
                     tempDict["meetingid"] = str(meetingid)
-                    tempDict["emotionsselected"] = each[1]
+                    tempDict["emotionsselected"] = emotions
                     tempDict["templatename"] = each[0]
-                    tempDict["question"] = each[2]
+                    tempDict["question"] = postquestions
                     returnData.append(tempDict)
                 #print("out")
                 print(returnData)
