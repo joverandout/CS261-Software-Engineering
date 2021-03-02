@@ -197,7 +197,7 @@ def userfeedback():
 
         # going to get back an array
         #print(s)
-        semanticAnalysis = '-0.999987,0.989999'
+        semanticAnalysis = [-0.999987,0.989999]
 
         #write swear word and filter them out 
         swearWords = ['fuck', 'shit', 'bollocks', 'wanker', 'asshat', 'prick','bellend','crap', 'bugger', 'dick','knob','twat', 'bitch', 'cunt']
@@ -249,12 +249,21 @@ def userfeedback():
                     else:
                         print("TIME IS K")
                 print(timeConstraint)
+                print(str(semanticAnalysis))
+                semanticsAsString = ""
+                print(semanticsAsString)
+                for each in semanticAnalysis:
+                    print(each)
+                    semanticsAsString = semanticsAsString + str(each) + ","
+                print(semanticsAsString)
+                semanticsAsString = semanticsAsString[:-1]
+                print(semanticsAsString)
                 if timeConstraint == True:
                     print("here")
                     #query = """INSERT INTO FEEDBACK VALUES(NULL, " """+ generaltext +""" ", '""" + emotion + """', '""" + timeSent + """', '"""+ rating +"""', ' """ + semanticAnalysis + ""')"""
                     part1 = """INSERT INTO FEEDBACK VALUES(NULL, " """ + generaltext
                     part2 = """ ", '""" + emotion 
-                    part3 = "' , '" + timeSent + "' , '"+rating + "', '" + semanticAnalysis + "')"
+                    part3 = "' , '" + timeSent + "' , '"+rating + "', '" + semanticsAsString + "')"
                     # print("here1.5")
                     print(part1 + part2 + part3)
                     #print(query)
@@ -282,13 +291,25 @@ def userfeedback():
                             emotions = each[2].split(",")
                             ratings = each[4].split(",")
                             semanticsList = each[5].split(",")
+                            semanticsTotal = 0
+                            for num in semanticAnalysis:
+                                print(num)
+                                type(num)
+                                semanticsTotal += num
+                                print(semanticsTotal)
                             print(emotions)
                             print(ratings)
                             print(semanticsList)
                             # for emo in emotions:
                             #     #print()
-                            newDict = dict(zip(emotions,ratings))
-                            newDict["Semantics"] = semanticsList
+                            #newDict = dict(zip(emotions,ratings))
+                            newDict = dict()
+                            print("here before")
+                            newDict["semantics"] = semanticsTotal
+                            print("here")
+                            newDict["emotions"] = emotions
+                            newDict["ratings"] = ratings
+                            newDict["generaltext"] = each[1]
                             print(newDict)
                             returnData.append(newDict)
                     #print(data)
