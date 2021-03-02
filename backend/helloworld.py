@@ -595,6 +595,41 @@ def hostlogin():
         return ("Bad Request, probably missing the data we want", 400)
     
 
+@app.route('/gettemplates', methods=["POST"])
+def gettemplates():
+    info = request.get_json()
+    if info == None:
+        return "No login information was provided"
+    print("Info")
+    print(info)
+    
+    #Dont actually know what to do if parsing fails. info will be an error
+    try:
+        hostid = info["hostid"]
+        with sqlite3.connect("database.db") as con:
+            cur = con.cursor()
+            query = "SELECT TemplateName, TemplateID FROM TEMPLATES WHERE HostID = " + hostid
+            cur.execute(query)
+            data = cur.fetchall()
+            templateinfo = []
+            for each in data:
+                templateinfo.append([each[0], each[1]])
+            cur = con.cursor()
+            query = "SELECT Category FROM MEETING WHERE HostID = " + hostid
+            cur.execute(query)
+            data = cur.fetchall()
+            category = []
+            for each in data:
+                category.append(each[0])
+        
+        returnDict = dict()
+        returnDict["templates"] = templateinfo
+        returnDict["categories"] = category
+        return jsonify(returnDict)
+    except:
+        #Likely error is that the request did not have the fields we wanted from it
+        return ("Bad Request, probably missing the data we want", 400) 
+
 @app.route('/dataprinter', methods=["POST"])
 
 def dataPrintyer():
