@@ -295,7 +295,7 @@ def userfeedback():
                     #print("Success")
                     con.commit()
                     # i think this should work but cant properly test 
-                    socketio.emit("femessage",jsonify(returnData))
+                    socketio.emit("feedback",jsonify(returnData))
 
                     return jsonify(returnData)
                 else:
@@ -330,7 +330,7 @@ def meetinglogin():
                 meetinglive = True
         if meetinglive:
             return "SUCCESS???"
-            #mayve also return JSON with the meeting ID
+            # DO THIS mayve also return JSON with the meeting ID
         else:
             return "FAILURE - meetin not live"
     except:
@@ -459,6 +459,10 @@ def endmeeting():
             stack_of_available_codes.append(newly_available_code)
             still_collecting_feedback_meetings[meetingID] = meeting
             del currently_live_meetings[meetingID]
+            # JOE DO THIS
+            
+            #add socket
+
             return "SUCCESS???"
         else:
             return("that meeting isn't ongoing", 400)
@@ -521,7 +525,7 @@ def startmeeting():
             data = cur.fetchall()
             each = data[0]
             meeting_code = stack_of_available_codes.pop()
-            meeting = template.make_new_meetings(each[3], each[5], 111, each[6], each[4], host, True)
+            meeting = template.make_new_meetings(each[3], each[5], meeting_code, each[6], each[4], host, True)
             currently_live_meetings[meetingID] = meeting
             return "SUCCESS???"
     except:
@@ -557,7 +561,11 @@ def hostlogin():
                 if each[1] == hashed_password:
                     succesful_login = True
                     logged_in_id = each[0]
-                    return "SUCCESS???"
+
+                    #DO THIS RETURN HOST ID 
+                    returnDict = dict()
+                    returnDict["hostid"] = logged_in_id
+                    return jsonify(returnDict)
         
         if(not succesful_login):
             return ("wrong password",400)
