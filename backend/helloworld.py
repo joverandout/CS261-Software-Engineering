@@ -482,11 +482,11 @@ def endmeeting():
             del currently_live_meetings[meetingID]
             # JOE DO THIS
             
-            #add socket
+            socketio.emit("feedback",jsonify("OK"))
 
             return "SUCCESS???"
         else:
-            return("that meeting isn't ongoing", 400)
+            socketio.emit("feedback",jsonify("not-OK"))
     except:
         return ("nope not working",400)
 
