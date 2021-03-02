@@ -4,7 +4,7 @@ import { Link, useHistory } from 'react-router-dom';
 import Axios from 'axios';
 
 import "../styles.css"
-
+import hostLogIn from "../../api/hostLogIn"
 
 
 
@@ -22,35 +22,18 @@ export default function HostSignIn(){
   //todo, uncomment this and make sure the user gets added to the context
   let signedInIndicator = (<h2>Signed in: {signedIn.toString()}</h2>);
   function login(){
-    /*
-    Axios.post("http://127.0.0.1:5000/login",{
-      "username":username,
-	    "password":password
-    }).then(res => {
-
-      console.log(res)
+    hostLogIn.then(hostid=>{
       contextUser.setUser({
         user:{
           "Name":"Nkosi",
-          "id":3
+          "id":hostid
         },
         setUser:contextUser.setUser
       })
-      setSignedIn(true)
       history.push('/Timetable')
-      
-    }).catch(err => {
-
-      //console.log(err)
-      console.log(err)
-      setSignedIn(false)
-      contextUser.setUser({
-        user:null,
-        setUser:contextUser.setUser
-      })
+    }).catch(err=>{
+      console.log("Could not log in, make sure credentials are valid")
     })
-    */
-   history.push('/Timetable')
   }
 
   function usernameChange(e){
