@@ -500,9 +500,12 @@ def stopmeeting():
         meetingID = info["meetingid"]
         if(meetingID in currently_live_meetings):
             del still_collecting_feedback_meetings[meetingID]
-            return "SUCCESS???"
+            socketio.emit("endmeeting",jsonify("OK"))
+
+            return jsonify("OK")
         else:
-            return("that meeting isn't ongoing", 400)
+            socketio.emit("endmeeting",jsonify("not-OK"))
+            return jsonify("not-OK")
     except:
         return ("nope not working",400)
 
