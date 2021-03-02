@@ -14,7 +14,7 @@ class Meeting():
     __in_progress = None
     
     def __init__(self, meetingid, title, category, code, startime, duration, host, in_progress, template):
-        self.mee = meetingid
+        self.meetingid = meetingid
         self.title = title
         self.category = category
         self.code = code
