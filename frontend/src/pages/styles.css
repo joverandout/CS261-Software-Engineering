@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:regular,bold,italic&subset=latin,latin-ext');
+
+@import url( "https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap");
+
 @viewport {
     width: device-width;
     zoom: 1.0;
@@ -8,6 +12,7 @@ body {
     background-color: #deebf7;
     text-align: center;
     font-family: Comfortaa;
+  font-size: 20px;
 }
 
 form {
@@ -70,6 +75,7 @@ select {
         border-bottom: 3px solid #34495e;
         font-size: 20px;
         background: white;
+        font-family: Comfortaa;
     }
     
     /*Text box animation*/
@@ -87,7 +93,6 @@ select {
 
 
 /*Class to style multiple elements onto one line*/
-/*Looks delightful except it's too wide... Need to resize some text boxes*/
 .oneline {
     list-style: none;
     width: 100%;
@@ -97,21 +102,32 @@ select {
     overflow-y: hidden;
 }
 
+
+.oneline > p {
+    display: inline-block;
+}
+
 .oneline > input {
+    display: inline-block;
     width: 100px;
     max-width: 100%;
 }
 
 .oneline > select {
+    display: inline-block;
     width: 200px;
     max-width: 100%;
 }
 
 input[type="checkbox"] {
+    display: inline-block;
     width: 20px;
     transform: scale(1.5);
 }
 
+#AnonymousMessage {
+    padding-right: 0px;
+}
 
   /*BUTTONS*/
 
@@ -162,10 +178,21 @@ input[type="checkbox"] {
         width: 80vw - 120px;
         text-align: right;
         word-wrap: break-word;
-        font-size: 18px;
+        font-size: 20px;
         padding-top: 30px;
     }
 
+    /*General page style*/
+    body {
+        font-size: 15px;
+    }
+
+    link {
+        font-size: 25px;
+        max-width: 70vw;
+        width: 70vw;
+        padding-top: 30px;
+    }
 
 
     .oneline {
@@ -174,22 +201,57 @@ input[type="checkbox"] {
         padding: 10px;
         white-space: normal;
         overflow-x: auto;
-        overflow-y: auto;
+        overflow-y: hidden;
     }
     
+    .oneline > p {
+        display: inline-block;
+    }
+
     .oneline > input {
+        display: inline-block;
+        overflow-y: auto;
         width: 100px;
         max-width: 100%;
     }
     
     .oneline > select {
+        display: inline-block;
         width: 200px;
         max-width: 100%;
     }
 
     input[type="checkbox"] {
-        width: 10px;
+        display: inline-block;
+        width: 20px;
         transform: scale(1.5);
+        padding-bottom: 50px;
     }
+
+
+
+}
+
+.btn-group button {
+    background-color: #F2DFA7;
+    border: 1px solid black;
+    color: black; 
+    font-weight: bolder;
+    font-size: large;
+    padding: 10px 10px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: center; /* Float the buttons in the middle of the screen */
+    margin: 20px;
+    width: 80vw;
+  }
+  
+  /* Clear floats (clearfix hack) */
+  .btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+    width: 10px;
+    transform: scale(1.5);
+  }
 
 }

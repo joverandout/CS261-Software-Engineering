@@ -1,0 +1,254 @@
+@viewport {
+    width: device-width;
+    zoom: 1.0;
+}
+
+/*General page style*/
+body {
+    background-color: #deebf7;
+    text-align: center;
+    font-family: Comfortaa;
+    font-size: 20px;
+}
+
+form {
+    padding:50px;
+}
+
+hr {
+    border-color: black;
+}
+
+h1 {
+    padding: 20px;
+}
+
+span {
+    margin: 20px;
+}
+
+/*DROPDOWN MENU*/
+select {
+    padding: 15px 0 15px;
+    width: 100%;
+    border: none;
+    border-bottom: 3px solid #34495e;
+    font-size: 20px;
+    background: white/*#ecf0f1*/;
+    font-family: Comfortaa;
+}
+
+/*TEXT BOX from https://codepen.io/benedicksahagun/pen/WwaKEL*/
+
+    /*Sets size of text box*/
+    .wrap {
+        width: 600px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    
+    .row{
+        margin: 30px 0; /* need some nice spacing here */
+        position: relative; /* this one is important */
+    }
+    
+    /*make label absolute and position it on input area*/
+    label{
+        font-size: 24px;
+        font-weight: bold;
+        position: absolute;
+        top: 15px;
+        left: 0;
+        -webkit-transition: .1s;
+        -o-transition: .1s;
+        transition: .1s;
+    }
+    
+    input {
+        padding: 15px 0 15px;
+        width: 100%;
+        border: none;
+        border-bottom: 3px solid #34495e;
+        font-size: 20px;
+        background: white;
+        font-family: Comfortaa;
+    }
+    
+    /*Text box animation*/
+    input:focus{
+        outline: none;
+        border-color: #2980b9;
+    }
+    
+    input:valid ~ label, /*detects if input has valid input*/
+    input:focus ~ label{ 
+        top: -20px;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+
+/*Class to style multiple elements onto one line*/
+.oneline {
+    list-style: none;
+    width: 100%;
+    max-width: 90%;
+    padding: 10px;
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.oneline > p {
+    display: inline-block;
+}
+
+.oneline > input {
+    display: inline-block;
+    width: 150px;
+    max-width: 100%;
+}
+
+.oneline > select {
+    display: inline-block;
+    width: 200px;
+    max-width: 100%;
+}
+
+.oneline > button {
+    display: inline-block;
+    width: 100px;
+    max-width: 100%;
+}
+
+input[type="checkbox"] {
+    display: inline-block;
+    width: 20px;
+    transform: scale(1.5);
+}
+
+#AnonymousMessage {
+    padding-right: 0px;
+}
+
+
+  /*BUTTONS*/
+
+  button {
+    font-family: Comfortaa;
+    color: black;
+    margin: auto;
+    margin-top: 20px;
+    padding: 1.5rem 2rem;
+    border-radius: 0.2rem;
+    border: 0.2rem solid transparent;
+    width: 200px;
+    max-width: 100%;
+    display: block;
+    transition: all 0.3s;
+  }
+
+.green_button{
+    border-color: #00b050;
+    background-color: #B9DFA0;
+}
+
+.yellow_button{
+    border-color: #FFC000;
+    background-color: #F2DFA7;
+}
+
+.white_button{
+    border-color: darkgray;
+    background-color: white;
+}
+
+#back_button{
+    position: absolute; /*Fix back button to top-left*/
+    left: 15;
+    top: 5;
+    width: 10vw;
+    min-width: 100px;
+    max-width: 200px;
+    color: rgb(0, 0, 0);
+}
+
+#new_event {
+    position: absolute; /*Fix back button to top-left*/
+    right: 15;
+    top: 5;
+    width: 10vw;
+    min-width: 150px;
+    max-width: 250px;
+    color: rgb(0, 0, 0);
+}
+
+
+@media screen and (max-width: 628px) {
+    /* Code/resizing specifically for mobile devices goes here */
+    .header > h1 {
+        margin-left: 80px;
+        width: 80vw - 120px;
+        text-align: right;
+        word-wrap: break-word;
+        font-size: 20px;
+        padding-top: 30px;
+    }
+
+    /*General page style*/
+    body {
+        font-size: 15px;
+    }
+
+    link {
+        font-size: 25px;
+        max-width: 70vw;
+        width: 70vw;
+    }
+
+
+    .oneline {
+        list-style: none;
+        width: 100%;
+        padding: 10px;
+        white-space: normal;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+    
+    .oneline > p {
+        display: inline-block;
+    }
+
+    .oneline > input {
+        display: inline-block;
+        width: 150px;
+        max-width: 100%;
+    }
+    
+    .oneline > select {
+        display: inline-block;
+        width: 200px;
+        max-width: 100%;
+    }
+
+    .oneline > button {
+        display: inline-block;
+    }
+
+    input[type="checkbox"] {
+        display: inline-block;
+        width: 20px;
+        transform: scale(1.5);
+        padding-bottom: 50px;
+    }
+
+    #avoid_buttons > h1 {
+        padding-top: 130px;
+        margin-left: 30px;
+        text-align: center;
+        font-size: 22px;
+        width: 80vw;
+    }
+
+}

@@ -4,19 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { Router } from 'react-router-dom';
-import history from './services/history';
-import Routes from './routes';
+import { BrowserRouter } from 'react-router-dom';
 
-const routing = (
-  <Router history={history}>
-      <Routes />
-  </Router>
-)
 
-ReactDOM.render(
-  routing,
-  document.getElementById('root')
+
+ReactDOM.render((
+  <BrowserRouter>
+    <App/>
+  </BrowserRouter>
+  ),document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

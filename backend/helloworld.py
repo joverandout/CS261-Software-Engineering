@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+from flask_socketio import SocketIO, emit, send
+from flask import Flask, url_for, render_template, jsonify, request
+=======
 #pip install flask
 #pip install flask_socketio
 #pip install flask-cors
@@ -6,6 +10,7 @@
 from flask import Flask, url_for, render_template, jsonify
 from flask_socketio import SocketIO, emit, send
 from flask import request
+>>>>>>> 542e5203bc58ca92f57d99da2daf9488caece89c
 from flask_cors import CORS
 from markupsafe import escape
 
@@ -32,6 +37,19 @@ app.config['SECRET_KEY'] = 'dolphin'
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
+<<<<<<< HEAD
+app.config['SECRET_KEY'] = 'Dolphin!'
+socketio = SocketIO(app, cors_allowed_origins="*")
+
+if __name__ == '__main__':
+    socketio.run(app)
+
+@socketio.on('connect')
+def socket_connection():
+    print("\nNew Connection!")
+    
+
+=======
 #socket stuff but the functions wont work since the 
 #python throws an error when trying to import the 
 #paclets cors and socketio
@@ -64,10 +82,23 @@ def handle_hello(text):
 
 
 
+>>>>>>> 542e5203bc58ca92f57d99da2daf9488caece89c
 @app.route('/')
 def index():
     return 'MEETING APP PLS GIVE US A FIRST'
 
+<<<<<<< HEAD
+@app.route("/semanticfeedback", methods=["POST"])
+def semanticfeedback():
+    info = request.get_json()
+    if info == None:
+        return "No hostID provided"
+    print(info)
+    value = info["semanticvalue"]
+    socketio.emit("feedback", {"value":value})
+    return "all good"
+
+=======
 @app.route('/sendsocketmessage', methods=["POST"])  
 def sendsocketmessage():
     data = request.get_json()
@@ -75,6 +106,7 @@ def sendsocketmessage():
     
     socketio.emit("femessage",data)
     return "Sent!"
+>>>>>>> 542e5203bc58ca92f57d99da2daf9488caece89c
 
 @app.route('/hostmain', methods=["POST"])
 def hostmain():

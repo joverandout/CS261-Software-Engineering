@@ -1,20 +1,29 @@
-import logo from './logo.svg';
-//We arent using this
 import { Router } from 'react-router-dom';
-
-import history from './services/history';
 import Routes from './routes';
 
 import './App.css';
-import ReactDOM from 'react-dom';
-function App() {
+import React, { useState } from 'react';
+
+import UserContext from './contexts/user-context'
+
+export default function App() {
+  const [userC, setUserC] = useState({
+    user:null,
+    setUser:setUserFunction
+  });
+
+  function setUserFunction(newUser){
+    setUserC({
+      user: newUser,
+      setUser: setUserFunction
+    })
+  }
+
   return (
-    ReactDOM.render(
-      <Router history={history}>
-          <Routes />
-      </Router>
-    )
+    <UserContext.Provider value={userC}>
+      <Routes />
+    </UserContext.Provider >
   );
 }
 
-export default App;
+

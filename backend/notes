@@ -1,0 +1,7 @@
+https://flask.palletsprojects.com/en/1.1.x/quickstart/ - Good resource
+The return value from a view function is automatically converted into a response object for you. If the return value is a string it’s converted into a response object with the string as response body, a 200 OK status code and a text/html mimetype. If the return value is a dict, jsonify() is called to produce a response.
+
+export FLASK_APP=helloworld.py
+export FLASK_ENV=development
+
+need to watch out for cross-site request forgery
