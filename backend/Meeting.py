@@ -4,6 +4,7 @@ import sys
 class Meeting():
     title = ""
     category = ""
+    meetingid = 0
     code = ""
     template = None
     __starttime = None
@@ -12,7 +13,8 @@ class Meeting():
     __participants = None
     __in_progress = None
     
-    def __init__(self, title, category, code, startime, duration, host, in_progress, template):
+    def __init__(self, meetingid, title, category, code, startime, duration, host, in_progress, template):
+        self.meetingid = meetingid
         self.title = title
         self.category = category
         self.code = code
