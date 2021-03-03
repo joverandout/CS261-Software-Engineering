@@ -1,6 +1,6 @@
 import API from "../backendApi";
 
-export default async function templateCreation(data){
+export default async function meetingCreation(data){
     return API.post("/meetingcreation", data).then(res=>{
         return true
     }).catch(err=>{

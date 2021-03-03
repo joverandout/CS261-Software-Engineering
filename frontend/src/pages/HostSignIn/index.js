@@ -21,7 +21,11 @@ export default function HostSignIn(){
   //todo, uncomment this and make sure the user gets added to the context
   let signedInIndicator = (<h2>Signed in: {signedIn.toString()}</h2>);
   function login(){
-    hostLogIn.then(hostid=>{
+    let data={
+      username: username,
+      password: password
+    }
+    hostLogIn(data).then(hostid=>{
       contextUser.setUser({
         user:{
           "Name":"Nkosi",
