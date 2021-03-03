@@ -12,7 +12,7 @@ body {
     background-color: #deebf7;
     text-align: center;
     font-family: Comfortaa;
-    font-size: 20px;
+  font-size: 20px;
 }
 
 form {
@@ -102,6 +102,7 @@ select {
     overflow-y: hidden;
 }
 
+
 .oneline > p {
     display: inline-block;
 }
@@ -127,7 +128,6 @@ input[type="checkbox"] {
 #AnonymousMessage {
     padding-right: 0px;
 }
-
 
   /*BUTTONS*/
 
@@ -191,6 +191,7 @@ input[type="checkbox"] {
         font-size: 25px;
         max-width: 70vw;
         width: 70vw;
+        padding-top: 30px;
     }
 
 
@@ -209,6 +210,7 @@ input[type="checkbox"] {
 
     .oneline > input {
         display: inline-block;
+        overflow-y: auto;
         width: 100px;
         max-width: 100%;
     }
@@ -248,4 +250,8 @@ input[type="checkbox"] {
     content: "";
     clear: both;
     display: table;
+    width: 10px;
+    transform: scale(1.5);
   }
+
+}

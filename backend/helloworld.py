@@ -367,11 +367,11 @@ def meetinglogin():
     print(info)
     try:
         meetingcode = info["meetingcode"]
+        username = info["username"]
+        anonymous = info["anonymous"]
         print(meetingcode)
-        # DO THIS - NEED TO CHECK IF THE MEETING IS LIVE FROM THE MEETING LIST 
-        # this will be the meeting id that we extract from the list of live meetings from login code
-        # need to add this user to the meetign count or somethingf 
         meetinglive = False
+        MeetingFound = None
         print(currently_live_meetings)
         for meeting in currently_live_meetings:
             print("in loop")
@@ -381,9 +381,60 @@ def meetinglogin():
             if str(currently_live_meetings[meeting].code) == str(meetingcode):
                 print("meeting is live ")
                 meetinglive = True
+                print(currently_live_meetings[meeting].meetingid)
+                meetingid = currently_live_meetings[meeting].meetingid
+                MeetingFound = currently_live_meetings[meeting]
         if meetinglive:
-            return "SUCCESS???"
-            # DO THIS mayve also return JSON with the meeting ID
+            with sqlite3.connect("database.db") as con:
+                cur = con.cursor()
+                print("here 1.5")
+                print("SELECT CompanyID FROM ATTENDEE where username = ''")
+                print(username)
+                userq = "SELECT CompanyID FROM ATTENDEE where username = '" + username + "'"
+                print(userq)
+                cur.execute(userq)
+                print("here2")
+                data = cur.fetchall()
+                for each in data:
+                    print(each[0])
+                    companyid = each[0]
+                print("here3")
+                print(companyid)
+                print(str(companyid))
+                print("INSERT INTO ATTENDANCE VALUES("+ str(meetingid) +", " + str(companyid)  +" ,"+ anonymous +")")
+                attendance = "INSERT INTO ATTENDANCE VALUES("+ str(meetingid) +", " + str(companyid) + ", "+ anonymous + ")"
+                print(attendance)
+                cur.execute(attendance)
+                print(currently_live_meetings)
+                print(MeetingFound)
+                print(MeetingFound.get_number_of_participants())
+                MeetingFound.update_participants(companyid)
+                print(MeetingFound.get_number_of_participants())
+                
+                getTemplate = "Select TemplateName, EmotionsSelected, Question from TEMPLATES INNER JOIN MEETING ON MEETING.TemplateID = TEMPLATES.TemplateID WHERE MEETING.MeetingID =" + str(meetingid)
+                print(getTemplate)
+                cur.execute(getTemplate)
+                row_headers=[x[0] for x in cur.description]
+                print(row_headers)
+                data = cur.fetchall()
+
+                returnData = []
+                for each in data:
+                    #returnData.append(dict(zip(row_headers, each)))
+                    emotions = each[1].split(',')
+                    postquestions = each[2].split('?')
+                    tempDict = dict()
+                    tempDict["meetingid"] = str(meetingid)
+                    tempDict["emotionsselected"] = emotions
+                    tempDict["templatename"] = each[0]
+                    tempDict["question"] = postquestions
+                    returnData.append(tempDict)
+                #print("out")
+                print(returnData)
+                print("success")
+                con.commit()
+                
+                return jsonify(returnData)
         else:
             return "FAILURE - meetin not live"
     except:
@@ -532,9 +583,12 @@ def stopmeeting():
         meetingID = info["meetingid"]
         if(meetingID in currently_live_meetings):
             del still_collecting_feedback_meetings[meetingID]
-            return "SUCCESS???"
+            socketio.emit("endmeeting",jsonify("OK"))
+
+            return jsonify("OK")
         else:
-            return("that meeting isn't ongoing", 400)
+            socketio.emit("endmeeting",jsonify("not-OK"))
+            return jsonify("not-OK")
     except:
         return ("nope not working",400)
 
@@ -579,9 +633,9 @@ def startmeeting():
             data = cur.fetchall()
             each = data[0]
             meeting_code = stack_of_available_codes.pop()
-            meeting = template.make_new_meetings(each[3], each[5], meeting_code, each[6], each[4], host, True)
+            meeting = template.make_new_meetings(each[0], each[3], each[5], meeting_code, each[6], each[4], host, True)
             currently_live_meetings[meetingID] = meeting
-            return "SUCCESS???"
+            return jsonify(meeting_code)
     except:
         return ("nope not working",400)
 

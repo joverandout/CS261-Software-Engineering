@@ -29,6 +29,6 @@ class Template():
         else:
             self.__questions.append(question)
 
-    def make_new_meetings(self, title, category, code, startime, duration, host, in_progress):
-        m1 = Meeting(title, category, code, startime, duration, host, in_progress, self)
+    def make_new_meetings(self, meetingid, title, category, code, startime, duration, host, in_progress):
+        m1 = Meeting(meetingid, title, category, code, startime, duration, host, in_progress, self)
         return m1

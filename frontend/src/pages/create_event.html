@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    </head>
+    <body>
+         <!---- requirements for fancy text box
+          1. wrap input label on a div
+          2. add "required" attribute on input so we can use :valid selector
+          --->
+
+        <div class="header">
+            <button class="white_button" id="back_button">Back</button>
+            <h1>Create New Event</h1>
+            <div class="divider"> <span></span>
+        </div>
+
+        <hr>
+
+        <div class="wrap">
+  
+            <form>
+
+                <div class="row">
+                    <input type="text" class="form-control" id="name" required>
+                    <label for="name">Event Title</label>
+                </div>
+                <div>
+                    <select name="cars" id="cars">
+                        <option> --Select Category-- </option> <!--get categories for that user-->
+                    </select>
+                </div>
+                <div>
+                    <p>Event Start Time:</p>
+                </div>
+                <div class="oneLine">
+                    Event Duration:
+                    <input type="number" min=1 class="form-control" id="duration" required>
+                    <select name="durationUnit" id="durationUnit">
+                        <option value="minutes">minutes</option>
+                        <option value="hours">hours</option>
+                    </select>
+                </div>
+                <div class="oneLine">
+                    Make Meeting Recurring: <input type="checkbox" id="recurringMeetingCheckbox" onclick="showRecurrenceDropdown()"> <!--Show recurrence dropdown using this function-->
+                    <select name="recurrenceFrequency" id="recurrenceFrequency">
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="yellow_button">Schedule Event</button>
+
+                <button type="submit" class="green_button">Start Event Now</button>
+
+            </form>
+            
+          </div>
+          
+
+    </body>
+</html>
