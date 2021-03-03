@@ -1,19 +1,13 @@
-import Axios from 'axios';
+import API from "../backendApi";
 
-export default function getHostMeetings(){
-    return [[{
-        eventName:"Event 1",
-        eventTime:" 20/02/21 : 1600",
-        tag:"Tag1"
-    }, 
-    {
-        eventName:"Event 2",
-        eventTime:" 26/02/21 : 1300",
-        tag:"Tag1"
-    }, 
-    {
-        eventName:"Event 3",
-        eventTime:" 11/03/21 : 2200",
-        tag:"Tag3"
-    }], ["Tag1", "Tag3"]]
+export default async function getHostMeetings(data){
+    return API.post("/hostmain", data).then(res=>{
+        let categories = []
+        res.array.forEach(event => {
+            categories.push (event.Category)
+        });
+        return [res, categories]
+    }).catch(err=>{
+        throw new Error("Could not retrieve host's events")
+    })
 }

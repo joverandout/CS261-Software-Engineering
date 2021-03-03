@@ -1,4 +1,4 @@
-import Axios from 'axios';
+import API from "../backendApi";
 
 export default function joinMeeting(data){
 
