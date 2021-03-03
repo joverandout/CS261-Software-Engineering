@@ -1,7 +1,6 @@
 
 import React, {useContext, useState, useCallback} from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import Axios from 'axios';
 
 import "../styles.css"
 import hostLogIn from "../../api/hostLogIn"

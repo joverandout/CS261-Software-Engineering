@@ -2,46 +2,36 @@ import "../styles.css"
 import React, {useContext, useState, useCallback, useEffect} from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import EmotionButton from "../../components/emotion_button"
+import templateCreation from "../../api/templateCreation"
 
 
 export default function CreateTemplate(){
     let eList = [["Proud", "#F4b72f"],["Excited","#F4b72f"],["Interested", "#F4b72f"], ["Happy", "#F4b72f"], ["Joyful", "#F4b72f"], ["Optimistic", "#75C7E3"], ["Tired", "#75C7E3"], ["Calm", "#75C7E3"], ["Grateful", "#75C7E3"], ["Bored", "#75C7E3"], ["Sad", "#9B75E3"], ["Insecure", "#9B75E3"], ["Depressed", "#9B75E3"], ["Anxious", "#9B75E3"], ["Afraid", "#9B75E3"], ["Annoyed", "#F07A7A"], ["Angry", "#F07A7A"], ["Overwhelmed", "#F07A7A"], ["Stressed", "#F07A7A"], ["Frustrated", "#F07A7A"]];
-    const [emotions, setEmotions] = useState(eList)
+
+    const [customEmName, setCustomName] = useState("");
+    const [buttonValues, setButtonValues] = useState([])
     const [emotionButtons, setEmButtons] = useState([])
-    const [emotionValues, setEmValues] = useState([])
+    const [questions, setQuestions] = useState([])
+    const [questionPs, setQPs] = useState([])
+    const [newQ, setNewQ] = useState("")
+    const [form, setForm] = useState({})
 
-    const [customEmotion,setCustomEm] = useState("")
-    //todo finish create template functions
-    function customEmHandler(inObj){
-        setCustomEm(inObj.target.value)    
-    }
-
-    function formChange(formObj){
-        console.log(formObj.target.value)
-    }
+    useEffect(()=>{
+        let tmpValues = []
+        let tmpButtons = []
+        eList.forEach((em, i)=>{
+            let name = em[0]
+            tmpValues.push(false)
+            tmpButtons.push(<EmotionButton name={name} value={false} toggleEmotionCb={toggleEmotionCb} key={i} id={i}/>)
+        })
+        setEmButtons(tmpButtons)
+        setButtonValues(tmpValues)
+    },[])
     
-    function complete(){
-
-    }
-
-    function addButton(){
-        //todo clear the entry field when this is pressed
-        if(customEmotion == ""){
-            return
-        }
-        //todo change this color
-        let tmpEmotions = emotions;
-        tmpEmotions.push([customEmotion, "#F4b72f"])
-        setEmotions([...tmpEmotions])
-        setCustomEm("") //this isnt good enough
-
-    }
-    //todo, make this a object with the emotions as keys inst
     function toggleEmotionCb(id, value){
-        console.log(value)
         let count = 0
-        for(let i=0;i<emotionValues.length;i++){
-            if(emotionValues[i] == true){
+        for(let i=0;i<buttonValues.length;i++){
+            if(buttonValues[i] == true){
                 count++;
             }
             if(count>=8 && value==true){
@@ -50,41 +40,67 @@ export default function CreateTemplate(){
                 return false
             }
         }
-        let tmpEmValues = emotionValues;
-        let val = emotionValues[id]
+        let tmpEmValues = buttonValues;
+        let val = buttonValues[id]
         tmpEmValues[id] = (val?false:true)
-        setEmValues(tmpEmValues)
+        setButtonValues([...tmpEmValues])
+        console.log(tmpEmValues)
         return true
     }
 
-    function refreshButtons(){
-        let diff = emotions.length-emotionButtons.length;
-        let tmpEmButtons = emotionButtons
-        let tmpEmValues = emotionValues
-        let offset = emotionButtons.length
+    function customEmHandler(inObj){
+        setCustomName(inObj.target.value)
+    }
 
-        for (let i=offset; i<diff+offset; i++) {
-            
-            let emotion={
-                name: emotions[i][0],
-                color: emotions[i][1]
-            }
-            tmpEmButtons.push(<EmotionButton toggleEmotionCb={toggleEmotionCb} emotion={emotion} key={i+offset} id={i+offset}/>)
-            tmpEmValues.push(false)
+    function addButton(){
+        let i = emotionButtons.length
+        let newButton = (<EmotionButton name={customEmName} value={false} toggleEmotionCb={toggleEmotionCb} key={i} id={i}/>)
+        setButtonValues([...buttonValues, false])
+        setEmButtons([...emotionButtons, newButton])
+    }
+
+    function newQuestionHandler(formObj){
+        setNewQ(formObj.target.value)
+    }
+
+    function addQuestion(){
+        let q = newQ
+        
+        if(q.charAt(q.length-1) !="?"){
+            q+="?"
         }
-        setEmButtons([...tmpEmButtons])
-        setEmValues(tmpEmValues)
+        
+        setQuestions([...questions, q])
+        setQPs([...questionPs, (<p key={questionPs.length}>{q}</p>)])
     }
 
-    useEffect(()=>{
-        refreshButtons()
-        console.log("refresh!!!")
-    },[emotions])
-
-    if(emotionButtons.length == 0){
-        refreshButtons()
+    function complete(){
+        //? seperated sstring
+        let finalQuestions = questions.join("")
+        let emotions = []
+        buttonValues.forEach((bool, i)=>{
+            if(bool){
+                emotions.push(emotionButtons[i].props.name)
+            }
+        })
+        let tmpForm = form
+        tmpForm.emotionsselected = emotions.join()
+        tmpForm.question = finalQuestions
+        setForm(tmpForm)
+        console.log(tmpForm)
     }
-    
+
+    function formChange(formObj){
+        let name = formObj.target.name
+        let value = formObj.target.value
+        let tmpForm = form
+        tmpForm[name] = value 
+        if(!tmpForm.templatename){
+            return
+        }
+        templateCreation(tmpForm)
+    }
+
     return(
         <div>
             <button className="white_button" id="back_button">Back</button>
@@ -96,7 +112,7 @@ export default function CreateTemplate(){
             <div className="wrap">
 
                 <div className="row">
-                    <input type="text" className="form-control" id="name" onChange={formChange}/>
+                    <input name={"templatename"} type="text" className="form-control" id="name" onChange={formChange}/>
                     <label htmlFor="name">Template Name</label>
                 </div>
             </div>
@@ -107,11 +123,22 @@ export default function CreateTemplate(){
                 {emotionButtons}
             </div>
 
+            <div>
+                <h2>Questions</h2>
+                {questionPs}
+            </div>
+
             <div className="wrap">
-                 <div className="oneline">
+                <div className="oneline">
                     <p>Add custom emotion: </p>
                     <input type="text" className="form-control" id="name" onChange={customEmHandler}/>
                     <button type="button" className="yellow_button" onClick={addButton}>Add</button>
+                </div>
+
+                <div className="oneline">
+                    <p>Add new question: </p>
+                    <input type="text" className="form-control" id="name" onChange={newQuestionHandler}/>
+                    <button type="button" className="yellow_button" onClick={addQuestion}>Add</button>
                 </div>
                 
             </div>      
