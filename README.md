@@ -18,17 +18,39 @@ From there navigate into the backend folder in order to run the backend python f
 
 Once flask is installed within the `/backend` folder run the following commands:
 ```
-python3 -m venv venv
-. venv/bin/activate
-export FLASK_APP="helloworld.py"
-flask run
+$ python3 -m venv venv
+$ . venv/bin/activate
+$ export FLASK_APP="helloworld.py"
+$ flask run
 ```
 These commands will only work on Unix based operating systems (Linux or MacOs) for windows instructions please consolt the earlier cited flask documentation. This should start the backend (this may also require the running of `pip install flask` to be able to initialise the local environment).
 
-Now to start the frontend navigate to `/frontend` and install and then run npm there:
+You should be able to tell the backend is running with the following message:
+
 ```
-npm install
-npm run
+ * Serving Flask app "helloworld.py"
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+
 ```
 
-This should (provided the backend was already running) startup the website and automatically open it in your default browser.
+Now to start the frontend navigate to `/frontend` and install and then run npm there:
+```
+$ npm install
+$ npm run
+```
+
+This should (provided the backend was already running) startup the website and automatically open it in your default browser. To verify this is working you will see this in your console:
+
+```
+You can now view dbsep in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://192.168.0.29:3000
+
+Note that the development build is not optimized.
+To create a production build, use npm run build.
+```
