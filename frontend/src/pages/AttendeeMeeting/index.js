@@ -9,16 +9,16 @@ import userFeedback from "../../api/userFeedback"
 
 export default function AttendeeMeeting(){
     const location = useLocation();
-    /*const meetingdetails = location.state.meetingdetails
-    const template = meetingdetails.template*/
-    const meetingdetails = {
+    const meetingdetails = location.state.meetingdetails
+    const template = meetingdetails.template
+    /*const meetingdetails = {
         meetingid:1,
         companyid:1,
         template:{
             emotions:["happy", "neutral", "sad"],
             questions:["How was the meeting?", "What are you having for lunch?", "Could you understand?"]
         }
-    }
+    }*/
     
     const [emotionButtons, setEmotionButtons] = useState([])
     const [emotionValues, setEmValues] = useState([])
@@ -27,6 +27,7 @@ export default function AttendeeMeeting(){
     const [score, setScore] = useState(0)
     const [popup, setPopup] = useState(false)
     const [feedback, setFeedback] = useState("")
+    const [tFeedback, setTFeedback] = useState("")
 
     const [render, setRender] = useState(false)
 
@@ -75,12 +76,6 @@ export default function AttendeeMeeting(){
     }
 
 
-    
-
-    function issueButton(buttonObj){
-
-    }
-
     function scoreChange(inObj){
         setScore(inObj.target.value)
     }
@@ -97,6 +92,45 @@ export default function AttendeeMeeting(){
         setFeedback(formObj.target.value)
         
     }
+
+    function issueButton(buttonObj){
+        let name = buttonObj.target.name
+        let now = new Date()
+        let h = now.getHours().toString()
+        let m = now.getMinutes().toString()
+        let s = now.getSeconds().toString()
+        let time = h+":"+m+":"+s
+        let data={
+            generaltext:name,
+            meetingid: meetingdetails.meetingid.toString(),
+            companyid: meetingdetails.companyid.toString(),
+            rating: "null",
+            emotion: "Technical",
+            ftime:time
+        }
+        setDisplayElement(0)
+    }   
+
+    function sendTechnical(){
+        let now = new Date()
+        let h = now.getHours().toString()
+        let m = now.getMinutes().toString()
+        let s = now.getSeconds().toString()
+        let time = h+":"+m+":"+s
+        if(tFeedback == ""){
+            return
+            //todo nothing entered error
+        }
+        let data={
+            generaltext:tFeedback,
+            meetingid: meetingdetails.meetingid.toString(),
+            companyid: meetingdetails.companyid.toString(),
+            rating: "null",
+            emotion: "emotions.join()",
+            ftime:time
+        }
+        setDisplayElement(0)
+    }   
 
     function sendFeedback(){
         let emotions = []
@@ -117,7 +151,6 @@ export default function AttendeeMeeting(){
             rating: scores.join(),
             emotion: emotions.join(),
             ftime:time
-        
         }
         console.log(data)
         userFeedback(data).then(res=>{
@@ -134,13 +167,13 @@ export default function AttendeeMeeting(){
         <div className="form-container report-container">
         <button onClick = {togglePopup} className="exit"><img src={x2} /> </button>
         <h1>Report an issue</h1>
-        <button className="btn report" onClick={issueButton}>The speaker is too quiet</button>
-        <button className="btn report" onClick={issueButton}>The speaker is on mute</button>
-        <button className="btn report" onClick={issueButton}>The content is missing</button>
+        <button name="quiet" className="btn report" onClick={issueButton}>The speaker is too quiet</button>
+        <button name="mute" className="btn report" onClick={issueButton}>The speaker is on mute</button>
+        <button name="missing" className="btn report" onClick={issueButton}>The content is missing</button>
         <div className="row">
-            <input type="text" className="form-control" id="name" name="Issue"/> 
+            <input type="text" className="form-control" id="name" name="Issue" onChange={(input)=>{setTFeedback(input.target.value)}}/> 
             <label htmlFor="name">Report other issue</label>
-            <button className="btn report">Send</button>
+            <button className="btn report" onClick={sendTechnical}>Send</button>
         </div>
         </div>
     </div>
