@@ -15,6 +15,8 @@ from Attendee import Attendee
 from datetime import datetime, timedelta
 from Template import Template
 
+import time
+
 import hashlib
 
 
@@ -482,11 +484,12 @@ def newmeeting():
         category = info["category"]
         startTime = info["starttime"]
         print(startTime)
-        intstartTime = int(startTime)
-        timeStampStartTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(intstartTime))
+        intstartTime = int(startTime) / 1000
+        timeStampStartTime = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(intstartTime))
+        print(timeStampStartTime)
         with sqlite3.connect("database.db") as con:
             cur = con.cursor()
-            query = "INSERT INTO MEETING VALUES(NULL, " + hostID + ", " + templateID + ", '" + meetingname + "', "+ duration +", '" + category + "' , DATETIME('"+timeStampStartTime +"') )"
+            query = "INSERT INTO MEETING VALUES(NULL, " + hostID + ", " + templateID + ", '" + meetingname + "', '"+ duration +"', '" + category + "' , DATETIME('"+timeStampStartTime +"') )"
             print(query)
             cur.execute(query)
             print("Success")
