@@ -1,7 +1,7 @@
 import "../styles.css"
-import React, {useContext, useState, useCallback} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import EmotionButton from "../../components/emotion_button"
+import userFeedback from "../../api/userFeedback"
 
 /**
  * Templates Need to look like this
@@ -35,48 +35,42 @@ function Question(props){
 
 
 export default function EosFeedback(){
-    /* const template = location.state.template;
-     */
-    const template = {
-        emotions: ["Sad", "Happy", "Numb"],
-        questions: ["What did you think of xyz", "Was everyting clear and consice", "Questions?"]
-    }
+    const location = useLocation()
+    const template = location.state.template;
+    const meetingdetails = location.state.meetingdetails
+    console.log(template)
+     
     const questions = template.questions
     const emotions = template.emotions
 
-    let tmpEmValues = []
-    let tmpQValues = []
-    let emotionButtons = []
-    let questionComponents=[]
-    emotions.forEach(e=>{
-        tmpEmValues.push(false)
-    })
-    questions.forEach(e=>{
-        tmpQValues.push(false)
-    })
-    const [emotionValues, setEmValues] = useState(tmpEmValues)
-    const [questionValues, setQValues] = useState(tmpQValues)
+    const [questionValues, setQValues] = useState([])
+    const [questionComponents, setQComponents] = useState([])
 
-   
-    function toggleEmotionCb(id, value){
-        let tmpEmValues = emotionValues;
-        let val = emotionValues[id]
-        tmpEmValues[id] = (val?false:true)
-        setEmValues(tmpEmValues)
-        return true
-    }
+    useEffect(()=>{
+        let tmpQComponents=[]
+        let tmpQValues = []
+        emotions.forEach(e=>{
+            tmpEmValues.push(false)
+        })
+        questions.forEach(e=>{
+            tmpQValues.push(false)
+        })
+
+        for(let i=0;i<questions.length;i++){
+            let question ={
+                text: questions[i],
+                callback:onQuestionChange
+            }
+            tmpQComponents.push(<Question cb={onQuestionChange} question={question} key={i} id={i}/>)
+        }
+
+    },[])
 
     function onQuestionChange(value, id){
         console.log(questions[id])
         console.log(value+"\n")
-    }
 
-    for(let i=0;i<emotions.length;i++){
-        let emotion={
-            name: emotions[i],
-            color: "#F4b72f"
-        }
-        emotionButtons.push(<EmotionButton toggleEmotionCb={toggleEmotionCb} emotion={emotion} key={i} id={i}/>)
+
     }
 
     for(let i=0;i<questions.length;i++){
@@ -87,6 +81,22 @@ export default function EosFeedback(){
         questionComponents.push(<Question question={question} key={i} id={i}/>)
     }
 
+    function sendFeedback(){
+        let now = new Date()
+        let h = now.getHours().toString()
+        let m = now.getMinutes().toString()
+        let s = now.getSeconds().toString()
+        let time = h+":"+m+":"+s
+
+        let data={
+            generaltext:name,
+            meetingid: meetingdetails.meetingid.toString(),
+            companyid: meetingdetails.companyid.toString(),
+            rating: "null",
+            emotion: "Post",
+            ftime:time
+        }
+    }
     
 
     //todo add meeting name
@@ -102,13 +112,8 @@ export default function EosFeedback(){
                 {questionComponents}
             </div>
 
-            <br/>
-            <div className="btn-group" id="buttons" style={{marginBottom: 60}}>
-                {emotionButtons}
-            </div>
-
             <div>
-                <button type="submit" className="green_button">Submit</button>
+                <button type="submit" className="green_button" onChange={sendFeedback}>Submit</button>
             </div>
         </div>
     </div>

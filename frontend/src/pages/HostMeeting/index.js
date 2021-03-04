@@ -4,6 +4,8 @@ import { useLocation, useHistory } from 'react-router-dom';
 import { Chart } from "react-charts"
 import {io} from "socket.io-client"
 import endMeeting from "../../api/endMeeting"
+import stopMeeting from "../../api/stopMeeting"
+import hostLogIn from "../../api/hostLogIn";
 
 function reducer(state, action){
     switch(action.type){
@@ -30,6 +32,7 @@ function reducer(state, action){
 
 export default function HostMeeting(){
     const location = useLocation()
+    const history = useHistory()
     const event = location.state.event
     console.log(location.state)
     const initialState ={
@@ -40,6 +43,7 @@ export default function HostMeeting(){
         }
     }
     const [state, dispatch] = useReducer(reducer, initialState)
+    const [buttonColour, setButtonColour] = useState("green_button")
 
     useEffect(()=>{
       const socket = io("http://127.0.0.1:5000", {
@@ -63,7 +67,21 @@ export default function HostMeeting(){
     }
 
     function triggerEnd(){
-      endMeeting({"meetingid":event.MeetingID.toString()}).then()
+      let data = {"meetingid":event.MeetingID.toString()}
+      if(buttonColour == "green_button"){
+        endMeeting(data).then(res=>{
+          setButtonColour("yellow_button")
+        }).catch(err=>{
+          console.log("Could not end the meeting")
+        })
+      }else{
+        stopMeeting(data).then(res=>{
+          history.push("/Timetable")
+        }).catch(err=>{
+          console.log("Could not stop the meeting")
+          history.push("/Timetable")
+        })
+      }
     }
 
     const data = useMemo(
@@ -102,7 +120,7 @@ export default function HostMeeting(){
             <hr/>
             {lineChart}
             <hr/>
-            <button onClick={triggerEnd}>End Meeting</button>
+            <button className={buttonColour} onClick={triggerEnd}>End Meeting</button>
         </div>
     )
 }

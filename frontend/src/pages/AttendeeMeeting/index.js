@@ -13,6 +13,7 @@ export default function AttendeeMeeting(){
     const location = useLocation();
     const meetingdetails = location.state.meetingdetails
     const template = meetingdetails.template
+    const history = useHistory()
     /*const meetingdetails = {
         meetingid:1,
         companyid:1,
@@ -75,7 +76,15 @@ export default function AttendeeMeeting(){
 
 
     function meetingOver(data){
-        console.log(data)
+        if(data=="ok"){
+            history.push({
+                pathname: "/EosFeedback",
+                state:{
+                    template:template,
+                    meetingdetails:meetingdetails
+                }
+            })
+        }
     }
 
     function togglePopup(){
