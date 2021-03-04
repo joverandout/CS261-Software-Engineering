@@ -16,6 +16,9 @@ from datetime import datetime, timedelta
 from Template import Template
 from fpdf import FPDF
 
+from matplotlib import pyplot as plt
+import numpy as np
+
 import time
 
 import hashlib
@@ -121,38 +124,159 @@ def meetingview():
         print(meetingID)
         with sqlite3.connect("database.db") as con:
             cur = con.cursor()
+            # do this get the meeting nam ehere too 
+
+            postQ = "SELECT Question FROM TEMPLATES INNER JOIN MEETING as M on M.TemplateID = TEMPLATES.TemplateID AND M.MeetingID = " + meetingID
+            cur.execute(postQ)
+            ques = cur.fetchall()
+            print(ques)
+            dictTest = dict()
+            for each in ques:
+                for quest in each:
+                    print(quest)
+                    dictTest[quest] = []
+
+
             query = "select GeneralText, Emotion, FTime, Rating, UF.CompanyID, A.Anonymous, AT.Username from FEEDBACK INNER JOIN USERFEEDBACK as UF on UF.FeedbackID = FEEDBACK.FeedbackID INNER JOIN ATTENDANCE as A on A.MeetingID = UF.MeetingID and A.CompanyID = UF.CompanyID LEFT JOIN ATTENDEE as AT on AT.CompanyID = A.CompanyID and A.Anonymous = 0 where UF.MeetingID = " + meetingID
             cur.execute(query)
             row_headers=[x[0] for x in cur.description]
             data = cur.fetchall()
             returnData = []
             generaltext = []
+            postfeed = []
             usernames = []
+            emotionsWithRatings = []
+            meetingName = ""
+            meetingCat = ""
+            emotDict = dict()
+                
             for each in data:
-                if each[1] != "Technical":
+                print(each[1])
+                if (each[1] != "Technical" and each[1] != "Post"):
                     x = each[1].split(",")
                     y = each[3].split(",")
+                    for emo in x:
+                        numDict = dict()
+                        numDict["5"] = 0
+                        numDict["4"] = 0
+                        numDict["3"] = 0
+                        numDict["2"] = 0
+                        numDict["1"] = 0
+                        emotDict[emo] = numDict
                     print(x)
                     print(y)
-                returnData.append(dict(zip(row_headers, each)))
-                generaltext.append(each[0])
-                #if each[5] == 
+                    for j in range(len(x)):
+                        emotionsWithRatings.append(x[j] + ":"+ y[j])
+                    returnData.append(dict(zip(row_headers, each)))
+                    generaltext.append(each[0])
+                    if each[5] == 0:
+                        usernames.append(each[6])
+                    else:
+                        usernames.append("Anonymous")
+                elif each[1] == "Post":
+                    print("ITS POSTTTTTTTTTTTTT")
+                    splt = each[0].split("~")
+                    print(splt)
+                    k = 0 
+                    for question in dictTest:
+                        dictTest[question].append(splt[k])
+                        k+=1
+                    for feed in splt:
+                        postfeed.append(feed)
+                    print(each[1])
+            print(dictTest)
+            print("here")
+            for each in data:
+                if (each[1] != "Technical" and each[1] != "Post"):
+                    x = each[1].split(",")
+                    y = each[3].split(",")
+                    print("here 2")
+                    for j in range(len(x)):
+                        print(j)
+                        print(emotDict[x[j]])
+                        val = emotDict[x[j]]
+                        print(y[j])
+                        print(val[y[j]])
+                        val[y[j]] = val[y[j]] + 1
+                        print(val[y[j]])
+                    print("DIE PLZ")
+            print("here")
+            query = "select MeetingName, Category from MEETING where MeetingID = " + meetingID
+            cur.execute(query)
+            data = cur.fetchall()
+            for meet in data:
+                meetingName = meet[0]
+                meetingCat = meet[1]
+
             print(generaltext)
-            makepdf(generaltext)
+            print(postfeed)
+            makepdf(generaltext, usernames, emotionsWithRatings, meetingName, meetingCat, emotDict, dictTest)
             print(data)
             return jsonify(returnData)
     except:
         return ("nope not working",400)
 
-def makepdf(generalText):
+def makepdf(generalText, usernames,emoR, MN, MC, emoDict, postfeed):
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_font("Arial", size = 15)
-    pdf.cell(200,10,txt = "Meeting Feedback", ln = 1, align = 'C')
-    for each in generalText:
-        print(each)  
-        pdf.cell(200,10, txt = each,ln = 1, align = 'L')
+    pdf.set_font("Arial", size = 20)
+    #pdf.set_fill_color(r=51,g=153,b=255)
+    pdf.cell(200,10,txt = MC + " : "+ MN, ln = 1, align = 'C')
+    pdf.set_font("Arial", size = 12)
+    print(len(generalText))
+    print(usernames[0])
+    for i in range(len(generalText)):
+        print(i)
+        print(usernames[i])
+        textThing = str(usernames[i]) + ": " + str(generalText[i])
+        print(textThing)
+        pdf.set_fill_color(r=230,g=242,b=255)
+        pdf.set_text_color(r=0,g=0,b=0)
+        #setFillColor(204,229,255)
+        pdf.cell(100,10, txt = textThing,border = 1,ln = 1, align = 'L', fill = True)
+    pdf.cell(200,10,txt = "", ln = 1, align = 'C')
+    pdf.set_fill_color(r=230,g=255,b=249)
+    # for j in range(len(emoR)):
+    #     pdf.cell(100,10, txt = emoR[j],border = 1,ln = 1, align = 'L', fill = True)
+    for each in postfeed:
+        pdf.set_fill_color(r=255,g=255,b=255)
+        pdf.cell(100,10, txt = str(each),border = 1,ln = 1, align = 'L', fill = True)
+        pdf.set_fill_color(r=230,g=255,b=249)
+        for rep in postfeed[each]:
+            pdf.cell(100,10, txt = str(rep),border = 1,ln = 1, align = 'L', fill = True)
+ 
+    pdf.cell(200,10,txt = "", ln = 1, align = 'C')
+
+    print("here")
+    #pdf.BarDiag(200, 100, ["happy", "sad"])
+    i = 0
+    for emotion in emoDict:
+        objects = ('5','4','3','2','1')
+        yAxis = np.arange(5)
+        values = []
+        print(emotion)
+        print(emoDict[emotion])
+        for each in emoDict[emotion]:
+            print(each)
+            print(emoDict[emotion][each])
+            values.append(emoDict[emotion][each])
+            print(values)
+
+        plt.bar(yAxis, values, align='center', alpha=0.5)
+        plt.xticks(yAxis, objects)
+        plt.ylabel('Times Recorded')
+        plt.xlabel('Rating')
+        plt.title(emotion+" rating during meeting")
+        plt.savefig(emotion + ".jpg")
+        plt.clf()
+        i += 1
+        print("Got to here")
+        pdf.image(emotion + ".jpg", x = 32, y = None, w = 140, h = 100, type = 'JPG', link = '')
+
+
+
     pdf.output("Test.pdf")
+
 
 
 @app.route('/postmeetingfeed', methods=["POST"])
