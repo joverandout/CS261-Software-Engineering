@@ -482,9 +482,11 @@ def newmeeting():
         category = info["category"]
         startTime = info["starttime"]
         print(startTime)
+        intstartTime = int(startTime)
+        timeStampStartTime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(intstartTime))
         with sqlite3.connect("database.db") as con:
             cur = con.cursor()
-            query = "INSERT INTO MEETING VALUES(NULL, " + hostID + ", " + templateID + ", '" + meetingname + "', "+ duration +", '" + category + "' , DATETIME('"+startTime +"') )"
+            query = "INSERT INTO MEETING VALUES(NULL, " + hostID + ", " + templateID + ", '" + meetingname + "', "+ duration +", '" + category + "' , DATETIME('"+timeStampStartTime +"') )"
             print(query)
             cur.execute(query)
             print("Success")
@@ -552,11 +554,11 @@ def stopmeeting():
         meetingID = info["meetingid"]
         if(meetingID in currently_live_meetings):
             del still_collecting_feedback_meetings[meetingID]
-            socketio.emit("endmeeting",jsonify("OK"))
+            socketio.emit("stopmeeting",jsonify("OK"))
 
             return jsonify("OK")
         else:
-            socketio.emit("endmeeting",jsonify("not-OK"))
+            socketio.emit("stopmeeting",jsonify("not-OK"))
             return jsonify("not-OK")
     except:
         return ("nope not working",400)
@@ -729,3 +731,4 @@ with app.test_request_context():
     print(url_for('profile', username='John Doe'))
     print(url_for('profile', username='Susan'))
     print(url_for('profile', username='template'))
+    
