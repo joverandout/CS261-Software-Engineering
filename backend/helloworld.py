@@ -203,7 +203,7 @@ def userfeedback():
         rating = info["rating"]
         meetingID = info["meetingid"]
         companyID = info["companyid"]
-        #print("here")
+        print("here")
 
         # offEval = Offensive(generaltext)
         # offEval.update_rating()
@@ -233,13 +233,13 @@ def userfeedback():
                 
         timeConstraint = True
         if abusive == False :
-
+            print("Abusinve")
             # need to chech here that the meetin is live DO THIS
             #need joe to make the list of meetings 
             if(meetingID in currently_live_meetings):
                 print("this meeting is still accepting feedback")
             else:
-                return "MEETING NO LONGER LIVE"
+                return ("MEETING NO LONGER LIVE", 400)
             with sqlite3.connect("database.db") as con:
                 cur = con.cursor()
 
@@ -278,7 +278,8 @@ def userfeedback():
                 print(semanticsAsString)
                 semanticsAsString = semanticsAsString[:-1]
                 print(semanticsAsString)
-                if timeConstraint == True:
+                print("Meme")
+                if True == True:
                     print("here")
                     #query = """INSERT INTO FEEDBACK VALUES(NULL, " """+ generaltext +""" ", '""" + emotion + """', '""" + timeSent + """', '"""+ rating +"""', ' """ + semanticAnalysis + ""')"""
                     part1 = """INSERT INTO FEEDBACK VALUES(NULL, " """ + generaltext
@@ -333,17 +334,20 @@ def userfeedback():
                             print(newDict)
                             returnData.append(newDict)
                     #print(data)
-                    #print("Success")
+                    
                     con.commit()
+                    print(returnData[0])
                     # i think this should work but cant properly test 
-                    socketio.emit("feedback",jsonify(returnData))
-
+                    print("Success!")
+                    socketio.emit("feedback",returnData[0])
+                    print("Success")
                     return jsonify(returnData)
                 else:
-                    return "we dont want your feedback - take it easy"
+                    return ("we dont want your feedback - take it easy", 400)
         else:
             return "abusive message was sent- be nice"
-    except:
+    except Exception as e:
+        print(e)
         return ("nope not working",400)
 
 
@@ -557,13 +561,14 @@ def endmeeting():
             del currently_live_meetings[meetingID]
             # JOE DO THIS
             
-            socketio.emit("endmeeting",jsonify("OK"))
+            socketio.emit("endmeeting","ok")
 
             return jsonify("OK")
         else:
-            socketio.emit("endmeeting",jsonify("not-OK"))
+            socketio.emit("endmeeting","not ok")
             return ("nope not working",400)
-    except:
+    except Exception as e:
+        print(e)
         return ("nope not working",400)
 
 @app.route('/stopmeeting', methods=["POST"])
