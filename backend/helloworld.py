@@ -572,7 +572,7 @@ def stopmeeting():
         return ("nope not working",400)
     try:
         meetingID = info["meetingid"]
-        if(meetingID in currently_live_meetings):
+        if(meetingID in still_collecting_feedback_meetings):
             del still_collecting_feedback_meetings[meetingID]
             socketio.emit("stopmeeting",jsonify("OK"))
 
