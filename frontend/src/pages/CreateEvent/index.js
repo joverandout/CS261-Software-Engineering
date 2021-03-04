@@ -75,7 +75,7 @@ export default function CreateEvent(){
             templates.forEach((tem,i)=>{
                 if(tem[0]==value){
                     name = "templateid"
-                    value = templates[i][1]
+                    value = templates[i][1].toString()
                     set = true
                 }
             })
