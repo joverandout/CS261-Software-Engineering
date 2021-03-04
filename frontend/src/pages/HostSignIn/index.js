@@ -69,7 +69,7 @@ export default function HostSignIn(){
                 {error}
                 
             </form>
-            {error}
+            
             <div>
                     <button onClick={login} className="green_button">GO</button>
               </div>

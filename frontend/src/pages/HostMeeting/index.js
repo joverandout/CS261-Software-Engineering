@@ -114,14 +114,35 @@ export default function HostMeeting(){
         </div>
       )
 
-    return(
+      const page = (
         <div>
-            
-            <hr/>
-            {lineChart}
-            <hr/>
-            <button className={buttonColour} onClick={triggerEnd}>End Meeting</button>
+          <div>
+              <h1>{event.MeetingName}</h1>            
+          </div>
+          <hr/>
+          <div>
+            <table>
+              <tr>
+                <td>
+                  <p>Attendees are saying:</p>
+                  <div>Error goes here</div>
+                </td>
+                <td>
+                  <p>Most attendees are:</p>
+                  <div>Emotions go here</div>
+                </td>
+              </tr>
+            </table>
+
+          </div>
+
+          <div>
+              <p>Overall mood graph:</p>
+              {lineChart}
+          </div>
         </div>
-    )
+      )
+
+    return page
 }
 
