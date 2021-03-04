@@ -1,4 +1,5 @@
 import "../styles.css"
+import "./cdstyle.css"
 import React, {useReducer, useState, useMemo, useEffect} from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { Chart } from "react-charts"
@@ -120,27 +121,25 @@ export default function HostMeeting(){
               <h1>{event.MeetingName}</h1>            
           </div>
           <hr/>
-          <div>
-            <table>
-              <tr>
-                <td>
-                  <p>Attendees are saying:</p>
-                  <div>Error goes here</div>
-                </td>
-                <td>
-                  <p>Most attendees are:</p>
-                  <div>Emotions go here</div>
-                </td>
-              </tr>
-            </table>
-
+          <div class="row">
+            <div class="column">
+              <p>Attendees are saying:</p>
+              <div class="errorBox">Error goes here and here is a really really long error message to prove if it goes onto a second line</div>
+            </div>
+            <div class="column">
+              <p>Most attendees are:</p>
+              <div className="btn-group" id="buttons" style={{marginBottom: 60}}>
+                  <button>2 or 3 emotion buttons, same as template page</button>
+              </div>
+            </div>
           </div>
-
           <div>
               <p>Overall mood graph:</p>
               {lineChart}
           </div>
+
         </div>
+        
       )
 
     return page
