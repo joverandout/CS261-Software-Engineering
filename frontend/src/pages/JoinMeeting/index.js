@@ -12,7 +12,7 @@ export default function JoinMeeting(){
     const [formEntries, setFormEntries] = useState({
         meetingcode: "",
         username:"",
-        anonymous: false
+        anonymous: "0"
     })
 
     function inputHandler(entryObj){

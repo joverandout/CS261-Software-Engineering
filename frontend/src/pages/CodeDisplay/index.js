@@ -22,14 +22,13 @@ export default function CodeDisplay(){
     }
 
     function endEvent(){
-        let data = {meetingid:event.MeetingID}
+        let data = {meetingid:event.MeetingID.toString()}
         endMeeting(data).then(res=>{
             stopMeeting(data).then(res=>{
                 history.push("/Timetable")
             }).catch(err=>{
-                console.log(err.message())
+                console.log(err.message)
             })
-            
         }).catch(err=>{
             console.log(err.message)
         })
