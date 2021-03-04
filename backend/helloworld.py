@@ -14,6 +14,7 @@ from Host import Host
 from Attendee import Attendee
 from datetime import datetime, timedelta
 from Template import Template
+from fpdf import FPDF
 
 import time
 
@@ -125,6 +126,7 @@ def meetingview():
             row_headers=[x[0] for x in cur.description]
             data = cur.fetchall()
             returnData = []
+            generaltext = []
             for each in data:
                 if each[1] != "Technical":
                     x = each[1].split(",")
@@ -132,10 +134,23 @@ def meetingview():
                     print(x)
                     print(y)
                 returnData.append(dict(zip(row_headers, each)))
+                generaltext.append(each[0])
+            print(generaltext)
+            makepdf(generaltext)
             print(data)
             return jsonify(returnData)
     except:
         return ("nope not working",400)
+
+def makepdf(generalText):
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size = 15)
+    pdf.cell(200,10,txt = "Meeting Feedback", ln = 1, align = 'C')
+    for each in generalText:
+        print(each)  
+        pdf.cell(200,10, txt = each,ln = 1, align = 'L')
+    pdf.output("Test.pdf")
 
 
 @app.route('/postmeetingfeed', methods=["POST"])
@@ -552,7 +567,7 @@ def endmeeting():
 def stopmeeting():
     info = request.get_json()
     if info == None:
-        return "No meeting information was provided"
+        return ("nope not working",400)
     try:
         meetingID = info["meetingid"]
         if(meetingID in currently_live_meetings):
@@ -562,7 +577,7 @@ def stopmeeting():
             return jsonify("OK")
         else:
             socketio.emit("stopmeeting",jsonify("not-OK"))
-            return jsonify("not-OK")
+            return ("nope not working",400)
     except:
         return ("nope not working",400)
 
