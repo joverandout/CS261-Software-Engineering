@@ -11,6 +11,7 @@ export default function HostSignIn(){
   const [signedIn, setSignedIn] = useState(false);
   const [username, setUsrname] = useState("")
   const [password, setPassword] = useState("")
+  const [error, setError] = useState(null)
 
   const history = useHistory();
   //In reality we should check if there is already a user logged in to set this
@@ -18,6 +19,7 @@ export default function HostSignIn(){
   let contextUser = useContext(UserContext)
   //todo, uncomment this and make sure the user gets added to the context
   let signedInIndicator = (<h2>Signed in: {signedIn.toString()}</h2>);
+
   function login(){
     let data={
       username: username,
@@ -32,6 +34,7 @@ export default function HostSignIn(){
       history.push('/Timetable')
     }).catch(err=>{
       console.log("Could not log in, make sure credentials are valid")
+      setError(<p style={{color:"red"}}>Could not log in, make sure credentials are valid</p>)
     })
   }
 
@@ -64,6 +67,8 @@ export default function HostSignIn(){
                 </div>
                 
                 <span className="link">I’ve forgotten my password</span>
+
+                {error}
                 
             </form>
             <div>
