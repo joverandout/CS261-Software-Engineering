@@ -3,10 +3,11 @@ import API from "../backendApi";
 export default function joinMeeting(data){
     return API.post("/meetinglogin",data).then(res=>{
         let info = res.data[0]
-        console.log(info)
+        
         let template ={
             emotions:info.emotionsselected,
-            questions:info.questions
+            questions:info.question,
+            name:info.templatename
         }
         return{
             meetingid:info.meetingid,
