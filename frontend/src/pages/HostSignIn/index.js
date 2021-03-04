@@ -34,7 +34,7 @@ export default function HostSignIn(){
       history.push('/Timetable')
     }).catch(err=>{
       console.log("Could not log in, make sure credentials are valid")
-      setError(<p>Could not log in, make sure credentials are valid</p>)
+      setError(<p style={{color:"red"}}>Could not log in, make sure credentials are valid</p>)
     })
   }
 
@@ -65,6 +65,8 @@ export default function HostSignIn(){
                 </div>
                 
                 <span className="link">I’ve forgotten my password</span>
+
+                {error}
                 
             </form>
             {error}
