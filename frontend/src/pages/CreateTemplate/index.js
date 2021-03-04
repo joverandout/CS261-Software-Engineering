@@ -88,6 +88,11 @@ export default function CreateTemplate(){
         tmpForm.question = finalQuestions
         setForm(tmpForm)
         console.log(tmpForm)
+        templateCreation(tmpForm).then(res=>{
+            console.log("Yay we made it")
+        }).catch(err=>{
+            console.log(err.message)
+        })
     }
 
     function formChange(formObj){
@@ -98,7 +103,6 @@ export default function CreateTemplate(){
         if(!tmpForm.templatename){
             return
         }
-        templateCreation(tmpForm)
     }
 
     return(

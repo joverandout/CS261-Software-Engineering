@@ -7,13 +7,12 @@ export default function PublishEvent(){
     const history = useHistory();
     //todo, add error checking here in case the state doesnt exist
     const event = location.state.event
-    const eventName = event.eventName
-    const startTime = event.eventTime
+    const eventName = event.MeetingName
+    const startTime = event.StartTime
 
     function startEvent(){
         history.push({
             pathname: "/HostMeeting",
-            search:"eventID", // i forgot what this does
           })
     }
 

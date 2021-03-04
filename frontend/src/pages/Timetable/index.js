@@ -1,21 +1,24 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import "../styles.css";
 
 import getHostMeetings from "../../api/getHostMeetings"
+import UserContext from '../../contexts/user-context'
+
 
 function EventComponent(props){
   const history = useHistory();
   
   if(!props.event){
     return <p>No event found</p>
-  }
+  }  
 
   let event = props.event
-  let eventName = event.eventName
-  let eventTime = event.eventTime
-  let tag = event.tag
+  
+  let eventName = event.MeetingName
+  let eventTime = event.StartTime
+  let tag = event.Category
 
   function clicked(){
     history.push({
@@ -29,7 +32,7 @@ function EventComponent(props){
 
 
   return(
-    <button onClick={clicked}>{eventName} {eventTime} {tag}</button>
+    <button onClick={clicked}>{eventName} | {eventTime} | {tag}</button>
   );
 }
 
@@ -40,28 +43,33 @@ export default function Timetable(){
   const [tagList, setTagList] = useState([]) //neither does this
 
   const history = useHistory()
+  const contextUser = useContext(UserContext)
+  const [user, setUser] = useState(contextUser.user)
   //Runs once to get the event list form the server.
   useEffect(()=>{
-    getHostMeetings().then(data=>{
-      let tmpEvList = data[0]
-      let tagList = data[1]
-      setEventList(tmpEvList)
-  
-      let tmpTagOptions = []
-      tagList.forEach((tag, index) => {
-        tmpTagOptions.push(<option key={index}> {tag} </option>)
-      });
-      setTagOptions(tmpTagOptions)
-  
-      let evButtons = []
-      for(let i=0; i<tmpEvList.length; i++){
-        evButtons.push(<EventComponent event={tmpEvList[i]} key={i} id={i}/>)
-      }
-      setEventButtons(evButtons)
-    }).catch(err=>{
-      console.log(err.message)
-      setEventButtons(<h1>No Events Found</h1>)
-    })
+    if(user!=null){
+        
+        getHostMeetings({hostid:user.hostid.toString()}).then(data=>{
+        let tmpEvList = data[0]
+        let tagList = data[1]
+        setEventList(tmpEvList)
+    
+        let tmpTagOptions = []
+        tagList.forEach((tag, index) => {
+          tmpTagOptions.push(<option key={index}> {tag} </option>)
+        });
+        setTagOptions(tmpTagOptions)
+    
+        let evButtons = []
+        for(let i=0; i<tmpEvList.length; i++){
+          evButtons.push(<EventComponent event={tmpEvList[i]} key={i} id={i}/>)
+        }
+        setEventButtons(evButtons)
+      }).catch(err=>{
+        console.log(err.message)
+        setEventButtons(<h1>No Events Found</h1>)
+      })
+    }
     
     //todo nake sure this returns as valid
 
@@ -71,13 +79,17 @@ export default function Timetable(){
   function createEvent(){
     history.push("/CreateEvent")
   }
+  
+  function logout(){
+    history.push("/")
+  }
 
   function refreshEventList(fieldObj){
     let tag = fieldObj.target.value
-    console.log("Tag:"+tag)
+    
     let evButtons = []
     for(let i=0; i<eventList.length; i++){
-      if(tag=="All" || tag==eventList[i].tag){
+      if(tag=="All" || tag==eventList[i].Category){
         evButtons.push(<EventComponent event={eventList[i]} key={i} id={i}/>)
       }  
     }
@@ -89,7 +101,7 @@ export default function Timetable(){
   
   return(
     <div>
-       <button className="white_button" id="back_button" >Log Out</button>
+       <button className="white_button" id="back_button" onClick={logout}>Log Out</button>
         <button className="white_button" id="new_event" onClick={createEvent}> Create New Event </button>
     
     <div className="wrap">

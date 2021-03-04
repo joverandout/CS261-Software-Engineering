@@ -5,8 +5,6 @@ import { Link, useHistory } from 'react-router-dom';
 import "../styles.css"
 import hostLogIn from "../../api/hostLogIn"
 
-
-
 import UserContext from '../../contexts/user-context'
 
 export default function HostSignIn(){
@@ -26,12 +24,10 @@ export default function HostSignIn(){
       password: password
     }
     hostLogIn(data).then(hostid=>{
+
       contextUser.setUser({
-        user:{
-          "Name":"Nkosi",
-          "id":hostid
-        },
-        setUser:contextUser.setUser
+        "Name":username,
+        "hostid":hostid
       })
       history.push('/Timetable')
     }).catch(err=>{

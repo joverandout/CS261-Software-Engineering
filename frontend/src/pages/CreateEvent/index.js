@@ -2,8 +2,11 @@ import "../styles.css"
 import React, {useContext, useState, useCallback, useEffect} from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import getTemplates from "../../api/getTemplates"
-import { createHashHistory } from "history";
+
 import meetingCreation from "../../api/meetingCreation"
+
+import UserContext from '../../contexts/user-context'
+
 
 export default function CreateEvent(){
     let location = useLocation()
@@ -19,8 +22,10 @@ export default function CreateEvent(){
     const [templateOptions, setTemOptions] = useState([])
     const [categoryOptions, setCatOptions] = useState([])
 
+    const contextUser = useContext(UserContext)
+    const user = contextUser.user
     useEffect( ()=>{
-         getTemplates({hostid:"1"}).then(temCat=>{
+         getTemplates({hostid:user.hostid.toString()}).then(temCat=>{
         
             let templates = temCat.templates
             let categories = temCat.categories
@@ -113,7 +118,7 @@ export default function CreateEvent(){
             }
         })
 
-        tmpForm.hostid="1"
+        tmpForm.hostid=user.hostid.toString
 
         meetingCreation(tmpForm).then(res=>{
             history.push("/Timetable")
