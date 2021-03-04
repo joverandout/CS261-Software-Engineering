@@ -37,7 +37,6 @@ function Question(props){
 export default function EosFeedback(){
     /* const template = location.state.template;
      */
-    console.log(">>>")
     const template = {
         emotions: ["Sad", "Happy", "Numb"],
         questions: ["What did you think of xyz", "Was everyting clear and consice", "Questions?"]

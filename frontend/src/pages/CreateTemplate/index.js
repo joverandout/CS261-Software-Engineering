@@ -3,6 +3,7 @@ import React, {useContext, useState, useCallback, useEffect} from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import EmotionButton from "../../components/emotion_button"
 import templateCreation from "../../api/templateCreation"
+import userContext from "../../contexts/user-context";
 
 
 export default function CreateTemplate(){
@@ -16,7 +17,11 @@ export default function CreateTemplate(){
     const [newQ, setNewQ] = useState("")
     const [form, setForm] = useState({})
 
+    const contextUser = useContext(userContext)
+    const user = contextUser.user
+    const history = useHistory()
     useEffect(()=>{
+
         let tmpValues = []
         let tmpButtons = []
         eList.forEach((em, i)=>{
@@ -86,6 +91,7 @@ export default function CreateTemplate(){
         let tmpForm = form
         tmpForm.emotionsselected = emotions.join()
         tmpForm.question = finalQuestions
+        tmpForm.hostid = user.hostid.toString()
         setForm(tmpForm)
         console.log(tmpForm)
         templateCreation(tmpForm).then(res=>{
@@ -105,9 +111,13 @@ export default function CreateTemplate(){
         }
     }
 
+    function back(){
+        history.goBack()
+    }
+
     return(
         <div>
-            <button className="white_button" id="back_button">Back</button>
+            <button className="white_button" id="back_button" onClick={back}>Back</button>
             <div className="header">
                 <h1>New Template</h1>
             </div>

@@ -33,6 +33,7 @@ export default function JoinMeeting(){
             console.log("Enter a meeting code and username")
             return
         }
+        console.log(formEntries)
         joinMeetingApiCall(formEntries).then(res=>{
             history.push({
                 pathname: "/AttendeeMeeting",
@@ -45,7 +46,7 @@ export default function JoinMeeting(){
             //todo add some kind of error message
         })
         
-       console.log(formEntries)
+       
     }
 
     return(
@@ -67,7 +68,7 @@ export default function JoinMeeting(){
             
             
             <div>
-                <button type="submit" className="green_button">Join</button>
+                <button type="submit" className="green_button" onClick={join}>Join</button>
             </div>
             
 

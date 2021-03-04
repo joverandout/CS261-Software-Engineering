@@ -96,13 +96,16 @@ export default function Timetable(){
     setEventButtons(evButtons)
   }
 
-  
+  function createTemplate(){
+    history.push("/CreateTemplate")
+  }
   // todo - change the username according to the context details
   
   return(
     <div>
        <button className="white_button" id="back_button" onClick={logout}>Log Out</button>
         <button className="white_button" id="new_event" onClick={createEvent}> Create New Event </button>
+        <button className="white_button" id="new_event" onClick={createTemplate}> Create Template </button>
     
     <div className="wrap">
      

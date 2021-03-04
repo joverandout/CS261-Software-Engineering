@@ -88,7 +88,7 @@ export default function CreateEvent(){
         let tmpForm = form
         form[name] = value 
         setForm(tmpForm)
-        console.log(tmpForm)
+        
         
     }
     
@@ -101,7 +101,7 @@ export default function CreateEvent(){
     }
 
     function back(){
-        history.push("/Timetable")
+        history.goBack()
     }
 
     function scheduleEvent(){
@@ -119,6 +119,7 @@ export default function CreateEvent(){
         })
 
         tmpForm.hostid=user.hostid.toString
+        tmpForm.starttime = new Date().getMilliseconds.toString() // todo dont do this
 
         meetingCreation(tmpForm).then(res=>{
             history.push("/Timetable")
