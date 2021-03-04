@@ -3,6 +3,7 @@ import React, {useReducer, useState, useMemo, useEffect} from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { Chart } from "react-charts"
 import {io} from "socket.io-client"
+import endMeeting from "../../api/endMeeting"
 
 function reducer(state, action){
     switch(action.type){
@@ -47,15 +48,24 @@ export default function HostMeeting(){
         }
       })
       socket.on("feedback", newFeedback)
+      return ()=>{
+        socket.close()
+        console.log("closing")
+      }
     },[])
     
     function newFeedback(data){
        dispatch({
            type:"newSemantic",
-           semanticValue:data.value
+           semanticValue:data.semantics
        })
+       console.log(data)
     }
-    
+
+    function triggerEnd(){
+      endMeeting({"meetingid":event.MeetingID.toString()}).then()
+    }
+
     const data = useMemo(
         () => [
           {
@@ -91,6 +101,8 @@ export default function HostMeeting(){
             
             <hr/>
             {lineChart}
+            <hr/>
+            <button onClick={triggerEnd}>End Meeting</button>
         </div>
     )
 }

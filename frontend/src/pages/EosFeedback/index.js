@@ -57,6 +57,7 @@ export default function EosFeedback(){
     const [emotionValues, setEmValues] = useState(tmpEmValues)
     const [questionValues, setQValues] = useState(tmpQValues)
 
+   
     function toggleEmotionCb(id, value){
         let tmpEmValues = emotionValues;
         let val = emotionValues[id]
@@ -86,7 +87,7 @@ export default function EosFeedback(){
         questionComponents.push(<Question question={question} key={i} id={i}/>)
     }
 
-
+    
 
     //todo add meeting name
     return(

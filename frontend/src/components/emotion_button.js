@@ -8,9 +8,8 @@ export default function EmotionButton(props){
     const [value, setValue] = useState(props.value)
     const [baseColour, setBaseColour] = useState("")
     const [btnStyle, setStyle] = useState({backgroundColor:""})
-
+    
     useEffect(()=>{
-        //console.log(props)
         let set = false
         let colour = ""
         eList.forEach(e=>{
@@ -28,6 +27,8 @@ export default function EmotionButton(props){
         if(props.value == true){
             
             setStyle({backgroundColor:colour})
+        }else{
+            setStyle({backgroundColor:""})
         }
     },[])
 

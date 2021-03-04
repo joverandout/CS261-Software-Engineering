@@ -7,6 +7,8 @@ import x2 from "./x2.png";
 import EmotionButton from "../../components/emotion_button"
 import userFeedback from "../../api/userFeedback"
 
+import {io} from "socket.io-client"
+
 export default function AttendeeMeeting(){
     const location = useLocation();
     const meetingdetails = location.state.meetingdetails
@@ -31,6 +33,7 @@ export default function AttendeeMeeting(){
 
     const [render, setRender] = useState(false)
 
+
     useEffect(()=>{
         
         let tmpEmValues = []
@@ -42,12 +45,22 @@ export default function AttendeeMeeting(){
         setEmotionButtons(tmpEmButtons)
         setEmValues(tmpEmValues)
         //setDisplayElement(page)
+        const socket = io("http://127.0.0.1:5000", {
+            auth:{
+            token:"id01043"
+            }
+        })
+        socket.on("endmeeting", meetingOver)
+        return ()=>{
+            socket.close()
+            console.log("closing")
+        }
     },[])
 
     useEffect(()=>{
         console.log("Emotion Values Changed!")
         let tmpEmButtons=[]
-        console.log(emotionValues)
+        
         emotionValues.forEach((val,i)=>{
             let value = (val>0)?true:false
             
@@ -60,8 +73,9 @@ export default function AttendeeMeeting(){
         
     }, [emotionValues])
 
-    function setEm(values){
-        setEmValues([...values])
+
+    function meetingOver(data){
+        console.log(data)
     }
 
     function togglePopup(){
@@ -108,6 +122,12 @@ export default function AttendeeMeeting(){
             emotion: "Technical",
             ftime:time
         }
+        userFeedback(data).then(res=>{
+            //refresh all the values
+            console.log("Feedback successfully sent")
+        }).catch(err=>{
+            console.log(err.message)
+        })
         setDisplayElement(0)
     }   
 
@@ -126,10 +146,16 @@ export default function AttendeeMeeting(){
             meetingid: meetingdetails.meetingid.toString(),
             companyid: meetingdetails.companyid.toString(),
             rating: "null",
-            emotion: "emotions.join()",
+            emotion: "Technical",
             ftime:time
         }
         setDisplayElement(0)
+        userFeedback(data).then(res=>{
+            //refresh all the values
+            console.log("Feedback successfully sent")
+        }).catch(err=>{
+            console.log(err.message)
+        })
     }   
 
     function sendFeedback(){
@@ -156,6 +182,14 @@ export default function AttendeeMeeting(){
         userFeedback(data).then(res=>{
             //refresh all the values
             console.log("Feedback successfully sent")
+            setFeedback("")
+            let tmpEmValues = []
+            emotionValues.forEach(e=>{
+                tmpEmValues.push(0)
+            })
+            setDisplayElement(1)
+            setEmValues([...tmpEmValues])
+            
         }).catch(err=>{
             console.log(err.message)
         })
@@ -203,7 +237,7 @@ export default function AttendeeMeeting(){
             </div>
             <hr/>
             <div className="row">
-                <input type="text" className="form-control" id="name" name="Feedback" onChange={formHandler}/> 
+                <input value={feedback} type="text" className="form-control" id="name" name="Feedback" onChange={formHandler}/> 
                 <label htmlFor="name">Provide Feedback</label>
             </div>
             <button className="green_button" onClick={sendFeedback}>Send</button>
@@ -221,7 +255,7 @@ export default function AttendeeMeeting(){
 
     
 
-    let f = page
+    let f = null
     switch(displayElement){
         case 0:
             f=page

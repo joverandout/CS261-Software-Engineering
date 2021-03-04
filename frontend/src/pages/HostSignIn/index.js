@@ -18,6 +18,7 @@ export default function HostSignIn(){
   let contextUser = useContext(UserContext)
   //todo, uncomment this and make sure the user gets added to the context
   let signedInIndicator = (<h2>Signed in: {signedIn.toString()}</h2>);
+  
   function login(){
     let data={
       username: username,
