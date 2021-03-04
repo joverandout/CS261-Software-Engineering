@@ -54,3 +54,4 @@ You can now view dbsep in the browser.
 Note that the development build is not optimized.
 To create a production build, use npm run build.
 ```
+If it doesn't automatically open you can then click on the local link here in order to open it (in failing that it can be copied and pasted into your browser directly)
