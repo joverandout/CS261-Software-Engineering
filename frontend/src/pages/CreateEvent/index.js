@@ -110,7 +110,7 @@ export default function CreateEvent(){
         
         tmpForm.category = newCategory
         
-        console.log(tmpForm)
+        //console.log(tmpForm)
         required.forEach((req,i)=>{
             if(!tmpForm[req] || tmpForm[req]==""){
                 console.log("Missing: ",req)
@@ -118,8 +118,10 @@ export default function CreateEvent(){
             }
         })
 
-        tmpForm.hostid=user.hostid.toString
-        tmpForm.starttime = new Date().getMilliseconds.toString() // todo dont do this
+        tmpForm.hostid=user.hostid.toString()
+        let time =  (new Date).getTime()
+        
+        tmpForm.starttime = time.toString() // todo dont do this
 
         meetingCreation(tmpForm).then(res=>{
             history.push("/Timetable")
