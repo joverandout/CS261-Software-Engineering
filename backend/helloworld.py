@@ -174,13 +174,13 @@ def postmeetingfeed():
             #return "no longer taking feedback"
         with sqlite3.connect("database.db") as con:
             cur = con.cursor()
-            for each in postquestions:
-                part1 = """INSERT INTO FEEDBACK VALUES(NULL, " """ + each
-                part2 = """ ", '"""
-                part3 = "Post' , '" + timeSent + "' , NULL, NULL)"
-                print(part1+part2+part3)
-                cur.execute(part1+part2+part3)
-            
+
+            part1 = """INSERT INTO FEEDBACK VALUES(NULL, " """ + postquestions
+            part2 = """ ", '"""
+            part3 = "Post' , '" + timeSent + "' , NULL, NULL)"
+            print(part1+part2+part3)
+            cur.execute(part1+part2+part3)
+        
             return "SUCCESS??"
     except:
         return ("nope not working",400)
