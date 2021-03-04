@@ -127,6 +127,7 @@ def meetingview():
             data = cur.fetchall()
             returnData = []
             generaltext = []
+            usernames = []
             for each in data:
                 if each[1] != "Technical":
                     x = each[1].split(",")
@@ -135,6 +136,7 @@ def meetingview():
                     print(y)
                 returnData.append(dict(zip(row_headers, each)))
                 generaltext.append(each[0])
+                #if each[5] == 
             print(generaltext)
             makepdf(generaltext)
             print(data)
@@ -542,7 +544,7 @@ def newtemplate():
 def endmeeting():
     info = request.get_json()
     if info == None:
-        return "No meeting information was provided"
+         return ("nope not working",400)
     try:
         meetingID = info["meetingid"]
         if(meetingID in currently_live_meetings):
@@ -559,7 +561,7 @@ def endmeeting():
             return jsonify("OK")
         else:
             socketio.emit("endmeeting",jsonify("not-OK"))
-            return jsonify("not-OK")
+            return ("nope not working",400)
     except:
         return ("nope not working",400)
 
