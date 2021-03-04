@@ -407,7 +407,7 @@ def meetinglogin():
                 
                 return jsonify(returnData)
         else:
-            return "FAILURE - meetin not live"
+            return ("nope not working",400)
     except:
         return ("nope not working",400)
 
