@@ -21,7 +21,7 @@ export default function JoinMeeting(){
         let name = entryObj.target.name
         
         if(name=="anonymous"){
-            tmpForm[name] = entryObj.target.checked?1:0
+            tmpForm[name] = (entryObj.target.checked?1:0).toString()
         }else{
             tmpForm[name] = value
         }

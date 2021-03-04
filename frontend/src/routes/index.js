@@ -12,6 +12,7 @@ import EosFeedback from '../pages/EosFeedback';
 import JoinMeeting from '../pages/JoinMeeting';
 import AttendeeMeeting from '../pages/AttendeeMeeting';
 import HostMeeting from '../pages/HostMeeting';
+import CodeDisplay from '../pages/CodeDisplay';
 
 
 export default function Routes() {
@@ -55,6 +56,11 @@ export default function Routes() {
       <Route path="/HostMeeting" exact>
         <HostMeeting/>
       </Route>
+
+      <Route path="/CodeDisplay" exact>
+        <CodeDisplay/>
+      </Route>
+
   
     </Switch>
   );

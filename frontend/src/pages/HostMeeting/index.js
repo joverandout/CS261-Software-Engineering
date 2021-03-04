@@ -1,5 +1,6 @@
 import "../styles.css"
 import React, {useReducer, useState, useMemo, useEffect} from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import { Chart } from "react-charts"
 import {io} from "socket.io-client"
 
@@ -27,7 +28,9 @@ function reducer(state, action){
 }
 
 export default function HostMeeting(){
-    
+    const location = useLocation()
+    const event = location.state.event
+    console.log(location.state)
     const initialState ={
         semanticData: {
             sum:0,
@@ -85,7 +88,7 @@ export default function HostMeeting(){
 
     return(
         <div>
-            <p>{state.semanticData.count}</p>
+            
             <hr/>
             {lineChart}
         </div>

@@ -31,7 +31,7 @@ export default function AttendeeMeeting(){
     const [render, setRender] = useState(false)
 
     useEffect(()=>{
-        console.log("Once")
+        
         let tmpEmValues = []
         let tmpEmButtons = []
         meetingdetails.template.emotions.forEach((emotion,i)=>{
