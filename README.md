@@ -6,3 +6,29 @@ A meeting feedback system to provide real-time feedback to a meeting organiser u
 Frontend - Create React App Project
 Backend - Python Flask Web Server (Rest API)
 Sentiment Analysis - Flair API sentiment analysis tool
+
+To run follow the below instructions:
+
+clone the repository to your local device using:
+```
+git clone https://github.com/joverandout/CS261-Software-Engineering/
+```
+
+From there navigate into the backend folder in order to run the backend python flask needs to be installed on your machine. Follow the following instructions to do that, https://flask.palletsprojects.com/en/1.1.x/installation/.
+
+Once flask is installed within the `/backend` folder run the following commands:
+```
+python3 -m venv venv
+. venv/bin/activate
+export FLASK_APP="helloworld.py"
+flask run
+```
+These commands will only work on Unix based operating systems (Linux or MacOs) for windows instructions please consolt the earlier cited flask documentation. This should start the backend (this may also require the running of `pip install flask` to be able to initialise the local environment).
+
+Now to start the frontend navigate to `/frontend` and install and then run npm there:
+```
+npm install
+npm run
+```
+
+This should (provided the backend was already running) startup the website and automatically open it in your default browser.
