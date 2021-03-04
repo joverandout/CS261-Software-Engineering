@@ -14,6 +14,7 @@ from Host import Host
 from Attendee import Attendee
 from datetime import datetime, timedelta
 from Template import Template
+from fpdf import FPDF
 
 import time
 
@@ -125,6 +126,8 @@ def meetingview():
             row_headers=[x[0] for x in cur.description]
             data = cur.fetchall()
             returnData = []
+            generaltext = []
+            usernames = []
             for each in data:
                 if each[1] != "Technical":
                     x = each[1].split(",")
@@ -132,10 +135,24 @@ def meetingview():
                     print(x)
                     print(y)
                 returnData.append(dict(zip(row_headers, each)))
+                generaltext.append(each[0])
+                #if each[5] == 
+            print(generaltext)
+            makepdf(generaltext)
             print(data)
             return jsonify(returnData)
     except:
         return ("nope not working",400)
+
+def makepdf(generalText):
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size = 15)
+    pdf.cell(200,10,txt = "Meeting Feedback", ln = 1, align = 'C')
+    for each in generalText:
+        print(each)  
+        pdf.cell(200,10, txt = each,ln = 1, align = 'L')
+    pdf.output("Test.pdf")
 
 
 @app.route('/postmeetingfeed', methods=["POST"])
@@ -399,6 +416,7 @@ def meetinglogin():
                     tempDict["emotionsselected"] = emotions
                     tempDict["templatename"] = each[0]
                     tempDict["question"] = postquestions
+                    tempDict["companyid"] = companyid
                     returnData.append(tempDict)
                 #print("out")
                 print(returnData)
@@ -527,7 +545,7 @@ def newtemplate():
 def endmeeting():
     info = request.get_json()
     if info == None:
-        return "No meeting information was provided"
+         return ("nope not working",400)
     try:
         meetingID = info["meetingid"]
         if(meetingID in currently_live_meetings):
@@ -544,7 +562,7 @@ def endmeeting():
             return jsonify("OK")
         else:
             socketio.emit("endmeeting",jsonify("not-OK"))
-            return jsonify("not-OK")
+            return ("nope not working",400)
     except:
         return ("nope not working",400)
 
@@ -552,17 +570,17 @@ def endmeeting():
 def stopmeeting():
     info = request.get_json()
     if info == None:
-        return "No meeting information was provided"
+        return ("nope not working",400)
     try:
         meetingID = info["meetingid"]
-        if(meetingID in currently_live_meetings):
+        if(meetingID in still_collecting_feedback_meetings):
             del still_collecting_feedback_meetings[meetingID]
             socketio.emit("stopmeeting",jsonify("OK"))
 
             return jsonify("OK")
         else:
             socketio.emit("stopmeeting",jsonify("not-OK"))
-            return jsonify("not-OK")
+            return ("nope not working",400)
     except:
         return ("nope not working",400)
 

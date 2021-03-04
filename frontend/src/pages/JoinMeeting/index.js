@@ -2,6 +2,7 @@ import "../styles.css"
 import React, {useContext, useState,} from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import joinMeetingApiCall from "../../api/joinMeeting"
+import userContext from "../../contexts/user-context";
 
 export default function JoinMeeting(){
     const history = useHistory()
@@ -11,7 +12,7 @@ export default function JoinMeeting(){
     const [formEntries, setFormEntries] = useState({
         meetingcode: "",
         username:"",
-        anonymous: false
+        anonymous: "0"
     })
 
     function inputHandler(entryObj){
@@ -20,12 +21,12 @@ export default function JoinMeeting(){
         let name = entryObj.target.name
         
         if(name=="anonymous"){
-            tmpForm[name] = entryObj.target.checked?1:0
+            tmpForm[name] = (entryObj.target.checked?1:0).toString()
         }else{
             tmpForm[name] = value
         }
 
-        console.log(tmpForm)
+        setFormEntries(tmpForm)
     }
 
     function join(){
@@ -34,7 +35,9 @@ export default function JoinMeeting(){
             return
         }
         console.log(formEntries)
+        
         joinMeetingApiCall(formEntries).then(res=>{
+            console.log(res)
             history.push({
                 pathname: "/AttendeeMeeting",
                 state:{

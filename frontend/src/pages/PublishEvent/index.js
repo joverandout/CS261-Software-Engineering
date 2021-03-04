@@ -1,6 +1,7 @@
 import "../styles.css"
 import React, {useContext, useState, useCallback} from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
+import startMeeting from "../../api/startMeeting";
 
 export default function PublishEvent(){
     let location = useLocation()
@@ -11,9 +12,19 @@ export default function PublishEvent(){
     const startTime = event.StartTime
 
     function startEvent(){
-        history.push({
-            pathname: "/HostMeeting",
-          })
+
+        startMeeting({meetingid:event.MeetingID.toString()}).then(res=>{
+            event.MeetingCode = res
+            history.push({
+                pathname: "/CodeDisplay",
+                state:{
+                    event:event
+                }
+            })
+        }).catch(err=>{
+            console.log(err.message)
+        })
+       
     }
 
     function backButton(){

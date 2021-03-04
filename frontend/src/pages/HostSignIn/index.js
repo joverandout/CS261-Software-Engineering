@@ -40,8 +40,6 @@ export default function HostSignIn(){
 
   function usernameChange(e){
     setUsrname(e.target.value)
-
-    
   }
 
   function passwordChange(e){
@@ -71,9 +69,10 @@ export default function HostSignIn(){
                 {error}
                 
             </form>
+            {error}
             <div>
                     <button onClick={login} className="green_button">GO</button>
-                </div>
+              </div>
         </div>
 
   )

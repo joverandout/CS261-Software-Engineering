@@ -1,0 +1,45 @@
+.split {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: 1;
+    top: 163;
+    overflow-x: hidden;
+    padding-top: 20px;
+  }
+  
+  .left {
+    left: 0;
+    border-right: 0.5px solid black;
+  }
+  
+  .right {
+    right: 0;
+    border-left: 0.5px solid black;
+  }
+  
+  .centered {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .bigtext{
+    font-size: xx-large;
+  }
+
+  .buttonlive{
+
+    font-size: medium;
+
+  }
+
+  .buttonend{
+    color:red; font-weight: bolder;
+  }
+
+  .vh{
+    margin-top:30vh
+  }

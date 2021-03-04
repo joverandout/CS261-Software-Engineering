@@ -7,18 +7,21 @@ import x2 from "./x2.png";
 import EmotionButton from "../../components/emotion_button"
 import userFeedback from "../../api/userFeedback"
 
+import {io} from "socket.io-client"
+
 export default function AttendeeMeeting(){
     const location = useLocation();
-    /*const meetingdetails = location.state.meetingdetails
-    const template = meetingdetails.template*/
-    const meetingdetails = {
+    const meetingdetails = location.state.meetingdetails
+    const template = meetingdetails.template
+    const history = useHistory()
+    /*const meetingdetails = {
         meetingid:1,
         companyid:1,
         template:{
             emotions:["happy", "neutral", "sad"],
             questions:["How was the meeting?", "What are you having for lunch?", "Could you understand?"]
         }
-    }
+    }*/
     
     const [emotionButtons, setEmotionButtons] = useState([])
     const [emotionValues, setEmValues] = useState([])
@@ -27,11 +30,13 @@ export default function AttendeeMeeting(){
     const [score, setScore] = useState(0)
     const [popup, setPopup] = useState(false)
     const [feedback, setFeedback] = useState("")
+    const [tFeedback, setTFeedback] = useState("")
 
     const [render, setRender] = useState(false)
 
+
     useEffect(()=>{
-        console.log("Once")
+        
         let tmpEmValues = []
         let tmpEmButtons = []
         meetingdetails.template.emotions.forEach((emotion,i)=>{
@@ -41,12 +46,22 @@ export default function AttendeeMeeting(){
         setEmotionButtons(tmpEmButtons)
         setEmValues(tmpEmValues)
         //setDisplayElement(page)
+        const socket = io("http://127.0.0.1:5000", {
+            auth:{
+            token:"id01043"
+            }
+        })
+        socket.on("endmeeting", meetingOver)
+        return ()=>{
+            socket.close()
+            console.log("closing")
+        }
     },[])
 
     useEffect(()=>{
         console.log("Emotion Values Changed!")
         let tmpEmButtons=[]
-        console.log(emotionValues)
+        
         emotionValues.forEach((val,i)=>{
             let value = (val>0)?true:false
             
@@ -59,8 +74,17 @@ export default function AttendeeMeeting(){
         
     }, [emotionValues])
 
-    function setEm(values){
-        setEmValues([...values])
+
+    function meetingOver(data){
+        if(data=="ok"){
+            history.push({
+                pathname: "/EosFeedback",
+                state:{
+                    template:template,
+                    meetingdetails:meetingdetails
+                }
+            })
+        }
     }
 
     function togglePopup(){
@@ -74,12 +98,6 @@ export default function AttendeeMeeting(){
         setPopup(tmpPopup)
     }
 
-
-    
-
-    function issueButton(buttonObj){
-
-    }
 
     function scoreChange(inObj){
         setScore(inObj.target.value)
@@ -97,6 +115,57 @@ export default function AttendeeMeeting(){
         setFeedback(formObj.target.value)
         
     }
+
+    function issueButton(buttonObj){
+        let name = buttonObj.target.name
+        let now = new Date()
+        let h = now.getHours().toString()
+        let m = now.getMinutes().toString()
+        let s = now.getSeconds().toString()
+        let time = h+":"+m+":"+s
+        let data={
+            generaltext:name,
+            meetingid: meetingdetails.meetingid.toString(),
+            companyid: meetingdetails.companyid.toString(),
+            rating: "null",
+            emotion: "Technical",
+            ftime:time
+        }
+        userFeedback(data).then(res=>{
+            //refresh all the values
+            console.log("Feedback successfully sent")
+        }).catch(err=>{
+            console.log(err.message)
+        })
+        setDisplayElement(0)
+    }   
+
+    function sendTechnical(){
+        let now = new Date()
+        let h = now.getHours().toString()
+        let m = now.getMinutes().toString()
+        let s = now.getSeconds().toString()
+        let time = h+":"+m+":"+s
+        if(tFeedback == ""){
+            return
+            //todo nothing entered error
+        }
+        let data={
+            generaltext:tFeedback,
+            meetingid: meetingdetails.meetingid.toString(),
+            companyid: meetingdetails.companyid.toString(),
+            rating: "null",
+            emotion: "Technical",
+            ftime:time
+        }
+        setDisplayElement(0)
+        userFeedback(data).then(res=>{
+            //refresh all the values
+            console.log("Feedback successfully sent")
+        }).catch(err=>{
+            console.log(err.message)
+        })
+    }   
 
     function sendFeedback(){
         let emotions = []
@@ -117,12 +186,19 @@ export default function AttendeeMeeting(){
             rating: scores.join(),
             emotion: emotions.join(),
             ftime:time
-        
         }
         console.log(data)
         userFeedback(data).then(res=>{
             //refresh all the values
             console.log("Feedback successfully sent")
+            setFeedback("")
+            let tmpEmValues = []
+            emotionValues.forEach(e=>{
+                tmpEmValues.push(0)
+            })
+            setDisplayElement(1)
+            setEmValues([...tmpEmValues])
+            
         }).catch(err=>{
             console.log(err.message)
         })
@@ -134,13 +210,13 @@ export default function AttendeeMeeting(){
         <div className="form-container report-container">
         <button onClick = {togglePopup} className="exit"><img src={x2} /> </button>
         <h1>Report an issue</h1>
-        <button className="btn report" onClick={issueButton}>The speaker is too quiet</button>
-        <button className="btn report" onClick={issueButton}>The speaker is on mute</button>
-        <button className="btn report" onClick={issueButton}>The content is missing</button>
+        <button name="quiet" className="btn report" onClick={issueButton}>The speaker is too quiet</button>
+        <button name="mute" className="btn report" onClick={issueButton}>The speaker is on mute</button>
+        <button name="missing" className="btn report" onClick={issueButton}>The content is missing</button>
         <div className="row">
-            <input type="text" className="form-control" id="name" name="Issue"/> 
+            <input type="text" className="form-control" id="name" name="Issue" onChange={(input)=>{setTFeedback(input.target.value)}}/> 
             <label htmlFor="name">Report other issue</label>
-            <button className="btn report">Send</button>
+            <button className="btn report" onClick={sendTechnical}>Send</button>
         </div>
         </div>
     </div>
@@ -170,7 +246,7 @@ export default function AttendeeMeeting(){
             </div>
             <hr/>
             <div className="row">
-                <input type="text" className="form-control" id="name" name="Feedback" onChange={formHandler}/> 
+                <input value={feedback} type="text" className="form-control" id="name" name="Feedback" onChange={formHandler}/> 
                 <label htmlFor="name">Provide Feedback</label>
             </div>
             <button className="green_button" onClick={sendFeedback}>Send</button>
@@ -188,7 +264,7 @@ export default function AttendeeMeeting(){
 
     
 
-    let f = page
+    let f = null
     switch(displayElement){
         case 0:
             f=page
