@@ -2,6 +2,7 @@ import "../styles.css"
 import React, {useContext, useState,} from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import joinMeetingApiCall from "../../api/joinMeeting"
+import userContext from "../../contexts/user-context";
 
 export default function JoinMeeting(){
     const history = useHistory()
@@ -25,7 +26,7 @@ export default function JoinMeeting(){
             tmpForm[name] = value
         }
 
-        console.log(tmpForm)
+        setFormEntries(tmpForm)
     }
 
     function join(){
@@ -34,7 +35,9 @@ export default function JoinMeeting(){
             return
         }
         console.log(formEntries)
+        
         joinMeetingApiCall(formEntries).then(res=>{
+            console.log(res)
             history.push({
                 pathname: "/AttendeeMeeting",
                 state:{

@@ -96,6 +96,7 @@ export default function CreateTemplate(){
         console.log(tmpForm)
         templateCreation(tmpForm).then(res=>{
             console.log("Yay we made it")
+            history.goBack()
         }).catch(err=>{
             console.log(err.message)
         })
