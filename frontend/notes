@@ -1,1 +1,10 @@
 Create Template requires CSS work
+emotionScore in AttendeeMeeting needs css
+{
+    'generaltext': 'asdfasdf', 
+    'meetingid': '1', 
+    'companyid': '1', 
+    'rating': '0,0,0',
+    'emotion': 'happy,neutral,sad', 
+    'ftime': '16:12:20'
+ }

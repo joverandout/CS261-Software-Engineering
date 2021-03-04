@@ -95,6 +95,10 @@ export default function CreateEvent(){
         history.push("/CreateTemplate")
     }
 
+    function back(){
+        history.push("/Timetable")
+    }
+
     function scheduleEvent(){
         let required = ["meetingname", "duration", "category", "starttime", "templateid"]
         let tmpForm = form
@@ -114,7 +118,7 @@ export default function CreateEvent(){
         meetingCreation(tmpForm).then(res=>{
             history.push("/Timetable")
         }).catch(err=>{
-            console.log(err)
+            console.log(err.message)
         })
 
     }
@@ -137,7 +141,7 @@ export default function CreateEvent(){
         
         <div>
             <div className="header">
-            <button className="white_button" id="back_button">Back</button>
+            <button className="white_button" id="back_button" onClick={back}>Back</button>
             <h1>Create New Event</h1>
 
             </div>

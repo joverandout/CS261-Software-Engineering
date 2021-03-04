@@ -1,14 +1,15 @@
 import "../styles.css"
 import React, {useContext, useState,} from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import joinMeetingApiCall from "../../api/joinMeeting"
 
 export default function JoinMeeting(){
     const history = useHistory()
+    /*const location = useLocation()
+    const props = location.state*/
 
     const [formEntries, setFormEntries] = useState({
-        meetingCode: "",
-        companyID:-0,
+        meetingcode: "",
         username:"",
         anonymous: false
     })
@@ -19,7 +20,7 @@ export default function JoinMeeting(){
         let name = entryObj.target.name
         
         if(name=="anonymous"){
-            tmpForm[name] = entryObj.target.checked
+            tmpForm[name] = entryObj.target.checked?1:0
         }else{
             tmpForm[name] = value
         }
@@ -28,18 +29,22 @@ export default function JoinMeeting(){
     }
 
     function join(){
-        /*
+        if(formEntries.username=="" || formEntries.meetingcode==""){
+            console.log("Enter a meeting code and username")
+            return
+        }
         joinMeetingApiCall(formEntries).then(res=>{
             history.push({
                 pathname: "/AttendeeMeeting",
                 state:{
-                  event: props.template
+                  meetingdetails:res
                 }
             })
         }).catch(err=>{
+            console.log(err.message)
             //todo add some kind of error message
         })
-        */
+        
        console.log(formEntries)
     }
 
@@ -47,7 +52,7 @@ export default function JoinMeeting(){
         <div className="wrap">
         <h1>Find a Meeting</h1>
             <div className="row">
-                <input type="text" className="form-control" id="name" name="meetingCode" required onChange={inputHandler}/> 
+                <input type="text" className="form-control" id="name" name="meetingcode" required onChange={inputHandler}/> 
                 <label htmlFor="name">Meeting Code</label>
             </div>
 

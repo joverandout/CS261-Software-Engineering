@@ -39,28 +39,38 @@ export default function Timetable(){
   const [eventList, setEventList] = useState([]) // doesnt really need to be a hook tbh
   const [tagList, setTagList] = useState([]) //neither does this
 
-
+  const history = useHistory()
   //Runs once to get the event list form the server.
   useEffect(()=>{
-    let hostMeetingsApiCall = getHostMeetings()
+    getHostMeetings().then(data=>{
+      let tmpEvList = data[0]
+      let tagList = data[1]
+      setEventList(tmpEvList)
+  
+      let tmpTagOptions = []
+      tagList.forEach((tag, index) => {
+        tmpTagOptions.push(<option key={index}> {tag} </option>)
+      });
+      setTagOptions(tmpTagOptions)
+  
+      let evButtons = []
+      for(let i=0; i<tmpEvList.length; i++){
+        evButtons.push(<EventComponent event={tmpEvList[i]} key={i} id={i}/>)
+      }
+      setEventButtons(evButtons)
+    }).catch(err=>{
+      console.log(err.message)
+      setEventButtons(<h1>No Events Found</h1>)
+    })
+    
     //todo nake sure this returns as valid
 
-    let tmpEvList = hostMeetingsApiCall[0]
-    let tagList = hostMeetingsApiCall[1]
-    setEventList(tmpEvList)
-
-    let tmpTagOptions = []
-    tagList.forEach((tag, index) => {
-      tmpTagOptions.push(<option key={index}> {tag} </option>)
-    });
-    setTagOptions(tmpTagOptions)
-
-    let evButtons = []
-    for(let i=0; i<tmpEvList.length; i++){
-      evButtons.push(<EventComponent event={tmpEvList[i]} key={i} id={i}/>)
-    }
-    setEventButtons(evButtons)
+   
   }, [])
+
+  function createEvent(){
+    history.push("/CreateEvent")
+  }
 
   function refreshEventList(fieldObj){
     let tag = fieldObj.target.value
@@ -76,11 +86,11 @@ export default function Timetable(){
 
   
   // todo - change the username according to the context details
-  // todo - add facility for no events
+  
   return(
     <div>
        <button className="white_button" id="back_button" >Log Out</button>
-        <button className="white_button" id="new_event" > Create New Event </button>
+        <button className="white_button" id="new_event" onClick={createEvent}> Create New Event </button>
     
     <div className="wrap">
      

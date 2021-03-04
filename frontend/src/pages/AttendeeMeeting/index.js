@@ -5,64 +5,129 @@ import React, {useContext, useState, useCallback, useEffect} from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import x2 from "./x2.png";
 import EmotionButton from "../../components/emotion_button"
+import userFeedback from "../../api/userFeedback"
 
 export default function AttendeeMeeting(){
     const location = useLocation();
-    const eList = [["Proud", "#F4b72f"],["Excited","#F4b72f"],["Interested", "#F4b72f"], ["Happy", "#F4b72f"], ["Joyful", "#F4b72f"], ["Optimistic", "#75C7E3"], ["Tired", "#75C7E3"], ["Calm", "#75C7E3"], ["Grateful", "#75C7E3"], ["Bored", "#75C7E3"], ["Sad", "#9B75E3"], ["Insecure", "#9B75E3"], ["Depressed", "#9B75E3"], ["Anxious", "#9B75E3"], ["Afraid", "#9B75E3"], ["Annoyed", "#F07A7A"], ["Angry", "#F07A7A"], ["Overwhelmed", "#F07A7A"], ["Stressed", "#F07A7A"], ["Frustrated", "#F07A7A"]];
+    /*const meetingdetails = location.state.meetingdetails
+    const template = meetingdetails.template*/
+    const meetingdetails = {
+        meetingid:1,
+        companyid:1,
+        template:{
+            emotions:["happy", "neutral", "sad"],
+            questions:["How was the meeting?", "What are you having for lunch?", "Could you understand?"]
+        }
+    }
     
-    let tmpEmValues = []
-    eList.forEach(element => {
-        tmpEmValues.push(false)
-    });
-    const [emotionValues, setEmValues] = useState(tmpEmValues)
-    const [popup, setPopup] = useState(false)
     const [emotionButtons, setEmotionButtons] = useState([])
-    
-    //todo manage button state from the parent
+    const [emotionValues, setEmValues] = useState([])
+    const [displayElement, setDisplayElement] = useState(0)
+    const [lastPressed, setLastPressed] = useState(null)
+    const [score, setScore] = useState(0)
+    const [popup, setPopup] = useState(false)
+    const [feedback, setFeedback] = useState("")
+
+    const [render, setRender] = useState(false)
+
     useEffect(()=>{
-        console.log("!!!!!!!!")
-        
+        console.log("Once")
+        let tmpEmValues = []
         let tmpEmButtons = []
-        for(let i=0; i<eList.length;i++){
-            let emotionObj={
-                name: eList[i][0],
-                color: eList[i][1]
-            }
-            tmpEmButtons.push(<EmotionButton toggleEmotionCb={toggleEmotionCb} emotion={emotionObj} key={i} id={i}/>)
-        }
+        meetingdetails.template.emotions.forEach((emotion,i)=>{
+            tmpEmValues.push(0)
+            tmpEmButtons.push(<EmotionButton name={emotion} toggleEmotionCb={toggleEmotionCb} value={false} id={i} key={i}/>)
+        })
         setEmotionButtons(tmpEmButtons)
+        setEmValues(tmpEmValues)
+        //setDisplayElement(page)
     },[])
-    
 
+    useEffect(()=>{
+        console.log("Emotion Values Changed!")
+        let tmpEmButtons=[]
+        console.log(emotionValues)
+        emotionValues.forEach((val,i)=>{
+            let value = (val>0)?true:false
+            
+            let name = meetingdetails.template.emotions[i]
+            tmpEmButtons.push(<EmotionButton name={name} toggleEmotionCb={toggleEmotionCb} value={value} id={i} key={i}/>)
+        })
+        
+        setEmotionButtons([...tmpEmButtons])
+        setDisplayElement(0)
+        
+    }, [emotionValues])
 
-    function toggleEmotionCb(id, value){
-        let count = 0
-        for(let i=0;i<emotionValues.length;i++){
-            if(emotionValues[i] == true){
-                count++;
-            }
-            if(count>=3 && value==true){
-                //todo make some kind of popup appear
-                console.log("too many emotions selected")
-                return false
-            }
-        }
-        let tmpEmValues = emotionValues;
-        let val = emotionValues[id]
-        tmpEmValues[id] = (val?false:true)
-        setEmValues([...tmpEmValues])
-        console.log(tmpEmValues)
-        return true
+    function setEm(values){
+        setEmValues([...values])
     }
 
     function togglePopup(){
-        setPopup(popup ? false:true)
+        let tmpPopup = popup?false:true 
+
+        if(tmpPopup){
+            setDisplayElement(2)
+        }else{
+            setDisplayElement(0)
+        }
+        setPopup(tmpPopup)
     }
+
+
+    
 
     function issueButton(buttonObj){
 
     }
 
+    function scoreChange(inObj){
+        setScore(inObj.target.value)
+    }
+
+    function scoreOk(){
+        let tmpEmValues = emotionValues
+        tmpEmValues[lastPressed] = parseInt(score)
+        setEmValues([...tmpEmValues])
+        
+        setScore(0)
+    }
+
+    function formHandler(formObj){
+        setFeedback(formObj.target.value)
+        
+    }
+
+    function sendFeedback(){
+        let emotions = []
+        let scores = []
+        meetingdetails.template.emotions.forEach((emotion,i)=>{
+            emotions.push(emotion)
+            scores.push(emotionValues[i].toString())
+        })
+        let now = new Date()
+        let h = now.getHours().toString()
+        let m = now.getMinutes().toString()
+        let s = now.getSeconds().toString()
+        let time = h+":"+m+":"+s
+        let data={
+            generaltext:feedback,
+            meetingid: meetingdetails.meetingid.toString(),
+            companyid: meetingdetails.companyid.toString(),
+            rating: scores.join(),
+            emotion: emotions.join(),
+            ftime:time
+        
+        }
+        console.log(data)
+        userFeedback(data).then(res=>{
+            //refresh all the values
+            console.log("Feedback successfully sent")
+        }).catch(err=>{
+            console.log(err.message)
+        })
+    }
+    
     //todo manage state of components from parent to allow state resetting
     let technicalIssue = (
         <div  id="reportIssue">
@@ -81,6 +146,18 @@ export default function AttendeeMeeting(){
     </div>
     )
 
+    
+    
+    let emotionScore=(
+        <div>
+            <div className="row">
+                <input type="number" onChange={scoreChange} min={0} max={5} className="form-control" id="name" name="emScore"/> 
+                <label htmlFor="emScore">How Strongly do you feel this 0-5</label>
+                <button className="green_button" onClick={scoreOk}>Confirm</button>
+             </div>
+        </div>
+    )
+
     let page =(
         <div>
             <div className="header">
@@ -93,16 +170,43 @@ export default function AttendeeMeeting(){
             </div>
             <hr/>
             <div className="row">
-                <input type="text" className="form-control" id="name" name="Feedback"/> 
+                <input type="text" className="form-control" id="name" name="Feedback" onChange={formHandler}/> 
                 <label htmlFor="name">Provide Feedback</label>
             </div>
-            <button className="green_button">Send</button>
+            <button className="green_button" onClick={sendFeedback}>Send</button>
         </div>
     )
 
+
+    function toggleEmotionCb(id, value){
+        setDisplayElement(1)
+        setLastPressed(id)
+        return true
+    }
+    
+    //This is structured weirdly, but it's just so the pages are defined before we set the display element
+
+    
+
+    let f = page
+    switch(displayElement){
+        case 0:
+            f=page
+            break;
+        case 1:
+            f=emotionScore
+            break;
+        case 2:
+            f=technicalIssue
+            break;
+        default:
+            f=page
+    }    
+
+    
     return(
     <div>
-        {popup ? technicalIssue:page}
+        {f}
     </div>
     )
 }
