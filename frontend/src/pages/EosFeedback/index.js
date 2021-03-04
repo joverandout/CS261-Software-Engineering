@@ -49,9 +49,7 @@ export default function EosFeedback(){
     useEffect(()=>{
         let tmpQComponents=[]
         let tmpQValues = []
-        emotions.forEach(e=>{
-            tmpEmValues.push(false)
-        })
+
         questions.forEach(e=>{
             tmpQValues.push(false)
         })
@@ -61,24 +59,16 @@ export default function EosFeedback(){
                 text: questions[i],
                 callback:onQuestionChange
             }
-            tmpQComponents.push(<Question cb={onQuestionChange} question={question} key={i} id={i}/>)
+            tmpQComponents.push(<Question callback={onQuestionChange} question={question} key={i} id={i}/>)
         }
-
+        setQComponents(tmpQComponents)
+        setQValues(tmpQValues)
     },[])
 
     function onQuestionChange(value, id){
-        console.log(questions[id])
-        console.log(value+"\n")
-
-
-    }
-
-    for(let i=0;i<questions.length;i++){
-        let question ={
-            text: questions[i],
-            callback:onQuestionChange
-        }
-        questionComponents.push(<Question question={question} key={i} id={i}/>)
+        let qVals = questionValues
+        qVals[id] = value
+        setQValues(qVals)
     }
 
     function sendFeedback(){
@@ -88,14 +78,16 @@ export default function EosFeedback(){
         let s = now.getSeconds().toString()
         let time = h+":"+m+":"+s
 
+        let gText = questionValues.join("~")
         let data={
-            generaltext:name,
+            generaltext:gText,
             meetingid: meetingdetails.meetingid.toString(),
             companyid: meetingdetails.companyid.toString(),
             rating: "null",
             emotion: "Post",
             ftime:time
         }
+        console.log(data)
     }
     
 
@@ -113,7 +105,7 @@ export default function EosFeedback(){
             </div>
 
             <div>
-                <button type="submit" className="green_button" onChange={sendFeedback}>Submit</button>
+                <button type="submit" className="green_button" onClick={sendFeedback}>Submit</button>
             </div>
         </div>
     </div>
