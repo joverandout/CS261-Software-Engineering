@@ -178,7 +178,7 @@ input[type="checkbox"] {
     width: 10vw;
     min-width: 100px;
     max-width: 200px;
-    color: rgb(0, 0, 0);
+    color: red;
     margin-left: 30px;
 }
 
