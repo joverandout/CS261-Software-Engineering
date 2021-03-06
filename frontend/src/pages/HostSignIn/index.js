@@ -51,7 +51,7 @@ export default function HostSignIn(){
 
         <div className="wrap">
             <h1>Host Login</h1>
-            {signedInIndicator}
+            
             <form action=""> 
 
                 <div className="row">
@@ -71,8 +71,8 @@ export default function HostSignIn(){
             </form>
             
             <div>
-                    <button onClick={login} className="green_button">GO</button>
-              </div>
+                <button onClick={login} className="green_button">GO</button>
+            </div>
         </div>
 
   )
