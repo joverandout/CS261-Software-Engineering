@@ -7,6 +7,10 @@
     overflow-x: hidden;
     padding-top: 20px;
   }
+
+  .image{
+    padding-top: 500px;
+  }
   
   .left {
     left: 0;

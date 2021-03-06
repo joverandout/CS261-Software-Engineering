@@ -79,7 +79,7 @@ export default function CreateTemplate(){
         }
         
         setQuestions([...questions, q])
-        setQPs([...questionPs, (<p key={questionPs.length}>{q}</p>)])
+        setQPs([...questionPs, (<button class="question_box" key={questionPs.length}>{q}</button>)])
     }
 
     function complete(){
@@ -129,6 +129,7 @@ export default function CreateTemplate(){
             </div>
             <hr/>
 
+            <br></br>
             <div className="wrap">
 
                 <div className="row">
@@ -137,31 +138,40 @@ export default function CreateTemplate(){
                 </div>
             </div>
 
-            <p className="largerFont">Select up to 8 emotions for attendees to choose from:</p>
+            <br></br>
+            <br></br>
+            <h2>Emotions</h2>
+            <p className="largerFont">Ask attendees how they are feeling.</p>
+            <p className="largerFont"> Select up to 8 emotions for attendees to choose from:</p>
 
             <div className="btn-group" id="buttons" style={{marginBottom: 60}}>
                 {emotionButtons}
             </div>
 
+            <div className="wrap">
+                <div className="row">
+                    <input type="text" className="form-control" id="name" onChange={customEmHandler}/>
+                    <label htmlFor="name">Custom Emotion</label>
+                    <button type="button" className="yellow_button" onClick={addButton}>Add</button>
+                </div>
+            </div>
+
+
             <div>
-                <h2>Questions</h2>
+                <br></br>
+                <br></br>
+                <h2>End of Session Questions</h2>
+                <p className="largerFont">Ask attendees questions after the session</p>
                 {questionPs}
             </div>
 
             <div className="wrap">
-                <div className="oneline">
-                    <p>Add custom emotion: </p>
-                    <input type="text" className="form-control" id="name" onChange={customEmHandler}/>
-                    <button type="button" className="yellow_button" onClick={addButton}>Add</button>
-                </div>
-
-                <div className="oneline">
-                    <p>Add new question: </p>
+                <div className="row">
                     <input type="text" className="form-control" id="name" onChange={newQuestionHandler}/>
                     <button type="button" className="yellow_button" onClick={addQuestion}>Add</button>
                 </div>
-                
-            </div>      
+            </div>
+
             <button type="submit" className="green_button" id="next_button" onClick={complete}>Next</button>
 
 
