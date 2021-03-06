@@ -17,39 +17,38 @@ export default function CreateTemplate(){
     const [newQ, setNewQ] = useState("")
     const [form, setForm] = useState({})
 
+    const [id, setID] = useState(-1)
+    const [val, setVal] = useState(false)
+
     const contextUser = useContext(userContext)
     const user = contextUser.user
     const history = useHistory()
     useEffect(()=>{
-
+        console.log("!!")
         let tmpValues = []
         let tmpButtons = []
         eList.forEach((em, i)=>{
             let name = em[0]
             tmpValues.push(false)
             tmpButtons.push(<EmotionButton name={name} value={false} toggleEmotionCb={toggleEmotionCb} key={i} id={i}/>)
+            //console.log(i)
         })
+    
         setEmButtons(tmpButtons)
         setButtonValues(tmpValues)
     },[])
+
+    useEffect(()=>{
+        let tmpEmValues = buttonValues
+        console.log(id, val)
+        tmpEmValues[id] = val
+        setButtonValues([...tmpEmValues])
+    }, [id, val])
     
     function toggleEmotionCb(id, value){
-        let count = 0
-        for(let i=0;i<buttonValues.length;i++){
-            if(buttonValues[i] == true){
-                count++;
-            }
-            if(count>=8 && value==true){
-                //todo make some kind of popup appear
-                console.log("too many emotions selected")
-                return false
-            }
-        }
-        let tmpEmValues = buttonValues;
-        let val = buttonValues[id]
-        tmpEmValues[id] = (val?false:true)
-        setButtonValues([...tmpEmValues])
-        console.log(tmpEmValues)
+        
+        setVal(value)
+        setID(id)
         return true
     }
 
@@ -58,10 +57,14 @@ export default function CreateTemplate(){
     }
 
     function addButton(){
+        let tmpEmButton = emotionButtons
+        let tmpEmValues = buttonValues
         let i = emotionButtons.length
-        let newButton = (<EmotionButton name={customEmName} value={false} toggleEmotionCb={toggleEmotionCb} key={i} id={i}/>)
-        setButtonValues([...buttonValues, false])
-        setEmButtons([...emotionButtons, newButton])
+        tmpEmButton.push(<EmotionButton value={false} toggleEmotionCb={toggleEmotionCb} name={customEmName} key={i} id={i}/>)
+        tmpEmValues.push(false)
+
+        setButtonValues([...tmpEmValues])
+        setEmButtons([...tmpEmButton])
     }
 
     function newQuestionHandler(formObj){
@@ -76,7 +79,7 @@ export default function CreateTemplate(){
         }
         
         setQuestions([...questions, q])
-        setQPs([...questionPs, (<button class="question_box" key={questionPs.length}>{q}</button>)])
+        setQPs([...questionPs, (<button className="question_box" key={questionPs.length}>{q}</button>)])
     }
 
     function complete(){
@@ -85,6 +88,7 @@ export default function CreateTemplate(){
         let emotions = []
         buttonValues.forEach((bool, i)=>{
             if(bool){
+                console.log(emotionButtons[i].props.name)
                 emotions.push(emotionButtons[i].props.name)
             }
         })
@@ -114,8 +118,9 @@ export default function CreateTemplate(){
 
     function back(){
         history.goBack()
-    }
-
+    }   
+    console.log("FF",buttonValues, emotionButtons.length)
+    
     return(
         <div>
             <button className="white_button" id="back_button" onClick={back}>Back</button>

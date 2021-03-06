@@ -1,7 +1,7 @@
 import "../styles.css"
 import React, {useContext, useState, useEffect} from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import userFeedback from "../../api/userFeedback"
+import postMeetingFeedback from "../../api/postMeeting"
 
 /**
  * Templates Need to look like this
@@ -38,6 +38,7 @@ export default function EosFeedback(){
     const location = useLocation()
     const template = location.state.template;
     const meetingdetails = location.state.meetingdetails
+    const history = useHistory()
     console.log(template)
      
     const questions = template.questions
@@ -80,14 +81,16 @@ export default function EosFeedback(){
 
         let gText = questionValues.join("~")
         let data={
-            generaltext:gText,
+            questionresponses:gText,
             meetingid: meetingdetails.meetingid.toString(),
             companyid: meetingdetails.companyid.toString(),
-            rating: "null",
-            emotion: "Post",
             ftime:time
         }
-        console.log(data)
+        postMeetingFeedback(data).then(res=>{
+            history.push("/JoinMeeting")
+        }).catch(err=>{
+            console.log(err.message)
+        })
     }
     
 
@@ -95,10 +98,12 @@ export default function EosFeedback(){
     return(
         <div>
         <div className="wrap">
-            <h1> Meeting Name </h1> 
             <p>End-of-session feedback</p>
+            <h1>{meetingdetails.MeetingName}</h1>
         </div>
         <hr/>
+        <p>Thank you for attending this event. Please take a minute to fill in the end-of-session feedback questions below.</p>
+        <br></br>
         <div className="wrap">
             <div className="row">
                 {questionComponents}

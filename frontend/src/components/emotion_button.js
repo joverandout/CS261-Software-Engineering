@@ -1,5 +1,5 @@
 import "../styles.css"
-import "../template_styles.css"
+//import "../template_styles.css"
 import React, { useState, useEffect} from 'react';
 const eList = [["Proud", "#F4b72f"],["Excited","#F4b72f"],["Interested", "#F4b72f"], ["Happy", "#F4b72f"], ["Joyful", "#F4b72f"], ["Optimistic", "#75C7E3"], ["Tired", "#75C7E3"], ["Calm", "#75C7E3"], ["Grateful", "#75C7E3"], ["Bored", "#75C7E3"], ["Sad", "#9B75E3"], ["Insecure", "#9B75E3"], ["Depressed", "#9B75E3"], ["Anxious", "#9B75E3"], ["Afraid", "#9B75E3"], ["Annoyed", "#F07A7A"], ["Angry", "#F07A7A"], ["Overwhelmed", "#F07A7A"], ["Stressed", "#F07A7A"], ["Frustrated", "#F07A7A"]];
 
@@ -49,6 +49,6 @@ export default function EmotionButton(props){
     }
 
     return(
-        <button style={btnStyle} onClick={toggle}>{props.name}</button>
+        <button className="emotion_button" style={btnStyle} onClick={toggle}>{props.name}</button>
     )
 }

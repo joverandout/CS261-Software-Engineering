@@ -169,6 +169,7 @@ input[type="checkbox"] {
 #next_button{
     float:right;
     margin-bottom: 20px;
+    margin-right: 20px;
 }
 
 #back_button{
@@ -178,7 +179,8 @@ input[type="checkbox"] {
     width: 10vw;
     min-width: 100px;
     max-width: 200px;
-    color: rgb(0, 0, 0);
+    color: red;
+    margin-left: 30px;
 }
 
 #progress_button{
@@ -231,7 +233,7 @@ input[type="checkbox"] {
     cursor: pointer; /* Pointer/hand icon */
     float: left; /* Float the buttons side by side */
     margin: 20px;
-    font-weight: bolder;
+    
 }
 
 .btn-group-2 button {

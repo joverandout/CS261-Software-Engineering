@@ -22,6 +22,8 @@ export default function CreateEvent(){
     const [templateOptions, setTemOptions] = useState([])
     const [categoryOptions, setCatOptions] = useState([])
 
+    const [error, setError] = useState(null)
+
     const contextUser = useContext(UserContext)
     const user = contextUser.user
     useEffect( ()=>{
@@ -47,6 +49,7 @@ export default function CreateEvent(){
             setCatOptions(catOptions)
         }).catch(err=>{
             console.log(err.message)
+            setError(<p style={{color:"red"}}>Could not log in, make sure credentials are valid</p>)
         })
     },[])
 
@@ -127,6 +130,7 @@ export default function CreateEvent(){
             history.push("/Timetable")
         }).catch(err=>{
             console.log(err.message)
+            setError(<p style={{color:"red"}}>Please complete all fields</p>)
         })
 
     }
@@ -148,12 +152,24 @@ export default function CreateEvent(){
     return (
         
         <div>
+
             <div className="header">
             <button className="white_button" id="back_button" onClick={back}>Back</button>
             <h1>Create New Event</h1>
 
             </div>
             <div className="wrap">
+                <div>
+                    <p style={style.genericText}> Select an existing template:</p>
+                    <select name="template" id="template" onChange={formChange}>
+                        <option> --Select Template-- </option> 
+                        {templateOptions}
+                    </select>
+                    <p style={style.genericText}>Or</p>
+                    <input type="button" onClick="" value="Make a new Template" onClick={makeNewTemplate}/>
+                </div>
+                <br></br>
+                <br></br>
                 <div className="row">
                     <p style={style.genericText}> Event Name: </p>
                     <input name = {"meetingname"}type="text" className="form-control" id="name" onChange={formChange}/>    
@@ -174,7 +190,7 @@ export default function CreateEvent(){
                 </div>
 
                 <div className="oneLine">
-                    <p style={style.genericText}> Event Duration (HH:MM:SS): </p>
+                    <p style={style.genericText}> Event Duration: </p>
                     <input name={"duration"} type="text" min={1} className="form-control" id="duration" onChange={formChange}/>
                     
                 </div>
@@ -186,21 +202,15 @@ export default function CreateEvent(){
                     {toggleRecurrance?recurrance:null}
                 </div>
 
-                <div>
-                    <p style={style.genericText}> Select an existing template:</p>
-                    <select name="template" id="template" onChange={formChange}>
-                        <option> --Select Template-- </option> 
-                        {templateOptions}
-                    </select>
-                    <p style={style.genericText}>Or</p>
-                    <input type="button" onClick="" value="Make a new Template" onClick={makeNewTemplate}/>
-                </div>
-
+                {error}
+                <br></br>
                 <button className="yellow_button" onClick={scheduleEvent}>Schedule Event</button>
+                <br></br>
+                <br></br>
 
             </div>
 
-            <hr/>
+        
         </div>
     );
 }

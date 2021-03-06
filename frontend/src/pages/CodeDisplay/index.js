@@ -38,13 +38,11 @@ export default function CodeDisplay(){
     return(
         <div>
             <button className="white_button buttonend" id="back_button" onClick={endEvent}>END EVENT</button>
-            <button className="yellow_button buttonlive" id="next_button" onClick={goLive}>View Live Feedback</button>
+            <button className="green_button buttonlive" id="next_button">In Progress</button>
             <div className="header">
                 <h1>{event.MeetingName}</h1>
-                
             </div>
-            <button className="green_button" id="progress_button">In Progress</button>
-
+            <br></br>
             <hr/>
 
             <div className="split left">
@@ -61,6 +59,7 @@ export default function CodeDisplay(){
                     <p> and enter the meeting code: </p>
                     <p className="bigtext">{event.MeetingCode}</p>  
                 </div>
+                <button className="yellow_button bottombtn" id="progress_button" onClick={goLive}>View Live Feedback</button>
             </div>
 
             
