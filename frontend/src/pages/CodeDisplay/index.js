@@ -49,6 +49,7 @@ export default function CodeDisplay(){
             <div className="split left">
                 <div className="centered">
                 <p>Join this event by scanning the QR code below</p>
+                <img src="qr.png"></img>
                 </div>
             </div>
             
