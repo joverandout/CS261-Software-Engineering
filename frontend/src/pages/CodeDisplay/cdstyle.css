@@ -35,9 +35,15 @@
   }
 
   .buttonlive{
-
     font-size: medium;
+    margin-right: 30px;
+  }
 
+  .bottombtn{
+    margin: 30px;
+    position: fixed;
+    right: 0px;
+    bottom: 200px;
   }
 
   .buttonend{
