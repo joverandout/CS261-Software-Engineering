@@ -148,12 +148,24 @@ export default function CreateEvent(){
     return (
         
         <div>
+
             <div className="header">
             <button className="white_button" id="back_button" onClick={back}>Back</button>
             <h1>Create New Event</h1>
 
             </div>
             <div className="wrap">
+                <div>
+                    <p style={style.genericText}> Select an existing template:</p>
+                    <select name="template" id="template" onChange={formChange}>
+                        <option> --Select Template-- </option> 
+                        {templateOptions}
+                    </select>
+                    <p style={style.genericText}>Or</p>
+                    <input type="button" onClick="" value="Make a new Template" onClick={makeNewTemplate}/>
+                </div>
+                <br></br>
+                <br></br>
                 <div className="row">
                     <p style={style.genericText}> Event Name: </p>
                     <input name = {"meetingname"}type="text" className="form-control" id="name" onChange={formChange}/>    
@@ -184,16 +196,6 @@ export default function CreateEvent(){
                     <p style={style.genericText}> Make Meeting Recurring: </p>
                     <input name={"recurring"}type="checkbox" id="recurringMeetingCheckbox" onClick={showRecuranceDropdown}/>
                     {toggleRecurrance?recurrance:null}
-                </div>
-
-                <div>
-                    <p style={style.genericText}> Select an existing template:</p>
-                    <select name="template" id="template" onChange={formChange}>
-                        <option> --Select Template-- </option> 
-                        {templateOptions}
-                    </select>
-                    <p style={style.genericText}>Or</p>
-                    <input type="button" onClick="" value="Make a new Template" onClick={makeNewTemplate}/>
                 </div>
 
                 <br></br>
