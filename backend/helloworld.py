@@ -15,6 +15,7 @@ from Attendee import Attendee
 from datetime import datetime, timedelta
 from Template import Template
 from fpdf import FPDF
+import random
 
 from matplotlib import pyplot as plt
 import numpy as np
@@ -83,6 +84,7 @@ def sendsocketmessage():
     
     socketio.emit("femessage",data)
     return "Sent!"
+
 
 @app.route('/hostmain', methods=["POST"])
 def hostmain():
@@ -278,6 +280,8 @@ def makepdf(generalText, usernames,emoR, MN, MC, emoDict, postfeed):
 
 
     pdf.output("Test.pdf")
+    files = {'file': open('Test.pdf', 'rb')}
+    print(jsonify())
 
 
 
@@ -343,8 +347,10 @@ def userfeedback():
 
         # going to get back an array
         #print(s)
-        semanticAnalysis = [-0.999987,0.989999]
-
+        x = random.uniform(-1,1)
+        semanticAnalysis = [x]
+        #x = random.uniform(-1,1)
+        print(x)
         #write swear word and filter them out 
         swearWords = ['fuck', 'shit', 'bollocks', 'wanker', 'asshat', 'prick','bellend','crap', 'bugger', 'dick','knob','twat', 'bitch', 'cunt']
 
@@ -529,7 +535,7 @@ def meetinglogin():
                 MeetingFound.update_participants(companyid)
                 print(MeetingFound.get_number_of_participants())
                 
-                getTemplate = "Select TemplateName, EmotionsSelected, Question from TEMPLATES INNER JOIN MEETING ON MEETING.TemplateID = TEMPLATES.TemplateID WHERE MEETING.MeetingID =" + str(meetingid)
+                getTemplate = "Select TemplateName, EmotionsSelected, Question, MeetingName from TEMPLATES INNER JOIN MEETING ON MEETING.TemplateID = TEMPLATES.TemplateID WHERE MEETING.MeetingID =" + str(meetingid)
                 print(getTemplate)
                 cur.execute(getTemplate)
                 row_headers=[x[0] for x in cur.description]
@@ -551,6 +557,7 @@ def meetinglogin():
                     tempDict["templatename"] = each[0]
                     tempDict["question"] = secondquestions
                     tempDict["companyid"] = companyid
+                    tempDict["meetingname"] = each[3]
                     returnData.append(tempDict)
                 #print("out")
                 print(returnData)
