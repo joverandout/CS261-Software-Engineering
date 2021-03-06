@@ -186,7 +186,7 @@ export default function CreateEvent(){
                 </div>
 
                 <div className="oneLine">
-                    <p style={style.genericText}> Event Duration (HH:MM:SS): </p>
+                    <p style={style.genericText}> Event Duration: </p>
                     <input name={"duration"} type="text" min={1} className="form-control" id="duration" onChange={formChange}/>
                     
                 </div>

@@ -71,8 +71,8 @@ export default function HostSignIn(){
             </form>
             
             <div>
-                    <button onClick={login} className="green_button">GO</button>
-              </div>
+                <button onClick={login} className="green_button">GO</button>
+            </div>
         </div>
 
   )
