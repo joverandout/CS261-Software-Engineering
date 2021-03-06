@@ -179,6 +179,7 @@ input[type="checkbox"] {
     min-width: 100px;
     max-width: 200px;
     color: rgb(0, 0, 0);
+    margin-left: 30px;
 }
 
 #progress_button{
@@ -193,7 +194,6 @@ input[type="checkbox"] {
 
 #new_event {
     position: absolute; /*Fix back button to top-left*/
-    top: 5;
     right: 5vw;
     width: 10vw;
     min-width: 150px;

@@ -200,7 +200,7 @@ export default function CreateEvent(){
 
             </div>
 
-            <hr/>
+        
         </div>
     );
 }

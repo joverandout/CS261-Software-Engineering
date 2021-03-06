@@ -104,8 +104,8 @@ export default function Timetable(){
   return(
     <div>
        <button className="white_button" id="back_button" onClick={logout}>Log Out</button>
-        <button className="white_button" id="new_event" onClick={createEvent}> Create New Event </button>
-        <button className="white_button" id="new_event" onClick={createTemplate}> Create Template </button>
+        <button className="white_button" id="new_event" onClick={createEvent} style={{paddingTop: "5"}}> Create New Event </button>
+        <button className="white_button"  onClick={createTemplate} style={{paddingTop: "20"}}> Create Template </button>
     
     <div className="wrap">
      
