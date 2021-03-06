@@ -8,7 +8,7 @@ export default function JoinMeeting(){
     const history = useHistory()
     /*const location = useLocation()
     const props = location.state*/
-
+    const [error, setError] = useState(null)
     const [formEntries, setFormEntries] = useState({
         meetingcode: "",
         username:"",
@@ -32,6 +32,7 @@ export default function JoinMeeting(){
     function join(){
         if(formEntries.username=="" || formEntries.meetingcode==""){
             console.log("Enter a meeting code and username")
+            setError(<p style={{color:"red"}}>Enter a meeting code and your company username</p>)
             return
         }
         console.log(formEntries)
@@ -47,6 +48,7 @@ export default function JoinMeeting(){
         }).catch(err=>{
             console.log(err.message)
             //todo add some kind of error message
+            setError(<p style={{color:"red"}}>Could not join meeting</p>)
         })
         
        
@@ -68,7 +70,7 @@ export default function JoinMeeting(){
             <span><a id="AnonymousMessage">Remain Anonymous</a></span>
             <input type="checkbox" id="Anonymous" name="anonymous" onChange={inputHandler}/>
 
-            
+            {error}
             
             <div>
                 <button type="submit" className="green_button" onClick={join}>Join</button>
