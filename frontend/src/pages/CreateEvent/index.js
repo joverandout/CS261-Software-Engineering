@@ -196,7 +196,10 @@ export default function CreateEvent(){
                     <input type="button" onClick="" value="Make a new Template" onClick={makeNewTemplate}/>
                 </div>
 
+                <br></br>
                 <button className="yellow_button" onClick={scheduleEvent}>Schedule Event</button>
+                <br></br>
+                <br></br>
 
             </div>
 
