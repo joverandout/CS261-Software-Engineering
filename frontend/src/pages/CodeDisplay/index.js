@@ -2,6 +2,7 @@ import "../styles.css"
 import "./cdstyle.css"
 import stopMeeting from "../../api/stopMeeting"
 import endMeeting from "../../api/endMeeting"
+import qrImage from '../../pages/CodeDisplay/qr.png';
 
 import React, {useReducer, useState, useMemo, useEffect} from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
@@ -48,8 +49,8 @@ export default function CodeDisplay(){
 
             <div className="split left">
                 <div className="centered">
-                <p>Join this event by scanning the QR code below</p>
-                <img src="qr.png"></img>
+                <p className="image">Join this event by scanning the QR code below</p>
+                <img src={qrImage} alt="QR Code" ></img>
                 </div>
             </div>
             

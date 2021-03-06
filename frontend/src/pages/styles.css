@@ -109,7 +109,7 @@ select {
 
 .oneline > input {
     display: inline-block;
-    width: 100px; /*possibly 150*/
+    width: 150px; 
     max-width: 100%;
 }
 
