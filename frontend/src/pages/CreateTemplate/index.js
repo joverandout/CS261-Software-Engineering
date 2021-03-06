@@ -79,7 +79,7 @@ export default function CreateTemplate(){
         }
         
         setQuestions([...questions, q])
-        setQPs([...questionPs, (<button class="question_box" key={questionPs.length}>{q}</button>)])
+        setQPs([...questionPs, (<button className="question_box" key={questionPs.length}>{q}</button>)])
     }
 
     function complete(){

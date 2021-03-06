@@ -18,6 +18,9 @@ function EventComponent(props){
   
   let eventName = event.MeetingName
   let eventTime = event.StartTime
+
+  
+
   let tag = event.Category
 
   function clicked(){
@@ -32,7 +35,7 @@ function EventComponent(props){
 
 
   return(
-    <button onClick={clicked}>{eventName} | {eventTime} | {tag}</button>
+    <button  onClick={clicked}>{eventName} | {eventTime} | {tag}</button>
   );
 }
 
@@ -100,18 +103,19 @@ export default function Timetable(){
     history.push("/CreateTemplate")
   }
   // todo - change the username according to the context details
-  
+  console.log(user)
   return(
     <div>
        <button className="white_button" id="back_button" onClick={logout}>Log Out</button>
         <button className="white_button" id="new_event" onClick={createEvent}> Create New Event </button>
-        <button className="white_button" id="new_event" onClick={createTemplate}> Create Template </button>
+        <button className="white_button" id="new_template" onClick={createTemplate}> Create Template </button>
     
     <div className="wrap">
+    
      
         
         <div className="header" id="avoid_buttons">
-            <h1>Welcome, Username </h1>
+            <h1>Welcome, {user.Name} </h1>
             <h3>Your scheduled meetings:</h3>
             <p style={{fontSize: 18, fontWeight: "bold", textAlign: "left"}}> Filter by Category: </p>
             <select name="cat" id="cat" style={{width: "30vw", paddingLeft: 10, marginRight: "60vw"}} onChange={refreshEventList}> 
