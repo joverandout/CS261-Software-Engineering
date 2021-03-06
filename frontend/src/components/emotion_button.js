@@ -49,6 +49,6 @@ export default function EmotionButton(props){
     }
 
     return(
-        <button style={btnStyle} onClick={toggle}>{props.name}</button>
+        <button className="emotion_button" style={btnStyle} onClick={toggle}>{props.name}</button>
     )
 }
