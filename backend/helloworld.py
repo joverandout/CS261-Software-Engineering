@@ -27,6 +27,8 @@ import hashlib
 import sqlite3
 from sqlite3 import Error
 
+import random
+
 import template_db_fethcer
 #from Semantic import Semantic
 #from Offensive import Offensive
@@ -450,7 +452,7 @@ def userfeedback():
                             #newDict = dict(zip(emotions,ratings))
                             newDict = dict()
                             print("here before")
-                            newDict["semantics"] = semanticsTotal
+                            newDict["semantics"] = random.randint(-100,100)/100 #semanticsTotal
                             print("here")
                             newDict["emotions"] = emotions
                             newDict["ratings"] = ratings
