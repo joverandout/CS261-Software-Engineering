@@ -1,0 +1,47 @@
+from multiprocessing.spawn import freeze_support
+
+from flair.data import Corpus
+from flair.datasets.document_classification import ClassificationCorpus
+from flair.embeddings import WordEmbeddings, FlairEmbeddings, DocumentRNNEmbeddings, StackedEmbeddings
+from flair.embeddings import TransformerDocumentEmbeddings
+from flair.models.text_classification_model import TextClassifier
+from flair.trainers.trainer import ModelTrainer
+from torch.optim.adam import Adam
+from flair.embeddings.legacy import DocumentLSTMEmbeddings
+from hyperopt import hp
+from flair.hyperparameter.param_selection import SearchSpace, Parameter
+
+data_folder = '.'
+
+# 'if' only needed when on Windows
+if __name__ == '__main__':
+    freeze_support()  
+
+    corpus: Corpus = ClassificationCorpus(data_folder, 
+                                     test_file='test.txt',
+                                     dev_file='dev.txt',
+                                     train_file='train.txt')
+    # 2. create the label dictionary
+    label_dict = corpus.make_label_dictionary()
+
+    # create a StackedEmbedding object that combines glove and forward/backward flair embeddings
+    stacked_embeddings = [WordEmbeddings('glove'),
+                         ]
+    
+    # 4. initialize transformer document embeddings
+    embedding = DocumentRNNEmbeddings(stacked_embeddings, 
+                                              hidden_size=512, 
+                                              reproject_words=True, 
+                                              reproject_words_dimension=256)
+
+    # 5. create the text classifier
+    classifier = TextClassifier(embedding, label_dictionary=label_dict, multi_label=False)
+
+    # 6. initialize the text classifier trainer
+    trainer = ModelTrainer(classifier, corpus, optimizer=Adam)
+    trainer.train('.', 
+                  learning_rate=0.1,
+                  mini_batch_size=16,
+                  max_epochs=5,
+                  embeddings_storage_mode='cpu')
+
