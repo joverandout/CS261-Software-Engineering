@@ -227,6 +227,12 @@ input[type="checkbox"] {
     display: table;
     }
 
+.btn-group button {
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+    margin: 20px;
+    
+}
 
 .btn-group-2 button {
     cursor: pointer; /* Pointer/hand icon */

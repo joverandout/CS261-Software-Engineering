@@ -120,7 +120,7 @@ export default function CreateTemplate(){
         history.goBack()
     }   
     console.log("FF",buttonValues, emotionButtons.length)
-    //console.log(buttonValues.length)
+    
     return(
         <div>
             <button className="white_button" id="back_button" onClick={back}>Back</button>

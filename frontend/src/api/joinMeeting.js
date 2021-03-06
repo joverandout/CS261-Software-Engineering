@@ -12,6 +12,7 @@ export default function joinMeeting(data){
         return{
             meetingid:info.meetingid,
             companyid:info.companyid,
+            meetingname:info.meetingname,
             template:template
         }
     }).catch(err=>{

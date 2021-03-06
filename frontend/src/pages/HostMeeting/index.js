@@ -19,7 +19,6 @@ function reducer(state, action){
            let newSum = currentSum+actionVal
            let ave = newSum/newCount
            let plot = [...state.semanticData.plot, [Date.parse(Date()), ave]]
-           console.log(plot)
            
            return {
                semanticData:{
@@ -35,7 +34,7 @@ export default function HostMeeting(){
     const location = useLocation()
     const history = useHistory()
     const event = location.state.event
-    console.log(location.state)
+
     const initialState ={
         semanticData: {
             sum:0,
@@ -45,6 +44,12 @@ export default function HostMeeting(){
     }
     const [state, dispatch] = useReducer(reducer, initialState)
     const [buttonColour, setButtonColour] = useState("green_button")
+    
+    const [textFeedback, setTextFeedback] = useState([])
+    const [emotions, setEmotions] = useState([])
+
+    const [emotionElements, setEmotionElements] = useState([])
+    
 
     useEffect(()=>{
       const socket = io("http://127.0.0.1:5000", {
@@ -52,19 +57,60 @@ export default function HostMeeting(){
           token:"id01043"
         }
       })
+
       socket.on("feedback", newFeedback)
       return ()=>{
         socket.close()
-        console.log("closing")
+        console.log("closing socket")
       }
+      
     },[])
+
+    useEffect(()=>{
+
+      let sortable = emotions
+      
+      sortable.sort((a,b)=>{
+        return a[1] - b[1];
+      })
+      let elements = []
+
+      for(let i=0;i<sortable.length;i++){
+        if(i>3){
+          break
+        }
+        
+        elements.push(<p key={i}>{sortable[i][0]} - {sortable[i][1]}</p>)
+      }
+      setEmotionElements([...elements])
+      console.log("!!!!")
+    },[emotions])
     
     function newFeedback(data){
-       dispatch({
+        dispatch({
            type:"newSemantic",
            semanticValue:data.semantics
-       })
-       console.log(data)
+        })
+       
+        if(!(data.generalText == "")){
+          let feedback = textFeedback
+          feedback.push((<p key={textFeedback.length}>{data.generaltext}</p>))
+          setTextFeedback([...feedback] )
+        }
+        console.log(data.emotions, data.ratings)
+        let tmpEmotions = emotions
+        
+        if(tmpEmotions.length==0){
+          data.emotions.forEach((element,i) => {
+            tmpEmotions.push([element, parseInt(data.ratings[i])])
+          });
+        }else{
+          tmpEmotions.forEach((element,i) => {
+            tmpEmotions[i][1]+=parseInt(data.ratings[i])
+          });
+        }
+        console.log(tmpEmotions)
+        setEmotions([...tmpEmotions])
     }
 
     function triggerEnd(){
@@ -114,22 +160,25 @@ export default function HostMeeting(){
           <Chart data={data} axes={axes} />
         </div>
       )
+      
 
-      const page = (
-        <div>
+    return(
+      <div>
           <div>
               <h1>{event.MeetingName}</h1>            
           </div>
           <hr/>
-          <div class="row">
-            <div class="column">
+          <div className="row">
+            <div className="column">
               <p>Attendees are saying:</p>
-              <div class="errorBox">Error goes here and here is a really really long error message to prove if it goes onto a second line</div>
+              {textFeedback}
+              <div className="errorBox">Error goes here and here is a really really long error message to prove if it goes onto a second line</div>
             </div>
-            <div class="column">
+            <div className="column">
               <p>Most attendees are:</p>
               <div className="btn-group" id="buttons" style={{marginBottom: 60}}>
-                  <button>2 or 3 emotion buttons, same as template page</button>
+                  
+                  {emotionElements}
               </div>
             </div>
           </div>
@@ -139,9 +188,6 @@ export default function HostMeeting(){
           </div>
 
         </div>
-        
-      )
-
-    return page
+    )
 }
 
