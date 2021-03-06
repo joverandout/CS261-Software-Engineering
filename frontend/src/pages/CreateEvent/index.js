@@ -22,6 +22,8 @@ export default function CreateEvent(){
     const [templateOptions, setTemOptions] = useState([])
     const [categoryOptions, setCatOptions] = useState([])
 
+    const [error, setError] = useState(null)
+
     const contextUser = useContext(UserContext)
     const user = contextUser.user
     useEffect( ()=>{
@@ -47,6 +49,7 @@ export default function CreateEvent(){
             setCatOptions(catOptions)
         }).catch(err=>{
             console.log(err.message)
+            setError(<p style={{color:"red"}}>Could not log in, make sure credentials are valid</p>)
         })
     },[])
 
@@ -127,6 +130,7 @@ export default function CreateEvent(){
             history.push("/Timetable")
         }).catch(err=>{
             console.log(err.message)
+            setError(<p style={{color:"red"}}>Please complete all fields</p>)
         })
 
     }
@@ -198,6 +202,7 @@ export default function CreateEvent(){
                     {toggleRecurrance?recurrance:null}
                 </div>
 
+                {error}
                 <br></br>
                 <button className="yellow_button" onClick={scheduleEvent}>Schedule Event</button>
                 <br></br>
