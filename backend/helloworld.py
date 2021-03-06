@@ -828,7 +828,7 @@ def gettemplates():
             for each in data:
                 templateinfo.append([each[0], each[1]])
             cur = con.cursor()
-            query = "SELECT Category FROM MEETING WHERE HostID = " + hostid
+            query = "SELECT Category FROM MEETING WHERE HostID = " + hostid + " GROUP BY Category"
             cur.execute(query)
             data = cur.fetchall()
             category = []
