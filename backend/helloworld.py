@@ -199,10 +199,11 @@ def meetingview():
                         print(j)
                         print(emotDict[x[j]])
                         val = emotDict[x[j]]
-                        print(y[j])
-                        print(val[y[j]])
-                        val[y[j]] = val[y[j]] + 1
-                        print(val[y[j]])
+                        if y[j] != 0:
+                            print(y[j])
+                            print(val[y[j]])
+                            val[y[j]] = val[y[j]] + 1
+                            print(val[y[j]])
                     print("DIE PLZ")
             print("here")
             query = "select MeetingName, Category from MEETING where MeetingID = " + meetingID
@@ -415,6 +416,9 @@ def userfeedback():
                 semanticsAsString = semanticsAsString[:-1]
                 print(semanticsAsString)
                 print("Meme")
+                #ratList = 
+                #emotsList = emotion.split(",")
+                
                 if True == True:
                     print("here")
                     #query = """INSERT INTO FEEDBACK VALUES(NULL, " """+ generaltext +""" ", '""" + emotion + """', '""" + timeSent + """', '"""+ rating +"""', ' """ + semanticAnalysis + ""')"""

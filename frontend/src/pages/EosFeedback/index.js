@@ -98,12 +98,11 @@ export default function EosFeedback(){
     return(
         <div>
         <div className="wrap">
+            <h1> Meeting Name </h1> 
             <p>End-of-session feedback</p>
             <h1>{meetingdetails.meetingname}</h1>
         </div>
         <hr/>
-        <p>Thank you for attending this event. Please take a minute to fill in the end-of-session feedback questions below.</p>
-        <br></br>
         <div className="wrap">
             <div className="row">
                 {questionComponents}

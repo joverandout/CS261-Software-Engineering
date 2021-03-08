@@ -174,7 +174,6 @@ input[type="checkbox"] {
 #next_button{
     float:right;
     margin-bottom: 20px;
-    margin-right: 20px;
 }
 
 #back_button{
@@ -184,8 +183,7 @@ input[type="checkbox"] {
     width: 10vw;
     min-width: 100px;
     max-width: 200px;
-    color: red;
-    margin-left: 30px;
+    color: rgb(0, 0, 0);
 }
 
 #progress_button{
