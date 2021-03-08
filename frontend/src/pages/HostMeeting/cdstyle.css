@@ -23,3 +23,33 @@
   margin-left: 60px;
   
 }
+
+#back_button2 {
+  color:black;
+  display: inline-block;
+}
+
+.mybtn-group button {
+  cursor: pointer; /* Pointer/hand icon */
+  float: left; /* Float the buttons side by side */
+  margin: 30px;
+}
+
+.mybtn-group h1 {
+  cursor: pointer; /* Pointer/hand icon */
+  float: left; /* Float the buttons side by side */
+  margin: 40px;
+  margin-left: 60px;
+  margin-top: 30px;
+}
+
+/* Clear floats (clearfix hack) */
+.mybtn-group:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.mybtn-group button:last-child {
+	margin-left: 260px;
+}

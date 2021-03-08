@@ -41,7 +41,7 @@ export default function HostMeeting(){
             count:0,
             plot:[[Date.parse(Date()), 0]]
         }
-    }
+    } 
     const [state, dispatch] = useReducer(reducer, initialState)
     const [buttonColour, setButtonColour] = useState("green_button")
     
@@ -164,8 +164,11 @@ export default function HostMeeting(){
 
     return(
       <div>
-          <div>
-              <h1>{event.MeetingName}</h1>            
+          <div class="mybtn-group">
+          <button className="white_button buttonend" >END EVENT</button>
+            <button className="yellow_button" style={{padding:"24px"}}>View Meeting Code</button>
+            <h1>{event.MeetingName}</h1>   
+            <button className="green_button buttonlive" >In Progress</button>
           </div>
           <hr/>
           <div className="row">
