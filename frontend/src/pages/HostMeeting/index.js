@@ -79,7 +79,7 @@ export default function HostMeeting(){
         if(i>3){
           break
         }
-        
+        let p = sortable.leng
         elements.push(<p key={i}>{sortable[i][0]} - {sortable[i][1]}</p>)
       }
       setEmotionElements([...elements])

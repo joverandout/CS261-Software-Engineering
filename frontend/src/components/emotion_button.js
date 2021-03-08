@@ -20,8 +20,8 @@ export default function EmotionButton(props){
             }
         })
         if(!set){
-            setBaseColour("#F4b72f")
-            colour = "#F4b72f"
+            setBaseColour("#00b050")
+            colour = "#00b050"
         }
 
         if(props.value == true){
