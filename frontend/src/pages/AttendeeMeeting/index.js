@@ -213,6 +213,8 @@ export default function AttendeeMeeting(){
         <button name="quiet" className="btn report" onClick={issueButton}>The speaker is too quiet</button>
         <button name="mute" className="btn report" onClick={issueButton}>The speaker is on mute</button>
         <button name="missing" className="btn report" onClick={issueButton}>The content is missing</button>
+        <br></br>
+        <br></br>
         <div className="row">
             <input type="text" className="form-control" id="name" name="Issue" onChange={(input)=>{setTFeedback(input.target.value)}}/> 
             <label htmlFor="name">Report other issue</label>
@@ -228,8 +230,12 @@ export default function AttendeeMeeting(){
         <div>
             <div className="row">
                 <input type="number" onChange={scoreChange} min={0} max={5} className="form-control" id="name" name="emScore"/> 
-                <label htmlFor="emScore">How Strongly do you feel this 0-5</label>
-                <button className="green_button" onClick={scoreOk}>Confirm</button>
+                <label htmlFor="emScore">How Strongly do you feel this 1-5</label>
+                <button className="green_button" onClick={scoreOk}>1</button>
+                <button className="green_button" onClick={scoreOk}>2</button>
+                <button className="green_button" onClick={scoreOk}>3</button>
+                <button className="green_button" onClick={scoreOk}>4</button>
+                <button className="green_button" onClick={scoreOk}>5</button>
              </div>
         </div>
     )
@@ -237,17 +243,19 @@ export default function AttendeeMeeting(){
     let page =(
         <div>
             <div className="header">
-                    <h1>Event Name</h1>
-                    <button className="green_button" onClick={togglePopup}>Report Technical Issue</button>
+                    <h1>Event Name</h1> 
+                    <button className="red_button" onClick={togglePopup}>Report Technical Issue</button>
             </div>
-            <hr/>
+            <br></br>
             <div className="btn-group" id="buttons" style={{marginBottom: 60}}>
                 {emotionButtons}
             </div>
-            <hr/>
+            <br></br>
+            <div className="wrap">
             <div className="row">
                 <input value={feedback} type="text" className="form-control" id="name" name="Feedback" onChange={formHandler}/> 
                 <label htmlFor="name">Provide Feedback</label>
+            </div>
             </div>
             <button className="green_button" onClick={sendFeedback}>Send</button>
         </div>
