@@ -219,8 +219,11 @@ def meetingview():
             print(data)
             with open("Test.pdf", "rb") as pdf_file:
                 encoded_string = base64.b64encode(pdf_file.read())
+                print(encoded_string)
             return encoded_string
-    except:
+    except Exception as e:
+        print(e)
+        print("\n\n")
         return ("nope not working",400)
 
 def makepdf(generalText, usernames,emoR, MN, MC, emoDict, postfeed):

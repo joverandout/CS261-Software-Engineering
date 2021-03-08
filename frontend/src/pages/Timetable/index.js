@@ -23,12 +23,7 @@ function EventComponent(props){
   let startTimeDate = Date.parse(event.StartTime)
   let timeNow = new Date()
 
-  let style = {backgroundColor: "#e7e6e6"}
 
-  if(startTimeDate > timeNow.getTime()){
-    style = {backgroundColor: "#F2DFA7"}
-  }
-  
   let tag = event.Category
 
   function clicked(){
@@ -40,14 +35,14 @@ function EventComponent(props){
       }
     })
   }
-  let style = {backgroundColor: "#e7e6e6"}
+  let style = {backgroundColor: "#F2DFA7"}
   let bjsx = (<button style={style} onClick={clicked}>{eventName} | {eventTime} | {tag}</button>)
-  if(startTimeDate > timeNow.getTime()){
-    style = {backgroundColor: "#F2DFA7"}
-    meetingView.then(res=>{
+  if(startTimeDate < timeNow.getTime()){
+    style = {backgroundColor: "#e7e6e6"}
+    meetingView({meetingid:event.MeetingID.toString()}).then(res=>{
 
     }).catch(err=>{
-      console.log("No Pdf")
+      console.log(err.message)
       bjsx = (<button style={style}>{eventName} | {eventTime} | {tag}</button>)
  
     })
@@ -59,7 +54,10 @@ function EventComponent(props){
 
 
   return(
-    {bjsx}
+    <div>
+        {bjsx}
+    </div>
+    
   );
 }
 

@@ -165,18 +165,12 @@ export default function HostMeeting(){
           <hr/>
           <div className="row">
             <div className="column">
-<<<<<<< HEAD
-              <p>Attendees are saying:</p>
-              {textFeedback}
-              <div className="errorBox">{technicalFeedback}</div>
-=======
             <div className="errorBox">Error goes here and here is a really really long error message to prove if it goes onto a second line</div>
               <br></br>
               <h3>Attendees are saying:</h3>
               <div className="scrollable">
                 {textFeedback}
               </div>
->>>>>>> 44066670e8f1e3d6ad729e08c412d0555531516a
             </div>
             <div className="column">
               <h3>Most attendees are:</h3>
