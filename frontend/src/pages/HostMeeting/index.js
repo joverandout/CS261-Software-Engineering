@@ -173,20 +173,23 @@ export default function HostMeeting(){
           <hr/>
           <div className="row">
             <div className="column">
-              <p>Attendees are saying:</p>
-              {textFeedback}
-              <div className="errorBox">Error goes here and here is a really really long error message to prove if it goes onto a second line</div>
+            <div className="errorBox">Error goes here and here is a really really long error message to prove if it goes onto a second line</div>
+              <br></br>
+              <h3>Attendees are saying:</h3>
+              <div className="scrollable">
+                {textFeedback}
+              </div>
             </div>
             <div className="column">
-              <p>Most attendees are:</p>
+              <h3>Most attendees are:</h3>
               <div className="btn-group" id="buttons" style={{marginBottom: 60}}>
                   
                   {emotionElements}
               </div>
             </div>
           </div>
-          <div>
-              <p>Overall mood graph:</p>
+          <div className="graph">
+              <h3>Overall mood graph:</h3>
               {lineChart}
           </div>
 

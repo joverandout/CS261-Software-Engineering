@@ -53,3 +53,15 @@
 .mybtn-group button:last-child {
 	margin-left: 260px;
 }
+
+.scrollable{
+  overflow: auto;
+  height: 150px;
+  width: 700px;
+  border: 1px solid black;
+  margin-left: 40px;
+}
+
+.graph {
+  margin: 30px;
+}
