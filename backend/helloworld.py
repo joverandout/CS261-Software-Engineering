@@ -8,7 +8,6 @@ from flask_socketio import SocketIO, emit, send
 from flask import request
 from flask_cors import CORS
 from markupsafe import escape
-import base64
 
 from Meeting import Meeting
 from Host import Host
@@ -22,7 +21,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 import time
-
+import base64
 import hashlib
 
 
