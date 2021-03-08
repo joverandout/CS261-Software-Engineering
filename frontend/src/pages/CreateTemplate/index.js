@@ -57,6 +57,12 @@ export default function CreateTemplate(){
     }
 
     function addButton(){
+        
+        if(customEmName == ""){
+            return
+            // Add error message?
+        }
+
         let tmpEmButton = emotionButtons
         let tmpEmValues = buttonValues
         let i = emotionButtons.length
@@ -78,6 +84,16 @@ export default function CreateTemplate(){
             q+="?"
         }
         
+        if(q==""){
+            return 
+            //Add some kind of error message?
+        }
+
+        if(questions.length == 3){
+            return 
+            //another
+        }
+
         setQuestions([...questions, q])
         setQPs([...questionPs, (<button className="question_box" key={questionPs.length}>{q}</button>)])
     }
@@ -119,8 +135,7 @@ export default function CreateTemplate(){
     function back(){
         history.goBack()
     }   
-    console.log("FF",buttonValues, emotionButtons.length)
-    
+
     return(
         <div>
             <button className="white_button" id="back_button" onClick={back}>Back</button>

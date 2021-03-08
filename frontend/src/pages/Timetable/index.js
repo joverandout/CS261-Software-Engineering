@@ -5,6 +5,7 @@ import "../styles.css";
 
 import getHostMeetings from "../../api/getHostMeetings"
 import UserContext from '../../contexts/user-context'
+import meetingView from '../../api/meetingView';
 
 
 function EventComponent(props){
@@ -19,8 +20,15 @@ function EventComponent(props){
   let eventName = event.MeetingName
   let eventTime = event.StartTime
 
-  
+  let startTimeDate = Date.parse(event.StartTime)
+  let timeNow = new Date()
 
+  let style = {backgroundColor: "#e7e6e6"}
+
+  if(startTimeDate > timeNow.getTime()){
+    style = {backgroundColor: "#F2DFA7"}
+  }
+  
   let tag = event.Category
 
   function clicked(){
@@ -32,10 +40,26 @@ function EventComponent(props){
       }
     })
   }
+  let style = {backgroundColor: "#e7e6e6"}
+  let bjsx = (<button style={style} onClick={clicked}>{eventName} | {eventTime} | {tag}</button>)
+  if(startTimeDate > timeNow.getTime()){
+    style = {backgroundColor: "#F2DFA7"}
+    meetingView.then(res=>{
+
+    }).catch(err=>{
+      console.log("No Pdf")
+      bjsx = (<button style={style}>{eventName} | {eventTime} | {tag}</button>)
+ 
+    })
+    bjsx = (<button style={style} >{eventName} | {eventTime} | {tag}</button>)
+  }
+  
+
+  
 
 
   return(
-    <button  onClick={clicked}>{eventName} | {eventTime} | {tag}</button>
+    {bjsx}
   );
 }
 
@@ -103,7 +127,6 @@ export default function Timetable(){
     history.push("/CreateTemplate")
   }
   // todo - change the username according to the context details
-  console.log(user)
   return(
     <div>
        <button className="white_button" id="back_button" onClick={logout}>Log Out</button>

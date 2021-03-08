@@ -50,21 +50,7 @@ export default function HostMeeting(){
 
     const [emotionElements, setEmotionElements] = useState([])
     
-
-    useEffect(()=>{
-      const socket = io("http://127.0.0.1:5000", {
-        auth:{
-          token:"id01043"
-        }
-      })
-
-      socket.on("feedback", newFeedback)
-      return ()=>{
-        socket.close()
-        console.log("closing socket")
-      }
-      
-    },[])
+    const [technicalFeedback, setTechnicalFeedback] = useState([])
 
     useEffect(()=>{
 
@@ -79,7 +65,7 @@ export default function HostMeeting(){
         if(i>3){
           break
         }
-        let p = sortable.leng
+        let p = sortable.length
         elements.push(<p key={i}>{sortable[i][0]} - {sortable[i][1]}</p>)
       }
       setEmotionElements([...elements])
@@ -87,6 +73,12 @@ export default function HostMeeting(){
     },[emotions])
     
     function newFeedback(data){
+
+        if(data.emotion){
+          setTechnicalFeedback(data.generalText)
+          return 
+        }
+
         dispatch({
            type:"newSemantic",
            semanticValue:data.semantics
@@ -165,8 +157,8 @@ export default function HostMeeting(){
     return(
       <div>
           <div class="mybtn-group">
-          <button className="white_button buttonend" >END EVENT</button>
-            <button className="yellow_button" style={{padding:"24px"}}>View Meeting Code</button>
+          <button className="white_button buttonend" onChange={triggerEnd}>END EVENT</button>
+            <button className="yellow_button" style={{padding:"24px"}} onChange={()=>{history.goBack()}}>View Meeting Code</button>
             <h1>{event.MeetingName}</h1>   
             <button className="green_button buttonlive" >In Progress</button>
           </div>
@@ -175,7 +167,7 @@ export default function HostMeeting(){
             <div className="column">
               <p>Attendees are saying:</p>
               {textFeedback}
-              <div className="errorBox">Error goes here and here is a really really long error message to prove if it goes onto a second line</div>
+              <div className="errorBox">{technicalFeedback}</div>
             </div>
             <div className="column">
               <p>Most attendees are:</p>
