@@ -3,11 +3,12 @@
 #pip install flask-cors
 #pip install flair (might need anaconda)
 
-from flask import Flask, url_for, render_template, jsonify
+from flask import Flask, url_for, render_template, jsonify, send_file
 from flask_socketio import SocketIO, emit, send
 from flask import request
 from flask_cors import CORS
 from markupsafe import escape
+import base64
 
 from Meeting import Meeting
 from Host import Host
@@ -216,7 +217,9 @@ def meetingview():
             print(postfeed)
             makepdf(generaltext, usernames, emotionsWithRatings, meetingName, meetingCat, emotDict, dictTest)
             print(data)
-            return jsonify(returnData)
+            with open("Test.pdf", "rb") as pdf_file:
+                encoded_string = base64.b64encode(pdf_file.read())
+            return encoded_string
     except:
         return ("nope not working",400)
 
@@ -282,7 +285,6 @@ def makepdf(generalText, usernames,emoR, MN, MC, emoDict, postfeed):
     pdf.output("Test.pdf")
     files = {'file': open('Test.pdf', 'rb')}
     print(jsonify())
-
 
 
 @app.route('/postmeetingfeed', methods=["POST"])
