@@ -51,8 +51,8 @@ class Semantic():
 
 # example usage
 
-# feedbackEval = Semantic("Groupwork was okay. There were no fireworks. I think you were on time. Overall, an avergae workshop")
-# feedbackEval.update_semValues_and_confScores()
-# s = feedbackEval.get_scores()
-# print(s)
+feedbackEval = Semantic("Groupwork was okay. There were no fireworks. I think you were on time. Overall, an avergae workshop")
+feedbackEval.update_semValues_and_confScores()
+s = feedbackEval.get_scores()
+print(s)
 #

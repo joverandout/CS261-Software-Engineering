@@ -3,7 +3,7 @@ import "./cdstyle.css"
 import React, {useReducer, useState, useMemo, useEffect} from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { Chart } from "react-charts"
-import {io} from "socket.io-client"
+import {io, Socket} from "socket.io-client"
 import endMeeting from "../../api/endMeeting"
 import stopMeeting from "../../api/stopMeeting"
 import hostLogIn from "../../api/hostLogIn";
@@ -69,9 +69,24 @@ export default function HostMeeting(){
         elements.push(<p key={i}>{sortable[i][0]} - {sortable[i][1]}</p>)
       }
       setEmotionElements([...elements])
-      console.log("!!!!")
     },[emotions])
+
+    useEffect(()=>{
+      const socket = io("http://127.0.0.1:5000", {
+        auth:{
+          token:"id01043"
+        }
+      })
+
+      socket.on("feedback", newFeedback)
+      return ()=>{
+        socket.close()
+        console.log("closing socket")
+      }
+      
+    },[])
     
+
     function newFeedback(data){
 
         if(data.emotion){

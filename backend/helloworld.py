@@ -31,8 +31,8 @@ from sqlite3 import Error
 import random
 
 import template_db_fethcer
-#from Semantic import Semantic
-#from Offensive import Offensive
+from Semantic import Semantic
+from Offensive import Offensive
 import time
 from datetime import datetime
 
@@ -346,9 +346,9 @@ def userfeedback():
         # print(howOffensive)
 
         # send to the sentiment analysis 
-        # feedbackEval = Semantic(generaltext)
-        # feedbackEval.update_semValues_and_confScores()
-        # s = feedbackEval.get_scores()
+        feedbackEval = Semantic(generaltext)
+        feedbackEval.update_semValues_and_confScores()
+        s = feedbackEval.get_scores()
 
         # going to get back an array
         #print(s)
