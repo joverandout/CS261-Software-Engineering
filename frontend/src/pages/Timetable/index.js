@@ -35,18 +35,34 @@ function EventComponent(props){
       }
     })
   }
-  let style = {backgroundColor: "#F2DFA7"}
-  let bjsx = (<button style={style} onClick={clicked}>{eventName} | {eventTime} | {tag}</button>)
-  if(startTimeDate < timeNow.getTime()){
-    style = {backgroundColor: "#e7e6e6"}
-    meetingView({meetingid:event.MeetingID.toString()}).then(res=>{
+
+  function pdfClicked(){
+    console.log("!!!")
+    meetingView({meetingid:event.MeetingID.toString()}).then(b64=>{
+      let uri = "data:application/pdf;base64,"+b64
+
+      //stolen code https://stackoverflow.com/questions/2805330/opening-pdf-string-in-new-window-with-javascript
+      var byteCharacters = atob(b64);
+      var byteNumbers = new Array(byteCharacters.length);
+      for (var i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      var byteArray = new Uint8Array(byteNumbers);
+      var file = new Blob([byteArray], { type: 'application/pdf;base64' });
+      var fileURL = URL.createObjectURL(file);
+      window.open(fileURL,"_blank");
 
     }).catch(err=>{
       console.log(err.message)
-      bjsx = (<button style={style}>{eventName} | {eventTime} | {tag}</button>)
- 
     })
-    bjsx = (<button style={style} >{eventName} | {eventTime} | {tag}</button>)
+  }
+  let style = {backgroundColor: "#F2DFA7"}
+  let bjsx = (<button style={style} onClick={clicked}>{eventName} | {eventTime} | {tag}</button>)
+  
+  if(startTimeDate < timeNow.getTime()){
+    style = {backgroundColor: "#e7e6e6"}
+    console.log("!!!!!!!")
+    bjsx = (<button style={style} onClick={pdfClicked}>{eventName} | {eventTime} | {tag}</button>)
   }
   
 
