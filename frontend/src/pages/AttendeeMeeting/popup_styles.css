@@ -1,9 +1,14 @@
-body 
-* {box-sizing: border-box;}
+body * {
+    box-sizing: border-box;
+}
 
 /* Add some hover effects to buttons */
 .form-container .btn:hover, .open-button:hover {
   opacity: 1;
+}
+
+.form-container{
+    padding: 20px;
 }
 
 /* Set a style for the submit button */
