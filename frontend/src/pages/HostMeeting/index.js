@@ -184,7 +184,7 @@ export default function HostMeeting(){
               </div>
             </div>
             <div className="column">
-              <h3>Most attendees are:</h3>
+              <h3>Attendees are feeling:</h3>
               <div className="btn-group" id="buttons" style={{marginBottom: 60}}>
                   
                   {emotionElements}

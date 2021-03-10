@@ -162,15 +162,18 @@ export default function Timetable(){
             </select>
         </div>
 
-        <hr/>
 
 
-                <div className="btn-group" id="buttons" >
-                  {/** generated buttons go here*/}
-                  {eventButtons}
-                </div>
+        
 
     </div>
+
+      <hr/>
+      <div className="new-btn-group" id="buttons" >
+            {/** generated buttons go here*/}
+            {eventButtons}
+        </div>
+
     </div>
   );
 }
