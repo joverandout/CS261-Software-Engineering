@@ -10,12 +10,3 @@ need to watch out for cross-site request forgery
 Semantic Analysis
 
 - Seems strange to structure the class like this
-
-flask
-flask_socketio
-flask_cors
-markupsafe
-matplotlib
-sqlite3
-fpdf
-./configure --enable-loadable-sqlite-extensions && make && sudo make altinstall
