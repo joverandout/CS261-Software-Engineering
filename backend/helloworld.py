@@ -123,14 +123,14 @@ def meetingview():
     if info == None:
         return "No meeitn ID"
     print(info)
+    # try:
+    #     with open("Test.pdf", "rb") as pdf_file:
+    #         encoded_string = base64.b64encode(pdf_file.read())
+    #         print(encoded_string)
+    #         return encoded_string
+    # except Exception as e:
+    #     print(e)
     try:
-        with open("Test.pdf", "rb") as pdf_file:
-            encoded_string = base64.b64encode(pdf_file.read())
-            print(encoded_string)
-            return encoded_string
-    except Exception as e:
-        print(e)
-    """try:
         meetingID = info["meetingid"]
         print(meetingID)
         with sqlite3.connect("database.db") as con:
@@ -141,13 +141,27 @@ def meetingview():
             cur.execute(postQ)
             ques = cur.fetchall()
             print(ques)
+            print("here")
+            elem = ques[0]
+            print(elem)
+            elemIn = elem[0]
+            print(elemIn)
+            splitQues = str(elemIn).split('?')
+            print(splitQues)
+            #del splitQues[-1]
+            print(splitQues)
             dictTest = dict()
-            for each in ques:
-                for quest in each:
-                    print(quest)
-                    dictTest[quest] = []
-
-
+            print("DEFINED")
+            for q in splitQues:
+                print(q)
+                if q != "":
+                    dictTest[q] = []
+            # for each in ques:
+            #     for quest in each:
+            #         print(quest)
+            #         for tmp in splitQues:
+            #             print(tmp)
+            #             dictTest[tmp] = []
             query = "select GeneralText, Emotion, FTime, Rating, UF.CompanyID, A.Anonymous, AT.Username from FEEDBACK INNER JOIN USERFEEDBACK as UF on UF.FeedbackID = FEEDBACK.FeedbackID INNER JOIN ATTENDANCE as A on A.MeetingID = UF.MeetingID and A.CompanyID = UF.CompanyID LEFT JOIN ATTENDEE as AT on AT.CompanyID = A.CompanyID and A.Anonymous = 0 where UF.MeetingID = " + meetingID
             cur.execute(query)
             row_headers=[x[0] for x in cur.description]
@@ -160,7 +174,7 @@ def meetingview():
             meetingName = ""
             meetingCat = ""
             emotDict = dict()
-                
+            print("Defined all values")
             for each in data:
                 print(each[1])
                 if (each[1] != "Technical" and each[1] != "Post"):
@@ -190,13 +204,15 @@ def meetingview():
                     print(splt)
                     k = 0 
                     for question in dictTest:
+                        print(question)
+                        print(splt[k])
                         dictTest[question].append(splt[k])
                         k+=1
                     for feed in splt:
                         postfeed.append(feed)
                     print(each[1])
             print(dictTest)
-            print("here")
+            print("MADE THROUGH FIRDST LOOP")
             for each in data:
                 if (each[1] != "Technical" and each[1] != "Post"):
                     x = each[1].split(",")
@@ -232,7 +248,7 @@ def meetingview():
         print("WEEOEOEOE")
         print(e)
         print("\n\n")
-        return ("nope not working",400)"""
+        return ("nope not working",400)
 
 def makepdf(generalText, usernames,emoR, MN, MC, emoDict, postfeed):
     pdf = FPDF()
@@ -289,7 +305,7 @@ def makepdf(generalText, usernames,emoR, MN, MC, emoDict, postfeed):
         plt.clf()
         i += 1
         print("Got to here")
-        pdf.image(emotion + ".jpg", x = 32, y = None, w = 140, h = 100, type = 'JPG', link = '')
+        pdf.image(emotion + ".jpg", x = None, y = None, w = 140, h = 100, type = 'JPG', link = '')
 
 
 
