@@ -237,13 +237,17 @@ export default function AttendeeMeeting(){
         <div>
             <div className="row">
                 
-                <label htmlFor="emScore">How Strongly do you feel this 1-5(strongest)</label>
-                <button className="green_button" name={1} onClick={scoreOk}>1</button>
-                <button className="green_button" name={2} onClick={scoreOk}>2</button>
-                <button className="green_button" name={3} onClick={scoreOk}>3</button>
-                <button className="green_button" name={4} onClick={scoreOk}>4</button>
-                <button className="green_button" name={5} onClick={scoreOk}>5</button>
-                <button className="green_button" name={0} onClick={scoreOk}>Back</button>
+                <label htmlFor="emScore">How strongly do you feel this?</label>
+                <br></br><br></br><br></br><br></br><br></br>
+                <div>
+                    <button className="green_button" name={1} onClick={scoreOk}>1 - Slightly</button>
+                    <button className="green_button" name={2} onClick={scoreOk}>2 - A little</button>
+                    <button className="green_button" name={3} onClick={scoreOk}>3 - Fairly</button>
+                    <button className="green_button" name={4} onClick={scoreOk}>4 - Moderately</button>
+                    <button className="green_button" name={5} onClick={scoreOk}>5 - Extremely</button>
+                    <button className="red_button" name={0} onClick={scoreOk}>Back</button>
+                </div>
+                
              </div>
         </div>
     )

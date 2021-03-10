@@ -62,7 +62,7 @@ select {
         font-weight: bold;
         position: absolute;
         top: 15px;
-        left: 0;
+        left: 5%;
         -webkit-transition: .1s;
         -o-transition: .1s;
         transition: .1s;
@@ -70,7 +70,7 @@ select {
     
     input {
         padding: 15px 0 15px;
-        width: 100%;
+        width: 90%;
         border: none;
         border-bottom: 3px solid #34495e;
         font-size: 20px;
@@ -225,6 +225,11 @@ input[type="checkbox"] {
     padding: 10px 24px;
 }
 
+btn-group {
+    padding-left:80px;
+    display:block;
+}
+
 /* Clear floats (clearfix hack) */
 .btn-group:after {
     content: "";
@@ -260,6 +265,10 @@ input[type="checkbox"] {
     background-color:#F2DFA7;
     font-weight: bolder;
     font-size: medium;
+}
+
+input {
+    max-width: 90vw;
 }
 
 @media screen and (max-width: 628px) {
@@ -328,5 +337,6 @@ input[type="checkbox"] {
         font-size: 22px;
         width: 80vw;
     }
+
 
 }
