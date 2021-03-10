@@ -199,6 +199,7 @@ input[type="checkbox"] {
 .buttonlive {
     position: absolute;
     right: 5vw;
+    top: 2vh;
 }
 
 #new_event {
