@@ -146,7 +146,7 @@ input[type="checkbox"] {
     border-radius: 0.2rem;
     border: 0.2rem solid transparent;
     width: 200px;
-    max-width: 100%;
+    max-width: 90%;
     display: block;
     transition: all 0.3s;
   }
@@ -225,9 +225,9 @@ input[type="checkbox"] {
     padding: 10px 24px;
 }
 
-btn-group {
-    padding-left:80px;
+.btn-group {
     display:block;
+    padding-left: 200px;
 }
 
 /* Clear floats (clearfix hack) */
@@ -336,6 +336,11 @@ input {
         text-align: center;
         font-size: 22px;
         width: 80vw;
+    }
+
+    .btn-group {
+        /*Position in the middle of the screen (roughly halve the spare area on the left/right)*/
+        padding-left: calc((100vw - 200px)/2.4);
     }
 
 

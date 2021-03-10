@@ -269,7 +269,7 @@ export default function AttendeeMeeting(){
                 <label htmlFor="name">Provide Feedback</label>
             </div>
             </div>
-            <button className="green_button" onClick={sendFeedback}>Send</button>
+            <button className="green_button" onClick={sendFeedback} style={{marginTop: 50, marginBottom: 60}}>Send</button>
         </div>
     )
 
