@@ -13,7 +13,7 @@ from flair.data import Sentence
 
 
 # load classifier (either 'sentiment' or 'sentiment-fast')
-classifier = TextClassifier.load('sentiment-fast')
+classifier = TextClassifier.load('en-sentiment')
 
 # initialize sentence splitter
 splitter = SegtokSentenceSplitter()

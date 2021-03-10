@@ -32,7 +32,7 @@ import random
 
 import template_db_fethcer
 from Semantic import Semantic
-from Offensive import Offensive
+#from Offensive import Offensive
 import time
 from datetime import datetime
 
@@ -219,7 +219,7 @@ def meetingview():
             print(data)
             with open("Test.pdf", "rb") as pdf_file:
                 encoded_string = base64.b64encode(pdf_file.read())
-                print(encoded_string)
+                #print(encoded_string)
             return encoded_string
     except Exception as e:
         print(e)
