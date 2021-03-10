@@ -1,52 +1,68 @@
 import "../styles.css"
-import React, {useContext, useState, useCallback, useEffect} from 'react';
+import React, {useContext, useState, useCallback, useEffect, useRef} from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import EmotionButton from "../../components/emotion_button"
 import templateCreation from "../../api/templateCreation"
 import userContext from "../../contexts/user-context";
 
-
 export default function CreateTemplate(){
-    let eList = [["Proud", "#F4b72f"],["Excited","#F4b72f"],["Interested", "#F4b72f"], ["Happy", "#F4b72f"], ["Joyful", "#F4b72f"], ["Optimistic", "#75C7E3"], ["Tired", "#75C7E3"], ["Calm", "#75C7E3"], ["Grateful", "#75C7E3"], ["Bored", "#75C7E3"], ["Sad", "#9B75E3"], ["Insecure", "#9B75E3"], ["Depressed", "#9B75E3"], ["Anxious", "#9B75E3"], ["Afraid", "#9B75E3"], ["Annoyed", "#F07A7A"], ["Angry", "#F07A7A"], ["Overwhelmed", "#F07A7A"], ["Stressed", "#F07A7A"], ["Frustrated", "#F07A7A"]];
 
     const [customEmName, setCustomName] = useState("");
     const [buttonValues, setButtonValues] = useState([])
     const [emotionButtons, setEmButtons] = useState([])
-    const [questions, setQuestions] = useState([])
-    const [questionPs, setQPs] = useState([])
+    const [eList, setEList] = useState([["Proud", "#F4b72f"],["Excited","#F4b72f"],["Interested", "#F4b72f"], ["Happy", "#F4b72f"], ["Joyful", "#F4b72f"], ["Optimistic", "#75C7E3"], ["Tired", "#75C7E3"], ["Calm", "#75C7E3"], ["Grateful", "#75C7E3"], ["Bored", "#75C7E3"], ["Sad", "#9B75E3"], ["Insecure", "#9B75E3"], ["Depressed", "#9B75E3"], ["Anxious", "#9B75E3"], ["Afraid", "#9B75E3"], ["Annoyed", "#F07A7A"], ["Angry", "#F07A7A"], ["Overwhelmed", "#F07A7A"], ["Stressed", "#F07A7A"], ["Frustrated", "#F07A7A"]])
+
+
     const [newQ, setNewQ] = useState("")
+    const [questions, setQuestions] = useState([])
+    const [questionBs, setQBs] = useState([])
+    const [delQ, setDelQ] = useState([""])
+    const [count, setCount] = useState(-1)
+    const [qCount, setQCount] = useState(0)
+    const c = useRef(0)
+
+
     const [form, setForm] = useState({})
 
+    //Dirty fix, should use useCallback probably
     const [id, setID] = useState(-1)
-    const [val, setVal] = useState(false)
+    const [val, setVal] = useState(true)
 
     const contextUser = useContext(userContext)
     const user = contextUser.user
     const history = useHistory()
     useEffect(()=>{
-        console.log("!!")
+        
         let tmpValues = []
         let tmpButtons = []
         eList.forEach((em, i)=>{
             let name = em[0]
             tmpValues.push(false)
             tmpButtons.push(<EmotionButton name={name} value={false} toggleEmotionCb={toggleEmotionCb} key={i} id={i}/>)
-            //console.log(i)
         })
     
         setEmButtons(tmpButtons)
         setButtonValues(tmpValues)
     },[])
 
+    //dirty fix to problem, should use useCallback probably
     useEffect(()=>{
+        
         let tmpEmValues = buttonValues
-        console.log(id, val)
+        let increment = val?1:-1
+        console.log("id use effect",count,increment)
+        c.current = count+increment
         tmpEmValues[id] = val
+        setCount(count+increment)
         setButtonValues([...tmpEmValues])
     }, [id, val])
     
     function toggleEmotionCb(id, value){
-        
+        console.log("Callback",c,value)
+        if(c.current+1>8 && value == true){
+            console.log("!!!!!!")
+            return false
+        }
         setVal(value)
         setID(id)
         return true
@@ -56,11 +72,23 @@ export default function CreateTemplate(){
         setCustomName(inObj.target.value)
     }
 
+    useEffect(()=>{
+        setQuestions(questions.filter(q=>q!=delQ))
+        setQBs(questionBs.filter(qb=>qb.props.name!=delQ))
+    },[delQ])
+
+
     function addButton(){
         
         if(customEmName == ""){
             return
             // Add error message?
+        }
+        for(let i=0;i<eList.length;i++){
+            if(eList[i][0]==customEmName){
+                return
+                //add error message
+            }
         }
 
         let tmpEmButton = emotionButtons
@@ -71,6 +99,7 @@ export default function CreateTemplate(){
 
         setButtonValues([...tmpEmValues])
         setEmButtons([...tmpEmButton])
+        setEList([...eList, [customEmName,""]])
     }
 
     function newQuestionHandler(formObj){
@@ -84,18 +113,26 @@ export default function CreateTemplate(){
             q+="?"
         }
         
-        if(q==""){
+        if(q==""||questions.includes(q)){
             return 
             //Add some kind of error message?
         }
 
         if(questions.length == 3){
             return 
-            //another
+            //another error message?
         }
+        //console.log(questions)
+        let newQB = (<button className="question_box" key={qCount} name={q} onClick={deleteQuestion}>{q}</button>)
+        setQCount(qCount+1)
+        setQuestions(questions.concat(q))
+        setQBs(questionBs.concat(newQB))
+        setNewQ("")
+       
+    }
 
-        setQuestions([...questions, q])
-        setQPs([...questionPs, (<button className="question_box" key={questionPs.length}>{q}</button>)])
+    function deleteQuestion(bqObj){
+        setDelQ(bqObj.target.name)
     }
 
     function complete(){
@@ -104,7 +141,7 @@ export default function CreateTemplate(){
         let emotions = []
         buttonValues.forEach((bool, i)=>{
             if(bool){
-                console.log(emotionButtons[i].props.name)
+               
                 emotions.push(emotionButtons[i].props.name)
             }
         })
@@ -177,12 +214,12 @@ export default function CreateTemplate(){
                 <br></br>
                 <h2>End of Session Questions</h2>
                 <p className="largerFont">Ask attendees questions after the session</p>
-                {questionPs}
+                {questionBs}
             </div>
 
             <div className="wrap">
                 <div className="row">
-                    <input type="text" className="form-control" id="name" onChange={newQuestionHandler}/>
+                    <input type="text" className="form-control" id="name" onChange={newQuestionHandler} value={newQ}/>
                     <button type="button" className="yellow_button" onClick={addQuestion}>Add</button>
                 </div>
             </div>

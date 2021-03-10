@@ -359,9 +359,9 @@ def userfeedback():
         s = feedbackEval.get_scores()
 
         # going to get back an array
-        #print(s)
+        print(s)
         x = random.uniform(-1,1)
-        semanticAnalysis = [x]
+        semanticAnalysis = [s[0]]
         #x = random.uniform(-1,1)
         print(x)
         #write swear word and filter them out 
@@ -474,7 +474,7 @@ def userfeedback():
                             #newDict = dict(zip(emotions,ratings))
                             newDict = dict()
                             print("here before")
-                            newDict["semantics"] = random.randint(-100,100)/100 #semanticsTotal
+                            newDict["semantics"] = semanticAnalysis[0]#random.randint(-100,100)/100 #semanticsTotal
                             print("here")
                             newDict["emotions"] = emotions
                             newDict["ratings"] = ratings

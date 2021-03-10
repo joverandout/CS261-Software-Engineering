@@ -103,7 +103,9 @@ export default function AttendeeMeeting(){
         setScore(inObj.target.value)
     }
 
-    function scoreOk(){
+    function scoreOk(bObj){
+        let score = bObj.target.name
+        console.log(score)
         let tmpEmValues = emotionValues
         tmpEmValues[lastPressed] = parseInt(score)
         setEmValues([...tmpEmValues])
@@ -187,7 +189,12 @@ export default function AttendeeMeeting(){
             emotion: emotions.join(),
             ftime:time
         }
-        console.log(data)
+        let sum = scores.reduce((a, b) => parseInt(a) + parseInt(b), 0)
+        //if nothing is entered dont send the feedback
+        if(data.generaltext=="" && sum==0){
+            return
+        }
+
         userFeedback(data).then(res=>{
             //refresh all the values
             console.log("Feedback successfully sent")
@@ -210,9 +217,9 @@ export default function AttendeeMeeting(){
         <div className="form-container report-container">
         <button onClick = {togglePopup} className="exit"><img src={x2} /> </button>
         <h1>Report an issue</h1>
-        <button name="quiet" className="btn report" onClick={issueButton}>The speaker is too quiet</button>
-        <button name="mute" className="btn report" onClick={issueButton}>The speaker is on mute</button>
-        <button name="missing" className="btn report" onClick={issueButton}>The content is missing</button>
+        <button name="The speaker is too quiet" className="btn report" onClick={issueButton}>The speaker is too quiet</button>
+        <button name="The speaker is muted" className="btn report" onClick={issueButton}>The speaker is on mute</button>
+        <button name="Meeting Content is missing" className="btn report" onClick={issueButton}>The content is missing</button>
         <br></br>
         <br></br>
         <div className="row">
@@ -229,13 +236,14 @@ export default function AttendeeMeeting(){
     let emotionScore=(
         <div>
             <div className="row">
-                <input type="number" onChange={scoreChange} min={0} max={5} className="form-control" id="name" name="emScore"/> 
-                <label htmlFor="emScore">How Strongly do you feel this 1-5</label>
-                <button className="green_button" onClick={scoreOk}>1</button>
-                <button className="green_button" onClick={scoreOk}>2</button>
-                <button className="green_button" onClick={scoreOk}>3</button>
-                <button className="green_button" onClick={scoreOk}>4</button>
-                <button className="green_button" onClick={scoreOk}>5</button>
+                
+                <label htmlFor="emScore">How Strongly do you feel this 1-5(strongest)</label>
+                <button className="green_button" name={1} onClick={scoreOk}>1</button>
+                <button className="green_button" name={2} onClick={scoreOk}>2</button>
+                <button className="green_button" name={3} onClick={scoreOk}>3</button>
+                <button className="green_button" name={4} onClick={scoreOk}>4</button>
+                <button className="green_button" name={5} onClick={scoreOk}>5</button>
+                <button className="green_button" name={0} onClick={scoreOk}>Back</button>
              </div>
         </div>
     )
@@ -243,7 +251,7 @@ export default function AttendeeMeeting(){
     let page =(
         <div>
             <div className="header">
-                    <h1>Event Name</h1> 
+                    <h1>{meetingdetails.meetingname}</h1> 
                     <button className="red_button" onClick={togglePopup}>Report Technical Issue</button>
             </div>
             <br></br>

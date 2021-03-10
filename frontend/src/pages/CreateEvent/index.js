@@ -56,7 +56,7 @@ export default function CreateEvent(){
         if(name=="category"){
             if(value == "new"){
                 setCatToggle(true)
-                
+                setNewCat("")
             }else{
                 setCatToggle(false)
                 setNewCat(value)
@@ -120,7 +120,14 @@ export default function CreateEvent(){
         tmpForm.hostid=user.hostid.toString()
         let time =  Date.parse( tmpForm.starttime )
         
-        tmpForm.starttime = time.toString() // todo dont do this
+        if(time<(new Date())){
+            console.log("cannot schedule events in the past")
+            return
+            //error message
+
+        }
+
+        tmpForm.starttime = time.toString() 
         console.log(tmpForm)
         meetingCreation(tmpForm).then(res=>{
             history.push("/Timetable")

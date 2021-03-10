@@ -57,15 +57,16 @@ export default function HostMeeting(){
       let sortable = emotions
       
       sortable.sort((a,b)=>{
-        return a[1] - b[1];
+        return b[1] - a[1];
       })
       let elements = []
 
       for(let i=0;i<sortable.length;i++){
-        if(i>3){
+        if(i>2){
           break
         }
-        let p = sortable.length
+        let p = sortable.length-i
+        
         elements.push(<p key={i}>{sortable[i][0]} - {sortable[i][1]}</p>)
       }
       setEmotionElements([...elements])
@@ -88,15 +89,16 @@ export default function HostMeeting(){
     
 
     function newFeedback(data){
-
-        if(data.emotion){
-          setTechnicalFeedback(data.generalText)
+        console.log(data)
+        if(data.emotion || data.Technical){
+          setTechnicalFeedback(data.Technical)
           return 
         }
-
+        console.log(data)
         dispatch({
            type:"newSemantic",
            semanticValue:data.semantics
+           
         })
        
         if(!(data.generalText == "")){
@@ -122,20 +124,14 @@ export default function HostMeeting(){
 
     function triggerEnd(){
       let data = {"meetingid":event.MeetingID.toString()}
-      if(buttonColour == "green_button"){
-        endMeeting(data).then(res=>{
-          setButtonColour("yellow_button")
-        }).catch(err=>{
-          console.log("Could not end the meeting")
+      endMeeting(data).then(res=>{
+        stopMeeting(data).catch(err=>{
+          console.log(err.message)
         })
-      }else{
-        stopMeeting(data).then(res=>{
-          history.push("/Timetable")
-        }).catch(err=>{
-          console.log("Could not stop the meeting")
-          history.push("/Timetable")
-        })
-      }
+      }).catch(err=>{
+        console.log(err.message)
+      })
+      history.push("/Timetable")
     }
 
     const data = useMemo(
@@ -160,7 +156,7 @@ export default function HostMeeting(){
         // space of its parent element automatically
         <div
           style={{
-            width: '900px',
+            width: '1000px',
             height: '700px'
           }}
         >
@@ -171,16 +167,16 @@ export default function HostMeeting(){
 
     return(
       <div>
-          <div class="mybtn-group">
-          <button className="white_button buttonend" onChange={triggerEnd}>END EVENT</button>
-            <button className="yellow_button" style={{padding:"24px"}} onChange={()=>{history.goBack()}}>View Meeting Code</button>
+          <div className="mybtn-group">
+          <button className="white_button buttonend" onClick={triggerEnd}>END EVENT</button>
+            <button className="yellow_button" style={{padding:"24px"}} onClick={()=>{history.goBack()}}>View Meeting Code</button>
             <h1>{event.MeetingName}</h1>   
             <button className="green_button buttonlive" >In Progress</button>
           </div>
           <hr/>
           <div className="row">
             <div className="column">
-            <div className="errorBox">Error goes here and here is a really really long error message to prove if it goes onto a second line</div>
+            <div className="errorBox" onClick={()=>{setTechnicalFeedback("")}}>{technicalFeedback}</div>
               <br></br>
               <h3>Attendees are saying:</h3>
               <div className="scrollable">
