@@ -124,6 +124,13 @@ def meetingview():
         return "No meeitn ID"
     print(info)
     try:
+        with open("Test.pdf", "rb") as pdf_file:
+            encoded_string = base64.b64encode(pdf_file.read())
+            print(encoded_string)
+            return encoded_string
+    except Exception as e:
+        print(e)
+    """try:
         meetingID = info["meetingid"]
         print(meetingID)
         with sqlite3.connect("database.db") as con:
@@ -219,12 +226,13 @@ def meetingview():
             print(data)
             with open("Test.pdf", "rb") as pdf_file:
                 encoded_string = base64.b64encode(pdf_file.read())
-                #print(encoded_string)
+                print(encoded_string)
             return encoded_string
     except Exception as e:
+        print("WEEOEOEOE")
         print(e)
         print("\n\n")
-        return ("nope not working",400)
+        return ("nope not working",400)"""
 
 def makepdf(generalText, usernames,emoR, MN, MC, emoDict, postfeed):
     pdf = FPDF()
