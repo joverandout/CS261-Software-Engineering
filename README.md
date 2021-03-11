@@ -18,12 +18,36 @@ From there navigate into the backend folder in order to run the backend python f
 
 Once flask is installed within the `/backend` folder run the following commands:
 ```
+$ pip install flask-cors
+$ pip install flask_socketio
+$ pip insall fpdf
+$ pip install mathplotlib 
+```
+These commands will install the information to send data via sockets and also to create and format the pdf for the host to view the feedback. 
+Then the following commands need to be run: 
+```
 $ python3 -m venv venv
 $ . venv/bin/activate
 $ export FLASK_APP="helloworld.py"
-$ flask run
 ```
-These commands will only work on Unix based operating systems (Linux or MacOs) for windows instructions please consolt the earlier cited flask documentation. This should start the backend (this may also require the running of `pip install flask` to be able to initialise the local environment).
+These commands will only work on Unix based operating systems (Linux or MacOs) for Windows use :
+```
+$ python -m venv venv
+$ . venv/Scripts/activate
+$ $env:FLASK_APP = "helloworld.py"
+```
+HERE NEED TO INSTALL FLAIR how to do this?? i have no idea 
+To install flair for sentiment analysis ensure you at least have python version 6.6/ 3.7, then run the following commands:
+```
+pip install pytorch
+pip install flair 
+```
+
+Once these commands are executed the back end can be run with the command:
+```
+$ flask run 
+```
+This should start the backend (this may also require the running of `pip install flask` to be able to initialise the local environment).
 
 You should be able to tell the backend is running with the following message:
 
