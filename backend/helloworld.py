@@ -45,9 +45,12 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 #python throws an error when trying to import the 
 #paclets cors and socketio
 
+#create the dictionaries to hold the currently live meeting objects and
+#meetings not currently live but still collecting feedback
 currently_live_meetings = {}
 still_collecting_feedback_meetings = {}
 
+#here we initialise the stack and push onto it all the valid meeting codes
 stack_of_available_codes = []
 for i in range(10000, 15000):
     stack_of_available_codes.append(i)
@@ -71,8 +74,7 @@ def socket_disconnect():
 def handle_hello(text):
     print("\nSocket Message: "+text+"\n")
 
-
-
+#test route never used
 @app.route('/')
 def index():
     return 'MEETING APP PLS GIVE US A FIRST'
@@ -85,27 +87,32 @@ def sendsocketmessage():
     socketio.emit("femessage",data)
     return "Sent!"
 
-
+#main page after logging in as the host
 @app.route('/hostmain', methods=["POST"])
 def hostmain():
     info = request.get_json()
     if info == None:
+        #if there are no host id passed to the backend
+        #return an error
         return "No hostID provided"
     print(info)
     try:
+        #otherwise collect the host id of the host who is logged in
         hostID = info["hostid"]
         with sqlite3.connect("database.db") as con:
             cur = con.cursor()
-            #get all the 
+            #get all the meeting data for all of the meetings that have the
+            #current hosts id as a foreign key
             query = "SELECT * FROM MEETING WHERE MEETING.HostID = " + hostID
             cur.execute(query)
             row_headers=[x[0] for x in cur.description]
             data = cur.fetchall()
             returnData = []
             for each in data:
+                #turn the data into a dictionary of the information
                 returnData.append(dict(zip(row_headers, each)))
             print(data)
-
+            #and then turn it into a json object.
             return jsonify(returnData)
     except Exception as e:
         print(e)
@@ -113,15 +120,17 @@ def hostmain():
 
 
 
-"""VITA
-need to pass the feedback 
-i dont think it requires socket as its not live 
-  """
+"""
+This is the view where the meeting is displayed and as such it fetches information
+Based off of a meeting id passed via json from the front end. This information allows
+the correct questions and emotions to be displayed and the appropriate information
+in relation to this specific meeting to be returned to the front end
+"""
 @app.route('/meetingview', methods=["POST"])
 def meetingview():
     info = request.get_json()
     if info == None:
-        return "No meeitn ID"
+        return "No meeting ID"
     print(info)
     # try:
     #     with open("Test.pdf", "rb") as pdf_file:
@@ -135,13 +144,11 @@ def meetingview():
         print(meetingID)
         with sqlite3.connect("database.db") as con:
             cur = con.cursor()
-            # do this get the meeting nam ehere too 
-
+            #Get the questions from the template of the meeting that corresponds to the meeting id passed via json
             postQ = "SELECT Question FROM TEMPLATES INNER JOIN MEETING as M on M.TemplateID = TEMPLATES.TemplateID AND M.MeetingID = " + meetingID
             cur.execute(postQ)
             ques = cur.fetchall()
             print(ques)
-            print("here")
             elem = ques[0]
             print(elem)
             elemIn = elem[0]
@@ -162,6 +169,8 @@ def meetingview():
             #         for tmp in splitQues:
             #             print(tmp)
             #             dictTest[tmp] = []
+
+            #Select the infomartion such as the emotions time rating etc of each piece of feedback that corresponds to the meeting id originally passed
             query = "select GeneralText, Emotion, FTime, Rating, UF.CompanyID, A.Anonymous, AT.Username from FEEDBACK INNER JOIN USERFEEDBACK as UF on UF.FeedbackID = FEEDBACK.FeedbackID INNER JOIN ATTENDANCE as A on A.MeetingID = UF.MeetingID and A.CompanyID = UF.CompanyID LEFT JOIN ATTENDEE as AT on AT.CompanyID = A.CompanyID and A.Anonymous = 0 where UF.MeetingID = " + meetingID
             cur.execute(query)
             row_headers=[x[0] for x in cur.description]
@@ -177,6 +186,7 @@ def meetingview():
             print("Defined all values")
             for each in data:
                 print(each[1])
+                #place the feedback into a dictionary 
                 if (each[1] != "Technical" and each[1] != "Post"):
                     x = each[1].split(",")
                     y = each[3].split(",")
