@@ -363,18 +363,20 @@ def postmeetingfeed():
         return "No feedback there"
     print(info)
     try:
-        #collect the id and questions 
+        #collect the id and question responses as well as the time submitted for the feedback 
         meetingID = info["meetingid"]
         postquestions = info["questionresponses"]
         timeSent = info["ftime"]
         companyID = info["companyid"]
         print(postquestions)
+        #check the meeting object exists in the still collecting feedback dictionary of currently 
+        #live meetinfs and if its doesn't do not allow it to collect feedback
         if (meetingID in still_collecting_feedback_meetings):
-            print("meetign collecting post feedback")
+            print("meeting collecting post feedback")
         else:
-            print("NO takine feedbakc")
-            #return "no longer taking feedback"
+            return "no longer taking feedback"
         with sqlite3.connect("database.db") as con:
+            #insert the feedback values into the dictionary for permanent storage
             cur = con.cursor()
             for each in postquestions:
                 part1 = """INSERT INTO FEEDBACK VALUES(NULL, " """ + each
@@ -387,11 +389,11 @@ def postmeetingfeed():
     except:
         return ("nope not working",400)
 
-"""VITA
+"""
 Need to pass the feedback recieved back to the front end 
 Via the socket - idk how to make this work byt we gon try 
 also need to filter out abusive text - start with some sewar words 
-  """
+"""
 @app.route('/userfeedback', methods=["POST"])
 def userfeedback():
     info = request.get_json()
@@ -571,42 +573,57 @@ def deEmojify(text):
                            "]+", flags = re.UNICODE)
     return regrex_pattern.sub(r'',text)
 
-
+"""
+This is the function called when an attendee trys to enter into a meeting
+This is performed by checking the meeting is currently live and if so creating
+and attendance object IF the user trying to connect is one who already exists
+it also handles anonymity
+"""
 @app.route('/meetinglogin', methods=["POST"])
 def meetinglogin():
     info = request.get_json()
     if info == None:
+        #if no meeting code is provided in that json object then say that
         return "No meeting code"
     print(info)
     try:
+        #otherwise if the json object contains information extract the meetingid alongside
+        #the username of the user trying to attned the meeting as well as whether or not
+        #they were trying to stay anonymous
         meetingcode = info["meetingcode"]
         username = info["username"]
         anonymous = info["anonymous"]
-        print(meetingcode)
         meetinglive = False
         MeetingFound = None
-        print(currently_live_meetings)
+        #fore ach meeting in the currently live meetinfs
         for meeting in currently_live_meetings:
             print("in loop")
             print(meeting)
             print(currently_live_meetings[meeting].code)
             print(meetingcode)
+            #if the code given by json matches a code of currently matched meeting
             if str(currently_live_meetings[meeting].code) == str(meetingcode):
                 print("meeting is live ")
                 meetinglive = True
+                #set the meeting live boolean to true as this means the meeting is live
                 print(currently_live_meetings[meeting].meetingid)
+                #set the meeting id to the id of the meeting in the list
                 meetingid = currently_live_meetings[meeting].meetingid
                 MeetingFound = currently_live_meetings[meeting]
         if meetinglive:
+            #if it is possible to connect to the meeting
             with sqlite3.connect("database.db") as con:
                 cur = con.cursor()
                 print("here 1.5")
+                #whilst connected to the database, we create a new attendance object
                 print("SELECT CompanyID FROM ATTENDEE where username = ''")
                 print(username)
                 userq = "SELECT CompanyID FROM ATTENDEE where username = '" + username + "'"
                 print(userq)
                 cur.execute(userq)
                 print("here2")
+                #here we select the id of the company from the attendee so we can use it as a foreign
+                #key in the database when we create our attendance entry in the database
                 data = cur.fetchall()
                 for each in data:
                     print(each[0])
@@ -614,25 +631,32 @@ def meetinglogin():
                 print("here3")
                 print(companyid)
                 print(str(companyid))
+                #with all the correct infomation selected we then insert into the attendance the object to represent each
+                #users attendance created from the data fetched from the database just before 
                 print("INSERT INTO ATTENDANCE VALUES("+ str(meetingid) +", " + str(companyid)  +" ,"+ anonymous +")")
                 attendance = "INSERT INTO ATTENDANCE VALUES("+ str(meetingid) +", " + str(companyid) + ", "+ anonymous + ")"
                 print(attendance)
+                #execute the query
                 cur.execute(attendance)
                 print(currently_live_meetings)
                 print(MeetingFound)
                 print(MeetingFound.get_number_of_participants())
                 MeetingFound.update_participants(companyid)
                 print(MeetingFound.get_number_of_participants())
-                
+                #selected the template naem emeotions questions etc from the templates table whilst joining it to the meetings table tog et the meeting name
+                #this is so it can be returned to the front end so the correct questions and available emotions can be displayed to the attendee
                 getTemplate = "Select TemplateName, EmotionsSelected, Question, MeetingName from TEMPLATES INNER JOIN MEETING ON MEETING.TemplateID = TEMPLATES.TemplateID WHERE MEETING.MeetingID =" + str(meetingid)
                 print(getTemplate)
+                #execute the query to get the template and meeting specific data
                 cur.execute(getTemplate)
                 row_headers=[x[0] for x in cur.description]
                 print(row_headers)
                 data = cur.fetchall()
+                #fetch all of it
 
                 returnData = []
                 for each in data:
+                    #for every piece of data create a temporary dictionary
                     #returnData.append(dict(zip(row_headers, each)))
                     emotions = each[1].split(',')
                     postquestions = each[2].split('?')
@@ -641,18 +665,21 @@ def meetinglogin():
                         if(not (question == "")):
                             secondquestions.append(question)
                     tempDict = dict()
+                    #fill each of the fields in the dictionary with the values from
+                    #the sql query in order to return to the front end
                     tempDict["meetingid"] = str(meetingid)
                     tempDict["emotionsselected"] = emotions
                     tempDict["templatename"] = each[0]
                     tempDict["question"] = secondquestions
                     tempDict["companyid"] = companyid
                     tempDict["meetingname"] = each[3]
+                    #append this new dictionary onto the data we are going to append
                     returnData.append(tempDict)
                 #print("out")
                 print(returnData)
                 print("success")
                 con.commit()
-                
+                #return the returdata in the form of a json object to the frontend
                 return jsonify(returnData)
         else:
             return ("nope not working",400)
