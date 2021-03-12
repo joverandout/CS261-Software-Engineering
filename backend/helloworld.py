@@ -686,33 +686,38 @@ def meetinglogin():
     except:
         return ("nope not working",400)
 
-
+"""
+Called when a user logins to the application. This is then used to create an attendance
+entry in the database
+"""
 @app.route('/userlogin', methods=["POST"])
 def userlogin():
     info = request.get_json()
     if info == None:
+        #return an error if no information is passed in json
         return "No feedback there"
     print(info)
     try:
+        #collect the username and the meetingid they are trying to connect to
+        #as well as whether or not they want to be anonymous or not
         username = info["username"]
         meetingid = info["meetingid"]
         anonymous = info["anonymous"]
         print("here")
-        # how am i supposed to get the company id ??? 
         companyid = 0
         # if the meeting is live then i need to add this user as an attendee 
         with sqlite3.connect("database.db") as con:
+            #with the database open as a connection
             cur = con.cursor()
             print("here 1.5")
-            print("SELECT CompanyID FROM ATTENDEE where username = ''")
-            print(username)
+            #get the userid of the attendee where the username matches the value in the database
             userq = "SELECT CompanyID FROM ATTENDEE where username = '" + username + "'"
-            print(userq)
             cur.execute(userq)
-            print("here2")
+            #execute the query
             data = cur.fetchall()
             for each in data:
                 print(each[0])
+                #set the variable companyid to the value returned from the sql query
                 companyid = each[0]
             #print(data)
             print("here3")
@@ -723,20 +728,26 @@ def userlogin():
             # print(attendance)
             # cur.execute(attendance)
 
-            #idk if this is right
+            #update the participants of the currently live meeting that shares and id with the meeting we are trying to connect to
             currently_live_meetings[meetingid].update_participants(companyid)
-
+            
+            #here we select all the values associated with a template and a meeting so as the return them to the front end and
+            #allow the correct information to be displayed to the front end
             getTemplate = "Select TemplateName, EmotionsSelected, Question from TEMPLATES INNER JOIN MEETING ON MEETING.TemplateID = TEMPLATES.TemplateID WHERE MEETING.MeetingID =" + meetingid
             cur.execute(getTemplate)
+            #the row headers are then initialised
             row_headers=[x[0] for x in cur.description]
             print(row_headers)
+            #and data is all fetched
             data = cur.fetchall()
 
             returnData = []
             for each in data:
+                #each piece of data is appended to the return data
                 returnData.append(dict(zip(row_headers, each)))
             #print("out")
             print(returnData)
+            #and it it returned as a json object below
             print("success")
             con.commit()
             
