@@ -125,7 +125,8 @@ def hostmain():
 This is the view where the meeting is displayed and as such it fetches information
 Based off of a meeting id passed via json from the front end. This information allows
 the correct questions and emotions to be displayed and the appropriate information
-in relation to this specific meeting to be returned to the front end
+in relation to this specific meeting to be returned to the front end in the form of a
+pdf.
 """
 @app.route('/meetingview', methods=["POST"])
 def meetingview():
@@ -174,6 +175,7 @@ def meetingview():
             #Select the infomartion such as the emotions time rating etc of each piece of feedback that corresponds to the meeting id originally passed
             query = "select GeneralText, Emotion, FTime, Rating, UF.CompanyID, A.Anonymous, AT.Username from FEEDBACK INNER JOIN USERFEEDBACK as UF on UF.FeedbackID = FEEDBACK.FeedbackID INNER JOIN ATTENDANCE as A on A.MeetingID = UF.MeetingID and A.CompanyID = UF.CompanyID LEFT JOIN ATTENDEE as AT on AT.CompanyID = A.CompanyID and A.Anonymous = 0 where UF.MeetingID = " + meetingID
             cur.execute(query)
+            #turn the values from the query into values in a data array
             row_headers=[x[0] for x in cur.description]
             data = cur.fetchall()
             returnData = []
@@ -202,33 +204,45 @@ def meetingview():
                     print(x)
                     print(y)
                     for j in range(len(x)):
+                        #add each of the emotions from the database and their rating to the emotions
+                        #in the format emotion:number so the array is formatted for example like,
+                        #[happy:5, sad:2, confused:3] etc.
                         emotionsWithRatings.append(x[j] + ":"+ y[j])
                     returnData.append(dict(zip(row_headers, each)))
                     generaltext.append(each[0])
+                    #if the anonymous value is set to 1 then the username for the individual feedback object is set to anonymous
+                    #else the username is appended to the dictionary
                     if each[5] == 0:
                         usernames.append(each[6])
                     else:
                         usernames.append("Anonymous")
                 elif each[1] == "Post":
                     print("ITS POSTTTTTTTTTTTTT")
+                    #if its a post meeting split it on the tildas
                     splt = each[0].split("~")
                     print(splt)
                     k = 0 
+                    #this gets the questions individually
                     for question in dictTest:
                         print(question)
                         print(splt[k])
+                        #append each questions response to the dictest
                         dictTest[question].append(splt[k])
-                        k+=1
+                        k+=1 #incrementing the counter afterwards
                     for feed in splt:
+                        #for each split question append it to the feed
                         postfeed.append(feed)
                     print(each[1])
             print(dictTest)
-            print("MADE THROUGH FIRDST LOOP")
+            #print("MADE THROUGH FIRDST LOOP")
             for each in data:
+                #for each feedback check it isnt technical or a post
                 if (each[1] != "Technical" and each[1] != "Post"):
+                    #that makes it an emotion
+                    #therefore we split on the commas to get the rating and the emotion
                     x = each[1].split(",")
                     y = each[3].split(",")
-                    print("here 2")
+                    #then for each of the emotions upddate the counter in the correct dictionary
                     for j in range(len(x)):
                         print(j)
                         print(emotDict[x[j]])
@@ -238,8 +252,7 @@ def meetingview():
                             print(val[y[j]])
                             val[y[j]] = val[y[j]] + 1
                             print(val[y[j]])
-                    print("DIE PLZ")
-            print("here")
+            #get the meeting information like the name and category to display in the webpage for the meeting view
             query = "select MeetingName, Category from MEETING where MeetingID = " + meetingID
             cur.execute(query)
             data = cur.fetchall()
@@ -249,20 +262,29 @@ def meetingview():
 
             print(generaltext)
             print(postfeed)
+            #turn all of this infomation we have collected like the name and values into the pdf format
             makepdf(generaltext, usernames, emotionsWithRatings, meetingName, meetingCat, emotDict, dictTest)
             print(data)
             with open("Test.pdf", "rb") as pdf_file:
+                #with the pdf open turn it into bsae64 in order to return it to the front end
                 encoded_string = base64.b64encode(pdf_file.read())
                 print(encoded_string)
             return encoded_string
-    except Exception as e:
-        print("WEEOEOEOE")
+    except Exception as e: #otherwise return an error
+        print("pdf conversion error")
         print(e)
         print("\n\n")
         return ("nope not working",400)
 
+"""
+this functiont akes key information on a meeting previoulsy taken from the database and formatted
+into dictionaries adn arrays specifically for use in this function. From there it constructs a pdf
+by creating graphs based on emotion selection whilst also then listing all personalised feedback
+and which suer sumbitted it
+"""
 def makepdf(generalText, usernames,emoR, MN, MC, emoDict, postfeed):
     pdf = FPDF()
+    #add a page and set the font size
     pdf.add_page()
     pdf.set_font("Arial", size = 20)
     #pdf.set_fill_color(r=51,g=153,b=255)
@@ -270,6 +292,9 @@ def makepdf(generalText, usernames,emoR, MN, MC, emoDict, postfeed):
     pdf.set_font("Arial", size = 12)
     print(len(generalText))
     print(usernames[0])
+    #The below forloop takes all of the personalised comment feedback and 
+    #turns it into the original table by drawing each row one after another
+    #at the top of the page
     for i in range(len(generalText)):
         print(i)
         print(usernames[i])
@@ -284,6 +309,7 @@ def makepdf(generalText, usernames,emoR, MN, MC, emoDict, postfeed):
     # for j in range(len(emoR)):
     #     pdf.cell(100,10, txt = emoR[j],border = 1,ln = 1, align = 'L', fill = True)
     for each in postfeed:
+        #creat the create the cells 
         pdf.set_fill_color(r=255,g=255,b=255)
         pdf.cell(100,10, txt = str(each),border = 1,ln = 1, align = 'L', fill = True)
         pdf.set_fill_color(r=230,g=255,b=249)
@@ -295,7 +321,9 @@ def makepdf(generalText, usernames,emoR, MN, MC, emoDict, postfeed):
     print("here")
     #pdf.BarDiag(200, 100, ["happy", "sad"])
     i = 0
+    #for each emotion of the meeting create the graph
     for emotion in emoDict:
+        #each rating for that emotion is treated as an object
         objects = ('5','4','3','2','1')
         yAxis = np.arange(5)
         values = []
@@ -306,7 +334,7 @@ def makepdf(generalText, usernames,emoR, MN, MC, emoDict, postfeed):
             print(emoDict[emotion][each])
             values.append(emoDict[emotion][each])
             print(values)
-
+        #use the built in plot function to create the graphs, aligning them centrally in the page
         plt.bar(yAxis, values, align='center', alpha=0.5)
         plt.xticks(yAxis, objects)
         plt.ylabel('Times Recorded')
@@ -315,16 +343,19 @@ def makepdf(generalText, usernames,emoR, MN, MC, emoDict, postfeed):
         plt.savefig(emotion + ".jpg")
         plt.clf()
         i += 1
-        print("Got to here")
+        #add the image each time after its creation
         pdf.image(emotion + ".jpg", x = None, y = None, w = 140, h = 100, type = 'JPG', link = '')
-
-
-
+    #once the graphs have all been created we simply exit the for loop and return the pdf as a json object
     pdf.output("Test.pdf")
     files = {'file': open('Test.pdf', 'rb')}
     print(jsonify())
 
-
+"""
+Once the meeting is over taking in the final feedback int erms of the questions
+It performs checks to ensure the meeting is still taking feedback and if so will
+accept the users feedback and return the values to the database. So the attendance
+is tracked and will appear in the pdf for examples
+"""
 @app.route('/postmeetingfeed', methods=["POST"])
 def postmeetingfeed():
     info = request.get_json()
@@ -332,6 +363,7 @@ def postmeetingfeed():
         return "No feedback there"
     print(info)
     try:
+        #collect the id and questions 
         meetingID = info["meetingid"]
         postquestions = info["questionresponses"]
         timeSent = info["ftime"]
