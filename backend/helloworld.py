@@ -24,6 +24,7 @@ import time
 import base64
 import hashlib
 
+import re
 
 import sqlite3
 from sqlite3 import Error
@@ -364,6 +365,9 @@ def userfeedback():
         companyID = info["companyid"]
         print("here")
 
+        # Remove emojis from text feedback
+        generaltext = deEmojify(generaltext)
+
         # offEval = Offensive(generaltext)
         # offEval.update_rating()
         # howOffensive = offEval.get_scores()
@@ -513,6 +517,17 @@ def userfeedback():
     except Exception as e:
         print(e)
         return ("nope not working",400)
+
+
+# A function to remove emojis from textual feedback
+def deEmojify(text):
+    regrex_pattern = re.compile(pattern = "["
+        u"\U0001F600-\U0001F64F"  # emoticons
+        u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+        u"\U0001F680-\U0001F6FF"  # transport & map symbols
+        u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+                           "]+", flags = re.UNICODE)
+    return regrex_pattern.sub(r'',text)
 
 
 @app.route('/meetinglogin', methods=["POST"])
