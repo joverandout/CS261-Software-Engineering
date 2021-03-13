@@ -958,20 +958,25 @@ def startmeeting():
     except:
         return ("nope not working",400)
 
-
+"""
+host login is called when a host tries to login in order to verify their password in before returning the successful login in it is.
+It also returns the value of the host id of the newly logged in user
+"""
 @app.route('/hostlogin', methods=["POST"])
 def hostlogin():
     info = request.get_json()
     if info == None:
+        #return an error if there are no json passed
         return "No login information was provided"
     print("Info")
     print(info)
     
-    #Dont actually know what to do if parsing fails. info will be an error
     try:
+        #get the username and password from the json object
         username = info["username"]
         password = info["password"]
 
+        #hash the password
         hashed_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
         print(hashed_password)
         succesful_login = False
@@ -981,12 +986,15 @@ def hostlogin():
             print(hashed_password)
             print("Here")
             cur = con.cursor()
+            #select the host id and the password from the database where the username matches
             query = "SELECT HostID, Password FROM HOSTS WHERE username = '" + username + "'"
             cur.execute(query)
             data = cur.fetchall()
             for each in data:
+                #if the password matches our hashed password
                 if each[1] == hashed_password:
                     succesful_login = True
+                    #set the lgin as true and get the host id of the newly logged in user
                     logged_in_id = each[0]
 
                     #DO THIS RETURN HOST ID 
@@ -995,40 +1003,54 @@ def hostlogin():
                     return jsonify(returnDict)
         
         if(not succesful_login):
+            #otherwise return a wrong password error
             return ("wrong password",400)
     except:
         #Likely error is that the request did not have the fields we wanted from it
         return ("Bad Request, probably missing the data we want", 400)
     
-
+"""
+Get templates is used to retrieve all of a hosts templates so the front end can display the correct information to the user
+so that the users templates are available for them to create new meetings and by which to filter their existing meetings
+on their home screen.
+"""
 @app.route('/gettemplates', methods=["POST"])
 def gettemplates():
     info = request.get_json()
-    
     if info == None:
+        #return the error message if no json is provided
         return "No login information was provided"
     print("Info")
     print(info)
     
     #Dont actually know what to do if parsing fails. info will be an error
     try:
+        #get the host id fromt eh jsn
         hostid = info["hostid"]
         with sqlite3.connect("database.db") as con:
+            #connect to the database
             cur = con.cursor()
+            #get all of the name and ids of the templates that share a host id with our host
             query = "SELECT TemplateName, TemplateID FROM TEMPLATES WHERE HostID = " + hostid
             cur.execute(query)
             data = cur.fetchall()
             templateinfo = []
             for each in data:
+                #add each of the info we got from the database 
+                #to the template array in the form of an array with name
+                #and id such as below:
+                #[[name,0], [template2,1], [othername, 3]]
                 templateinfo.append([each[0], each[1]])
             cur = con.cursor()
+            #get all the categories of the meetings where the hosts id is also the same as our host
             query = "SELECT Category FROM MEETING WHERE HostID = " + hostid + " GROUP BY Category"
             cur.execute(query)
             data = cur.fetchall()
             category = []
             for each in data:
+                #add each of these categories to an array
                 category.append(each[0])
-        
+        #put both the categories array and the templates array into a dictionary and return it as a json
         returnDict = dict()
         returnDict["templates"] = templateinfo
         returnDict["categories"] = category
