@@ -865,28 +865,44 @@ def endmeeting():
         print(e)
         return ("nope not working",400)
 
+"""
+Stop meeting is called when a host no longer wants a meeting to receive any feedback. It must be called
+after the meeting has ended and then destroys the entry of the meeting from the dictionary
+"""
 @app.route('/stopmeeting', methods=["POST"])
 def stopmeeting():
     info = request.get_json()
     if info == None:
+        #throws an error if no json is received
         return ("nope not working",400)
     try:
         meetingID = info["meetingid"]
+        #collect the meeting id from the json object
         if(meetingID in still_collecting_feedback_meetings):
+            #if the meeting is in the list, i.e. it is allowed to be stopped as 
+            #it has already been ended but not yet stopped then we deleted it from
+            #the dictionary
             del still_collecting_feedback_meetings[meetingID]
             socketio.emit("stopmeeting",jsonify("OK"))
-
+            #return that to the host
             return jsonify("OK")
         else:
+            #otherwise return an error as the meeting cannot be ended
             socketio.emit("stopmeeting",jsonify("not-OK"))
             return ("nope not working",400)
     except:
         return ("nope not working",400)
 
+"""
+Start meeting is used when a host wishes to begin a meeting they have prevoiusly created and therefore allow it to
+collect feedback. This is done by creating the meeting object from the entries in teh database and then adding it to
+the dictionary of live meetinfs
+"""
 @app.route('/startmeeting', methods=["POST"])
 def startmeeting():
     info = request.get_json()
     if info == None:
+        #return an error if no json is received
         return "No meeting information was provided"
     try:
         # #self, title, category, code, startime, duration, host, in_progress, template)
@@ -898,34 +914,46 @@ def startmeeting():
         # m1 = t1.make_new_meetings("Title", "Category", "Code", datetime.now(), datetime.now(), h1, False)
         hostid = 0
         meetingID = info["meetingid"]
+        #select the meeting id from the json
         with sqlite3.connect("database.db") as con:
+            #open the database
             cur = con.cursor()
+            #get the hsot and template ids that correspond to the meeting we want to start
             query = "SELECT HostID, TemplateID FROM MEETING WHERE MeetingID = "+ meetingID
             cur.execute(query)
             data = cur.fetchall()
             each = data[0]
             hostid = each[0]
             templateid = each[1]
+            #get all the host infomation from the database of that host id
             query = "SELECT * FROM HOSTS WHERE HostID = "+ str(hostid)
             cur.execute(query)
             data = cur.fetchall()
             each = data[0]
+            #create a new host object with this infomation we have gathered
             host = Host(each[1], each[0], each[2], each[3], each[4])
             cur = con.cursor()
+            #get all the relevant template information to make a template object
             query = "SELECT * FROM TEMPLATES WHERE TemplateID = "+ str(templateid)
             cur.execute(query)
             data = cur.fetchall()
             each = data[0]
             emotions = each[3].split(',')
+            #split the emotions so they form an array and then create a new template object
+            #splitting the questions into an array too 
             template = Template(each[2], emotions, each[4].split(','))
             cur = con.cursor()
+            #select all the meeting information aswell from the database
             query = "SELECT * FROM MEETING WHERE MeetingID = "+ str(meetingID)
             cur.execute(query)
             data = cur.fetchall()
             each = data[0]
+            #get a meeting code that can be used by popping it off the stuff
             meeting_code = stack_of_available_codes.pop()
+            #crete a new meeting from the template object we previously created
             meeting = template.make_new_meetings(each[0], each[3], each[5], meeting_code, each[6], each[4], host, True)
             currently_live_meetings[meetingID] = meeting
+            #return the meeting code so it can be displayed
             return jsonify(meeting_code)
     except:
         return ("nope not working",400)
