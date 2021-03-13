@@ -39,8 +39,8 @@ $ $env:FLASK_APP = "helloworld.py"
 HERE NEED TO INSTALL FLAIR how to do this?? i have no idea 
 To install flair for sentiment analysis ensure you at least have python version 6.6/ 3.7, then run the following commands:
 ```
-pip install pytorch
-pip install flair 
+$ pip install pytorch
+$ pip install flair 
 ```
 
 Once these commands are executed the back end can be run with the command:
@@ -58,7 +58,6 @@ You should be able to tell the backend is running with the following message:
    Use a production WSGI server instead.
  * Debug mode: off
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
-
 ```
 
 Now to start the frontend navigate to `/frontend` and install and then run npm there:
