@@ -755,25 +755,35 @@ def userlogin():
     except:
         return ("nope not working",400)
 
-
+"""
+This is the creation page for a new meeting where the values are created and placed into the database
+once the user has made their new meeting using the webpage
+"""
 @app.route('/newmeeting', methods=["POST"])
 def newmeeting():
     info = request.get_json()
     if info == None:
+        #if no meeting info is return send an error
         return "No feedback there"
     print(info)
     try:
+        #otherwise collect the things about the meeting that need to be entered into the database
+        #like host id template id (as foreign keys) duration category and start time
         hostID = info["hostid"]
         templateID = info["templateid"]
         meetingname = info["meetingname"]
         duration = info["duration"]
         category = info["category"]
         startTime = info["starttime"]
+        #the start time is collected as the number of mili seconds since the utf time in 1970s
         print(startTime)
         intstartTime = int(startTime) / 1000
+        #therefore we convert it to seconds by dividing by 1000
+        #and then convert using the below formula to a timestamp format
         timeStampStartTime = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(intstartTime))
         print(timeStampStartTime)
         with sqlite3.connect("database.db") as con:
+            #from there we connect to the database and insert all the values
             cur = con.cursor()
             query = "INSERT INTO MEETING VALUES(NULL, " + hostID + ", " + templateID + ", '" + meetingname + "', '"+ duration +"', '" + category + "' , DATETIME('"+timeStampStartTime +"') )"
             print(query)
@@ -784,21 +794,28 @@ def newmeeting():
     except:
         return ("nope not working",400)
 
-
+"""
+This is called similarly to new meeting however in the instance where the user wants to create a new template
+"""
 @app.route('/newtemplate', methods=["POST"])
 def newtemplate():
     info = request.get_json()
     if info == None:
         return "No feedback there"
+        #if no meeting info is return send an error
     print(info)
     try:
+        #otherwise collect the things about the meeting that need to be entered into the database for a template
+        #like host id (as a foreign key) the emotions and the questions
         hostID = info["hostid"]
         templateName = info["templatename"]
         emotionsSelected = info["emotionsselected"]
         question = info["question"]
         with sqlite3.connect("database.db") as con:
             print("Here")
+            #once these are all collected we then insert them into the database
             cur = con.cursor()
+            #we use NULL as the database schema then creates a meeting id that is new and not used before
             query = "INSERT INTO TEMPLATES VALUES(NULL, " + hostID + ", '" + templateName + "', '" + emotionsSelected + "', '"+ question +"')"
             print(query)
             cur.execute(query)
@@ -808,27 +825,40 @@ def newtemplate():
     except:
         return ("nope not working",400)
 
-
+"""
+End meeting is called when a meeting is no longer live but is still receiving feedback. For this we have to
+remove it from the list of live meetings and add it to the list of meetings that aren't live but are still taking
+feedback.
+"""
 @app.route('/endmeeting', methods=["POST"])
 def endmeeting():
     info = request.get_json()
     if info == None:
-         return ("nope not working",400)
+        #if no json data is received send an error
+        return ("nope not working",400)
     try:
+        #get the meeting id of the meeting we want to end
         meetingID = info["meetingid"]
+        #if the meeting id is shared with a meeting in the dictionary then 
+        #we have a valid meeting to end 
         if(meetingID in currently_live_meetings):
+            #get the meeting object and sotre it in a seperate variable 
             meeting = currently_live_meetings.get(meetingID)
+            #end the meeting
             meeting.end_meeting()
+            #get its code
             newly_available_code = meeting.code
+            #and pop it back on the stack of available meeting codes
             stack_of_available_codes.append(newly_available_code)
+            #add it to the new list of meetings that can take feedback but aren't live
             still_collecting_feedback_meetings[meetingID] = meeting
             del currently_live_meetings[meetingID]
-            # JOE DO THIS
-            
+            #finally delete it from the dictionary
             socketio.emit("endmeeting","ok")
 
             return jsonify("OK")
         else:
+            #this meeting doesnt exist so we can't end it, therefore we return an error
             socketio.emit("endmeeting","not ok")
             return ("nope not working",400)
     except Exception as e:
