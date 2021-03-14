@@ -14,14 +14,6 @@ export default function AttendeeMeeting(){
     const meetingdetails = location.state.meetingdetails
     const template = meetingdetails.template
     const history = useHistory()
-    /*const meetingdetails = {
-        meetingid:1,
-        companyid:1,
-        template:{
-            emotions:["happy", "neutral", "sad"],
-            questions:["How was the meeting?", "What are you having for lunch?", "Could you understand?"]
-        }
-    }*/
     
     const [emotionButtons, setEmotionButtons] = useState([])
     const [emotionValues, setEmValues] = useState([])
@@ -32,11 +24,8 @@ export default function AttendeeMeeting(){
     const [feedback, setFeedback] = useState("")
     const [tFeedback, setTFeedback] = useState("")
 
-    const [render, setRender] = useState(false)
-
-
     useEffect(()=>{
-        
+        //create all the emotion buttons from the template information received from the server
         let tmpEmValues = []
         let tmpEmButtons = []
         meetingdetails.template.emotions.forEach((emotion,i)=>{
@@ -45,7 +34,7 @@ export default function AttendeeMeeting(){
         })
         setEmotionButtons(tmpEmButtons)
         setEmValues(tmpEmValues)
-        //setDisplayElement(page)
+        //Open the socket connection to the server
         const socket = io("http://127.0.0.1:5000", {
             auth:{
             token:"id01043"
@@ -58,8 +47,8 @@ export default function AttendeeMeeting(){
         }
     },[])
 
+    //When the emotion values have changed, ensure that all the buttons reflect the proper value
     useEffect(()=>{
-        console.log("Emotion Values Changed!")
         let tmpEmButtons=[]
         
         emotionValues.forEach((val,i)=>{
@@ -74,7 +63,7 @@ export default function AttendeeMeeting(){
         
     }, [emotionValues])
 
-
+    //When we get the signal for the meeting tp be over, navigate to the End of Session feedback page
     function meetingOver(data){
         if(data=="ok"){
             history.push({
@@ -86,7 +75,8 @@ export default function AttendeeMeeting(){
             })
         }
     }
-
+    
+    //Display either the technical feedback prompt or the regular feedback prompt
     function togglePopup(){
         let tmpPopup = popup?false:true 
 
@@ -98,11 +88,7 @@ export default function AttendeeMeeting(){
         setPopup(tmpPopup)
     }
 
-
-    function scoreChange(inObj){
-        setScore(inObj.target.value)
-    }
-
+    //Set the score value based on the button pressed. The value is the same as the name attribute of the button
     function scoreOk(bObj){
         let score = bObj.target.name
         console.log(score)
@@ -113,11 +99,12 @@ export default function AttendeeMeeting(){
         setScore(0)
     }
 
+    //Enure the feedback hook reflects the information being input
     function formHandler(formObj){
         setFeedback(formObj.target.value)
-        
     }
 
+    //When a technical issue button is pressed, send the feedback to the server immediately
     function issueButton(buttonObj){
         let name = buttonObj.target.name
         let now = new Date()
@@ -141,7 +128,7 @@ export default function AttendeeMeeting(){
         })
         setDisplayElement(0)
     }   
-
+    //Send technical text feedback when the button is pressed
     function sendTechnical(){
         let now = new Date()
         let h = now.getHours().toString()
@@ -160,15 +147,16 @@ export default function AttendeeMeeting(){
             emotion: "Technical",
             ftime:time
         }
-        setDisplayElement(0)
+        setDisplayElement(0) //make sure we go back to displaying the origional screen
         userFeedback(data).then(res=>{
-            //refresh all the values
+            //todo refresh all the values
             console.log("Feedback successfully sent")
         }).catch(err=>{
             console.log(err.message)
         })
     }   
 
+    //Send emotion or regular text feedback
     function sendFeedback(){
         let emotions = []
         let scores = []
@@ -210,8 +198,13 @@ export default function AttendeeMeeting(){
             console.log(err.message)
         })
     }
+
+    function toggleEmotionCb(id, value){
+        setDisplayElement(1)
+        setLastPressed(id)
+        return true
+    }
     
-    //todo manage state of components from parent to allow state resetting
     let technicalIssue = (
         <div  id="reportIssue">
         <div className="form-container report-container">
@@ -274,18 +267,8 @@ export default function AttendeeMeeting(){
     )
 
 
-    function toggleEmotionCb(id, value){
-        setDisplayElement(1)
-        setLastPressed(id)
-        return true
-    }
-    
-    //This is structured weirdly, but it's just so the pages are defined before we set the display element
-
-    
-
     let f = null
-    switch(displayElement){
+    switch(displayElement){ //ensure the correct elements are being displayed
         case 0:
             f=page
             break;

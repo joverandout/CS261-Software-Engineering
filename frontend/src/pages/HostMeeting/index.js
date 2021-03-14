@@ -10,7 +10,7 @@ import hostLogIn from "../../api/hostLogIn";
 
 function reducer(state, action){
     switch(action.type){
-        case "newSemantic":
+        case "newSemantic": // update the rollong average and plot data when new feedback is received
             let currentSum = state.semanticData.sum
             let currentCount = state.semanticData.count
             let actionVal = action.semanticValue
@@ -30,6 +30,7 @@ function reducer(state, action){
     }
 }
 
+
 export default function HostMeeting(){
     const location = useLocation()
     const history = useHistory()
@@ -43,8 +44,7 @@ export default function HostMeeting(){
         }
     } 
     const [state, dispatch] = useReducer(reducer, initialState)
-    const [buttonColour, setButtonColour] = useState("green_button")
-    
+ 
     const [textFeedback, setTextFeedback] = useState([])
     const [emotions, setEmotions] = useState([])
 
@@ -55,14 +55,14 @@ export default function HostMeeting(){
     useEffect(()=>{
 
       let sortable = emotions
-      
+      //sort the emotions from highest to lowest represented
       sortable.sort((a,b)=>{
         return b[1] - a[1];
       })
       let elements = []
 
       for(let i=0;i<sortable.length;i++){
-        if(i>2){
+        if(i>2){ // only display 3 emotions
           break
         }
         let p = sortable.length-i
@@ -72,6 +72,7 @@ export default function HostMeeting(){
       setEmotionElements([...elements])
     },[emotions])
 
+    //connect to the socket when the page loads
     useEffect(()=>{
       const socket = io("http://127.0.0.1:5000", {
         auth:{
@@ -90,7 +91,7 @@ export default function HostMeeting(){
 
     function newFeedback(data){
         console.log(data)
-        if(data.emotion || data.Technical){
+        if(data.emotion || data.Technical){ //check if it's technical feedback that we have received
           setTechnicalFeedback(data.Technical)
           return 
         }
@@ -100,7 +101,7 @@ export default function HostMeeting(){
            semanticValue:data.semantics
            
         })
-       
+        // if we recieved text feedback, add it to the box to be displayed
         if(!(data.generalText == "")){
           let feedback = textFeedback
           feedback.push((<p key={textFeedback.length}>{data.generaltext}</p>))
@@ -111,17 +112,17 @@ export default function HostMeeting(){
         
         if(tmpEmotions.length==0){
           data.emotions.forEach((element,i) => {
-            tmpEmotions.push([element, parseInt(data.ratings[i])])
+            tmpEmotions.push([element, parseInt(data.ratings[i])]) //initialise the array if this is the first time
           });
         }else{
           tmpEmotions.forEach((element,i) => {
-            tmpEmotions[i][1]+=parseInt(data.ratings[i])
+            tmpEmotions[i][1]+=parseInt(data.ratings[i])//otherwise simply update the array
           });
         }
         console.log(tmpEmotions)
         setEmotions([...tmpEmotions])
     }
-
+    //signal the end of the meeting to cause the end of session feedback to display
     function triggerEnd(){
       let data = {"meetingid":event.MeetingID.toString()}
       endMeeting(data).then(res=>{
@@ -134,11 +135,12 @@ export default function HostMeeting(){
       history.push("/Timetable")
     }
 
+    // define the properties of the chart
     const data = useMemo(
         () => [
           {
-            label: 'Series 1',
-            data: state.semanticData.plot//[[0,0],[1,1],[2,1],[3,-1]]
+            label: 'Feedback Positivity',
+            data: state.semanticData.plot
           }
         ]
       )
@@ -152,8 +154,7 @@ export default function HostMeeting(){
       )
      
       const lineChart = (
-        // A react-chart hyper-responsively and continuously fills the available
-        // space of its parent element automatically
+
         <div
           style={{
             width: '1000px',

@@ -18,28 +18,28 @@ import CodeDisplay from '../pages/CodeDisplay';
 export default function Routes() {
   //todo make the relevant routes private
   const  isPrivate = true
-  //Special route for the loggin screen?
+  //define all of the routes for the application
   return (
     <Switch> 
       <Route path="/" exact>
         <SignIn/>
       </Route>
       
-      <Route path="/Timetable" exact>
+      <PrivateRoute path="/Timetable" exact>
         <Timetable/>
-      </Route>
+      </PrivateRoute>
 
-      <Route path="/PublishEvent" exact>
+      <PrivateRoute path="/PublishEvent" exact>
         <PublishEvent/>
-      </Route>
+      </PrivateRoute>
 
-      <Route path="/CreateEvent" exact>
+      <PrivateRoute path="/CreateEvent" exact>
         <CreateEvent/>
-      </Route>
+      </PrivateRoute>
 
-      <Route path="/CreateTemplate" exact>
+      <PrivateRoute path="/CreateTemplate" exact>
         <CreateTemplate/>
-      </Route>
+      </PrivateRoute>
 
       <Route path="/EosFeedback" exact>
         <EosFeedback/>
@@ -53,13 +53,13 @@ export default function Routes() {
         <AttendeeMeeting/>
       </Route>
 
-      <Route path="/HostMeeting" exact>
+      <PrivateRoute path="/HostMeeting" exact>
         <HostMeeting/>
-      </Route>
+      </PrivateRoute>
 
-      <Route path="/CodeDisplay" exact>
+      <PrivateRoute path="/CodeDisplay" exact>
         <CodeDisplay/>
-      </Route>
+      </PrivateRoute>
 
   
     </Switch>
@@ -67,7 +67,7 @@ export default function Routes() {
 }
 
 function PrivateRoute({ children, ...rest }) {
-
+  //used when user infromation is required for a page to function
   let contextUser = useContext(UserContext)
   let authorised = false
   if(contextUser.user != null){

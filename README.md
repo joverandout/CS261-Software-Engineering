@@ -60,10 +60,10 @@ You should be able to tell the backend is running with the following message:
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
 
-Now to start the frontend navigate to `/frontend` and install and then run npm there:
+Now to start the frontend, install npm (node package manager), navigate to `/frontend` and run:
 ```
 $ npm install
-$ npm run
+$ npm start
 ```
 
 This should (provided the backend was already running) startup the website and automatically open it in your default browser. To verify this is working you will see this in your console:

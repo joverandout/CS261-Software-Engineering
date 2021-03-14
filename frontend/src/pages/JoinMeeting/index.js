@@ -15,6 +15,7 @@ export default function JoinMeeting(){
         anonymous: "0"
     })
 
+    //update the form details appropriately when the user inputs information
     function inputHandler(entryObj){
         let tmpForm = formEntries
         let value = entryObj.target.value
@@ -28,9 +29,9 @@ export default function JoinMeeting(){
 
         setFormEntries(tmpForm)
     }
-
+    //try to join a meeting useing the input information
     function join(){
-        if(formEntries.username=="" || formEntries.meetingcode==""){
+        if(formEntries.username=="" || formEntries.meetingcode==""){ //make sure the fields are not empty
             console.log("Enter a meeting code and username")
             return
         }

@@ -47,6 +47,7 @@ export default function EosFeedback(){
     const [questionValues, setQValues] = useState([])
     const [questionComponents, setQComponents] = useState([])
 
+    //create all the question fields on page load
     useEffect(()=>{
         let tmpQComponents=[]
         let tmpQValues = []
@@ -72,6 +73,7 @@ export default function EosFeedback(){
         setQValues(qVals)
     }
 
+    //send the feedback when the appropriate button is pressed
     function sendFeedback(){
         let now = new Date()
         let h = now.getHours().toString()
@@ -98,7 +100,6 @@ export default function EosFeedback(){
     return(
         <div>
         <div className="wrap">
-            <h1> Meeting Name </h1> 
             <p>End-of-session feedback</p>
             <h1>{meetingdetails.meetingname}</h1>
         </div>

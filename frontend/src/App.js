@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 
 import UserContext from './contexts/user-context'
 
+//entry point for the application
 export default function App() {
   const [userC, setUserC] = useState({
     user:null,

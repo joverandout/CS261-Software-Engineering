@@ -94,13 +94,14 @@ export default function Timetable(){
         let tmpEvList = data[0]
         let tagList = data[1]
         setEventList(tmpEvList)
-    
+        //add the categories to the option list
         let tmpTagOptions = []
         tagList.forEach((tag, index) => {
           tmpTagOptions.push(<option key={index}> {tag} </option>)
         });
         setTagOptions(tmpTagOptions)
-    
+        
+        //add buttons for all of the events
         let evButtons = []
         for(let i=0; i<tmpEvList.length; i++){
           evButtons.push(<EventComponent event={tmpEvList[i]} key={i} id={i}/>)
@@ -111,9 +112,6 @@ export default function Timetable(){
         setEventButtons(<h1>No Events Found</h1>)
       })
     }
-    
-    //todo nake sure this returns as valid
-
    
   }, [])
 
@@ -124,7 +122,7 @@ export default function Timetable(){
   function logout(){
     history.push("/")
   }
-
+  //display the appropriate events when a category is selected
   function refreshEventList(fieldObj){
     let tag = fieldObj.target.value
     
@@ -137,10 +135,10 @@ export default function Timetable(){
     setEventButtons(evButtons)
   }
 
-  function createTemplate(){
+  function createTemplate(){ // we no longer have a create template button on the page
     history.push("/CreateTemplate")
   }
-  // todo - change the username according to the context details
+  
   return(
     <div>
        <button className="white_button" id="back_button" onClick={logout}>Log Out</button>
@@ -149,8 +147,6 @@ export default function Timetable(){
     
     <div className="wrap">
     
-     
-        
         <div className="header" id="avoid_buttons">
             <h1>Welcome, {user.Name} </h1>
             <h3>Your scheduled meetings:</h3>
@@ -161,10 +157,6 @@ export default function Timetable(){
                 {tagOptions}
             </select>
         </div>
-
-
-
-        
 
     </div>
 

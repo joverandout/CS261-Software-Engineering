@@ -17,20 +17,22 @@ export default function CreateTemplate(){
     const [questions, setQuestions] = useState([])
     const [questionBs, setQBs] = useState([])
     const [delQ, setDelQ] = useState([""])
-    const [count, setCount] = useState(-1)
+    const [count, setCount] = useState(-1) //redunant hook
     const [qCount, setQCount] = useState(0)
     const c = useRef(0)
 
 
     const [form, setForm] = useState({})
 
-    //Dirty fix, should use useCallback probably
+    //Dirty fix, should use a reference 
     const [id, setID] = useState(-1)
     const [val, setVal] = useState(true)
 
     const contextUser = useContext(userContext)
     const user = contextUser.user
     const history = useHistory()
+
+    //create the initial buttons on loadin
     useEffect(()=>{
         
         let tmpValues = []
@@ -45,12 +47,12 @@ export default function CreateTemplate(){
         setButtonValues(tmpValues)
     },[])
 
-    //dirty fix to problem, should use useCallback probably
+    //dirty fix to problem, should use a reference
     useEffect(()=>{
         
         let tmpEmValues = buttonValues
         let increment = val?1:-1
-        console.log("id use effect",count,increment)
+    
         c.current = count+increment
         tmpEmValues[id] = val
         setCount(count+increment)
@@ -60,8 +62,7 @@ export default function CreateTemplate(){
     function toggleEmotionCb(id, value){
         console.log("Callback",c,value)
         if(c.current+1>8 && value == true){
-            console.log("!!!!!!")
-            return false
+            return false // do not allow buttons to toggle true if 8 already exist
         }
         setVal(value)
         setID(id)
@@ -72,6 +73,7 @@ export default function CreateTemplate(){
         setCustomName(inObj.target.value)
     }
 
+    //update the questions if one was deleted
     useEffect(()=>{
         setQuestions(questions.filter(q=>q!=delQ))
         setQBs(questionBs.filter(qb=>qb.props.name!=delQ))
@@ -84,6 +86,8 @@ export default function CreateTemplate(){
             return
             // Add error message?
         }
+
+        //if the name already exists, do not leat a new button to be created
         for(let i=0;i<eList.length;i++){
             if(eList[i][0]==customEmName){
                 return
@@ -109,20 +113,20 @@ export default function CreateTemplate(){
     function addQuestion(){
         let q = newQ
         
-        if(q.charAt(q.length-1) !="?"){
+        if(q.charAt(q.length-1) !="?"){ // questions must end with ?
             q+="?"
         }
         
-        if(q==""||questions.includes(q)){
+        if(q==""||questions.includes(q)){ //no repeat questions
             return 
-            //Add some kind of error message?
+            //Add some kind of error message
         }
 
         if(questions.length == 3){
             return 
-            //another error message?
+            //another error message
         }
-        //console.log(questions)
+        
         let newQB = (<button className="question_box" key={qCount} name={q} onClick={deleteQuestion}>{q}</button>)
         setQCount(qCount+1)
         setQuestions(questions.concat(q))
@@ -135,6 +139,7 @@ export default function CreateTemplate(){
         setDelQ(bqObj.target.name)
     }
 
+    //send all the collected information back to the server
     function complete(){
         //? seperated sstring
         let finalQuestions = questions.join("")
@@ -152,13 +157,13 @@ export default function CreateTemplate(){
         setForm(tmpForm)
         console.log(tmpForm)
         templateCreation(tmpForm).then(res=>{
-            console.log("Yay we made it")
             history.goBack()
         }).catch(err=>{
             console.log(err.message)
         })
     }
 
+    //change the form details when one of the inputs change
     function formChange(formObj){
         let name = formObj.target.name
         let value = formObj.target.value

@@ -17,14 +17,14 @@ export default function HostSignIn(){
   //In reality we should check if there is already a user logged in to set this
 
   let contextUser = useContext(UserContext)
-
+  //send the username and password to the server for checking
   function login(){
     let data={
       username: username,
       password: password
     }
     hostLogIn(data).then(hostid=>{
-
+      //set the user context if we are a valid user
       contextUser.setUser({
         "Name":username,
         "hostid":hostid

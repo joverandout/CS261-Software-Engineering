@@ -11,6 +11,7 @@ export default function PublishEvent(){
     const eventName = event.MeetingName
     const startTime = event.StartTime
 
+    //tell the server to start the event
     function startEvent(){
 
         startMeeting({meetingid:event.MeetingID.toString()}).then(res=>{

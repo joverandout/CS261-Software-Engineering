@@ -24,6 +24,7 @@ export default function CreateEvent(){
 
     const contextUser = useContext(UserContext)
     const user = contextUser.user
+    //retriece the categories and the templates from the server for display
     useEffect( ()=>{
          getTemplates({hostid:user.hostid.toString()}).then(temCat=>{
         
@@ -50,6 +51,7 @@ export default function CreateEvent(){
         })
     },[])
 
+    //when a field changes, update the form details appropriately
     function formChange(formObj){
         let name = formObj.target.name
         let value = formObj.target.value
@@ -104,6 +106,7 @@ export default function CreateEvent(){
         history.goBack()
     }
 
+    //send the form details to the server
     function scheduleEvent(){
         let required = ["meetingname", "duration", "category", "starttime", "templateid"]
         let tmpForm = form
@@ -113,7 +116,7 @@ export default function CreateEvent(){
         required.forEach((req,i)=>{
             if(!tmpForm[req] || tmpForm[req]==""){
                 console.log("Missing: ",req)
-                return
+                return // do not send the details with empty fields
             }
         })
 

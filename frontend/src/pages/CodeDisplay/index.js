@@ -12,6 +12,7 @@ export default function CodeDisplay(){
     const event = location.state.event 
     const history = useHistory()
 
+    // Navigate to the live feedback page
     function goLive(){
         console.log("??")
         history.push({
@@ -22,6 +23,7 @@ export default function CodeDisplay(){
         })
     }
 
+    // stop the meeting and go back to the timetable page
     function endEvent(){
         let data = {meetingid:event.MeetingID.toString()}
         endMeeting(data).then(res=>{
@@ -29,9 +31,11 @@ export default function CodeDisplay(){
                 history.push("/Timetable")
             }).catch(err=>{
                 console.log(err.message)
+                history.push("/Timetable")//go back to the timetable place regardless
             })
         }).catch(err=>{
             console.log(err.message)
+            history.push("/Timetable")//go back to the timetable place regardless
         })
     }
 
