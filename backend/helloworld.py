@@ -30,6 +30,7 @@ import sqlite3
 from sqlite3 import Error
 
 import random
+import traceback
 
 import template_db_fethcer
 from Semantic import Semantic
@@ -194,6 +195,7 @@ def meetingview():
                     x = each[1].split(",")
                     y = each[3].split(",")
                     for emo in x:
+                        print(emo)
                         numDict = dict()
                         numDict["5"] = 0
                         numDict["4"] = 0
@@ -233,7 +235,8 @@ def meetingview():
                         #for each split question append it to the feed
                         postfeed.append(feed)
                     print(each[1])
-            print(dictTest)
+            print(emotDict)
+            print("---------")
             #print("MADE THROUGH FIRDST LOOP")
             for each in data:
                 #for each feedback check it isnt technical or a post
@@ -243,13 +246,15 @@ def meetingview():
                     x = each[1].split(",")
                     y = each[3].split(",")
                     #then for each of the emotions upddate the counter in the correct dictionary
+                    print("!!!!!!")
+                    #print(data)
                     for j in range(len(x)):
                         print(j)
                         print(emotDict[x[j]])
                         val = emotDict[x[j]]
-                        if y[j] != 0:
+                        if int(y[j] )!= 0:
                             print(y[j])
-                            print(val[y[j]])
+                            #print(val[y[j]])
                             val[y[j]] = val[y[j]] + 1
                             print(val[y[j]])
             #get the meeting information like the name and category to display in the webpage for the meeting view
@@ -272,7 +277,7 @@ def meetingview():
             return encoded_string
     except Exception as e: #otherwise return an error
         print("pdf conversion error")
-        print(e)
+        traceback.print_exc()
         print("\n\n")
         return ("nope not working",400)
 
@@ -368,7 +373,7 @@ def postmeetingfeed():
         postquestions = info["questionresponses"]
         timeSent = info["ftime"]
         companyID = info["companyid"]
-        print(postquestions)
+        postquestions = postquestions.split("~")
         #check the meeting object exists in the still collecting feedback dictionary of currently 
         #live meetinfs and if its doesn't do not allow it to collect feedback
         """

@@ -61,7 +61,7 @@ function EventComponent(props){
   
   if(startTimeDate < timeNow.getTime()){
     style = {backgroundColor: "#e7e6e6"}
-    console.log("!!!!!!!")
+    
     bjsx = (<button style={style} onClick={pdfClicked}>{eventName} | {eventTime} | {tag}</button>)
   }
   
