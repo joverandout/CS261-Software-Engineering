@@ -371,10 +371,12 @@ def postmeetingfeed():
         print(postquestions)
         #check the meeting object exists in the still collecting feedback dictionary of currently 
         #live meetinfs and if its doesn't do not allow it to collect feedback
+        """
+        For the sake of the demo we will not check if the meeting is still running
         if (meetingID in still_collecting_feedback_meetings):
             print("meeting collecting post feedback")
         else:
-            return ("no longer taking feedback",400)
+            return ("no longer taking feedback",400)"""
         with sqlite3.connect("database.db") as con:
             #insert the feedback values into the dictionary for permanent storage
             cur = con.cursor()
