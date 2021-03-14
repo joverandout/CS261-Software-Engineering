@@ -64,6 +64,13 @@ Now to start the frontend, install npm (node package manager), navigate to `/fro
 ```
 $ npm install
 $ npm start
+
+Host User Details:
+username:"John"
+password:"pa$$word"
+
+To access the attendee point of view, go to localhost:[port]/JoinMeeting
+usernames: Tom, Linda, Bert, Jenny, Adam
 ```
 
 This should (provided the backend was already running) startup the website and automatically open it in your default browser. To verify this is working you will see this in your console:
