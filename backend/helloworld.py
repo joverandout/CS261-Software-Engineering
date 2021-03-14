@@ -360,7 +360,7 @@ is tracked and will appear in the pdf for examples
 def postmeetingfeed():
     info = request.get_json()
     if info == None:
-        return "No feedback there"
+        return ("No feedback there",400)
     print(info)
     try:
         #collect the id and question responses as well as the time submitted for the feedback 
@@ -374,7 +374,7 @@ def postmeetingfeed():
         if (meetingID in still_collecting_feedback_meetings):
             print("meeting collecting post feedback")
         else:
-            return "no longer taking feedback"
+            return ("no longer taking feedback",400)
         with sqlite3.connect("database.db") as con:
             #insert the feedback values into the dictionary for permanent storage
             cur = con.cursor()
