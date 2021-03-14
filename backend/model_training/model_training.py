@@ -32,7 +32,7 @@ if __name__ == '__main__':
     trainer.train('.', 
                   learning_rate=3e-5, #learning rate must be small
                   mini_batch_size=16,
-                  max_epochs=15,  #terminate after
+                  max_epochs=8,  #terminate after 8 epochs
                   mini_batch_chunk_size=4, #this is so as not to overwhelm the CPU
                   shuffle=True,
                   )
