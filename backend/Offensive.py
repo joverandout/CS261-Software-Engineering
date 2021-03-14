@@ -8,9 +8,6 @@ classifier = TextClassifier.load('best-model.pt')
 # initialize sentence splitter
 splitter = SegtokSentenceSplitter()
 
-# create example sentence
-# sentence = Sentence('You are a piece of shit. I hate your faggot ass. I have to admit you are an expert in PR. You dress like a champion. I was bored the whole time. I can see you put a lot of effort into this.')
-
 class Offensive():
     input = ""
     __offValues = []
@@ -42,11 +39,3 @@ class Offensive():
                 self.__confScores[i] = -self.__confScores[i]
         return self.__confScores
 
-# offEval = Offensive('You suck balls. Fuck. I love you')
-# print('You suck balls. Fuck. I love you')
-# offEval.update_rating()
-# a = offEval.get_scores()
-# print(a)
-#for each in a:
-#    if each > 0.5:
-#        print("OFFENSIVE")
