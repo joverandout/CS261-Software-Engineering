@@ -36,8 +36,7 @@ $ python -m venv venv
 $ . venv/Scripts/activate
 $ $env:FLASK_APP = "helloworld.py"
 ```
-HERE NEED TO INSTALL FLAIR how to do this?? i have no idea 
-To install flair for sentiment analysis ensure you at least have python version 6.6/ 3.7, then run the following commands:
+To install flair for semantic analysis ensure you have python version 3.6/ 3.7, then run the following commands:
 ```
 $ pip install pytorch
 $ pip install flair 
