@@ -188,14 +188,15 @@ def meetingview():
             meetingCat = ""
             emotDict = dict()
             print("Defined all values")
+            print(data)
             for each in data:
-                print(each[1])
+                #print(each[1])
                 #place the feedback into a dictionary 
                 if (each[1] != "Technical" and each[1] != "Post"):
                     x = each[1].split(",")
                     y = each[3].split(",")
                     for emo in x:
-                        print(emo)
+                        #print(emo)
                         numDict = dict()
                         numDict["5"] = 0
                         numDict["4"] = 0
@@ -203,8 +204,8 @@ def meetingview():
                         numDict["2"] = 0
                         numDict["1"] = 0
                         emotDict[emo] = numDict
-                    print(x)
-                    print(y)
+                    #print(x)
+                    #print(y)
                     for j in range(len(x)):
                         #add each of the emotions from the database and their rating to the emotions
                         #in the format emotion:number so the array is formatted for example like,
@@ -220,22 +221,35 @@ def meetingview():
                         usernames.append("Anonymous")
                 elif each[1] == "Post":
                     print("ITS POSTTTTTTTTTTTTT")
+                    answer = each[0]
+                    print(answer)
+                    generaltext.append("Post: "+each[0])
+                    if each[5] == 0:
+                        usernames.append(each[6])
+                    else:
+                        usernames.append("Anonymous")
+                    """
+                    print(each)
                     #if its a post meeting split it on the tildas
-                    splt = each[0].split("~")
-                    print(splt)
+                    splt = each[0]
+                    ##print(splt)
                     k = 0 
                     #this gets the questions individually
+                    print(dictTest)
+                    print("-----")
+                    print(splt)
+                    
                     for question in dictTest:
                         print(question)
-                        print(splt[k])
+                        print(splt)
                         #append each questions response to the dictest
-                        dictTest[question].append(splt[k])
+                        dictTest[question].append(splt)
                         k+=1 #incrementing the counter afterwards
                     for feed in splt:
                         #for each split question append it to the feed
                         postfeed.append(feed)
-                    print(each[1])
-            print(emotDict)
+                    print(each[1])"""
+            print(generaltext)
             print("---------")
             #print("MADE THROUGH FIRDST LOOP")
             for each in data:
@@ -249,8 +263,8 @@ def meetingview():
                     print("!!!!!!")
                     #print(data)
                     for j in range(len(x)):
-                        print(j)
-                        print(emotDict[x[j]])
+                        #print(j)
+                        #print(emotDict[x[j]])
                         val = emotDict[x[j]]
                         if int(y[j] )!= 0:
                             print(y[j])
@@ -267,13 +281,14 @@ def meetingview():
 
             print(generaltext)
             print(postfeed)
+            print("!!!!!-----")
             #turn all of this infomation we have collected like the name and values into the pdf format
             makepdf(generaltext, usernames, emotionsWithRatings, meetingName, meetingCat, emotDict, dictTest)
-            print(data)
+            #print(data)
             with open("Test.pdf", "rb") as pdf_file:
                 #with the pdf open turn it into bsae64 in order to return it to the front end
                 encoded_string = base64.b64encode(pdf_file.read())
-                print(encoded_string)
+                #print(encoded_string)
             return encoded_string
     except Exception as e: #otherwise return an error
         print("pdf conversion error")
@@ -391,9 +406,13 @@ def postmeetingfeed():
                 part3 = "Post' , '" + timeSent + "' , NULL, NULL)"
                 print(part1+part2+part3)
                 cur.execute(part1+part2+part3)
+
+                query2 = "INSERT INTO USERFEEDBACK VALUES(last_insert_rowid(), "+ meetingID +", "+ companyID +") "
+                cur.execute(query2)
             
             return "SUCCESS??"
-    except:
+    except Exception as e:
+        traceback.print_exc()
         return ("nope not working",400)
 
 """
