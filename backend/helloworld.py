@@ -517,8 +517,8 @@ def userfeedback():
                 #ratList = 
                 #emotsList = emotion.split(",")
                 
-                if True == True:
-                    print("here")
+                if timeConstraint == True:
+                    # print("here")
                     #query = """INSERT INTO FEEDBACK VALUES(NULL, " """+ generaltext +""" ", '""" + emotion + """', '""" + timeSent + """', '"""+ rating +"""', ' """ + semanticAnalysis + ""')"""
                     part1 = """INSERT INTO FEEDBACK VALUES(NULL, " """ + generaltext
                     part2 = """ ", '""" + emotion 
