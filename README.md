@@ -3,11 +3,11 @@ Group 7's CS261 Software Engineering project for Deutsche Bank
 
 A meeting feedback system to provide real-time feedback to a meeting organiser using semantic text analysis.
 
-Frontend - Create React App Project
+*Frontend* - Create React App Project
 
-Backend - Python Flask Web Server (Rest API)
+*Backend* - Python Flask Web Server (Rest API)
 
-Sentiment Analysis - Flair Natural Language Processing Framework
+*Sentiment Analysis* - Flair Natural Language Processing Framework
 
 To run follow the below instructions:
 
